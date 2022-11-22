@@ -210,7 +210,7 @@ this.paymentmode =Value;
     console.log("credit",Val)
     this.creditTypeStatus = Val;
   }
-
+ 
   Submit()
   {
     this.paycred.push({

@@ -796,8 +796,8 @@ export class AuthService {
     return this.http.get(this.base_url1 + 'Internal/receivebyid?orderid=' + OrdId)
   }
   //Queen14-09-2022
-  getCredit(compid){
-    return this.http.get(this.base_url1 + 'CreditTrx/TestCreditData?CompanyId=' + compid)
+  getCredit(compid, billStatus){
+    return this.http.get(this.base_url1 + 'CreditTrx/TestCreditData?CompanyId=' + compid + '&billStatus=' + billStatus)
   }
   //Queen 23-09-2022
   getpurchase(compid){
@@ -807,10 +807,33 @@ export class AuthService {
   savecredit(crd){
     return this.http.post(this.base_url1 + 'CreditTrx/savecredit', crd)
   }
-  getcttypes(compid){
-    return this.http.get(this.base_url1 + 'CreditTrx/GetContType?CompanyId=' + compid)
+  // getcttypes(compid){
+  //   return this.http.get(this.base_url1 + 'CreditTrx/GetContType?CompanyId=' + compid)
+  // }
+  // getcredittypes(){
+  //   return this.http.get(this.base_url1 + 'CreditTrx/GetCreditType')
+  // } 
+  // getStores(CompanyId){
+  //   return this.http.get(this.base_url1+ 'CreditTrx/GetStores?CompanyId=' + CompanyId )
+  // }
+  //Queen 31-10-2022
+  getcontact(CompanyId, ContactTypeId){
+    return this.http.get(this.base_url1+ 'CreditTrx/GetContact?CompanyId=' + CompanyId + '&ContactTypeId=' + ContactTypeId)
   }
-  getcredittypes(){
-    return this.http.get(this.base_url1 + 'CreditTrx/GetCreditType')
+  getinputdata(CompanyId){
+    return this.http.get(this.base_url1+ 'CreditTrx/getTabledata?CompanyId=' + CompanyId )
   }
+  getbillstatus(CompanyId){
+    return this.http.get(this.base_url1+ 'CreditTrx/Getbillstatus?CompanyId=' + CompanyId )
+  }
+
+  //Queen 17-11-2022
+  // getconforrep(CompanyId){
+  //   return this.http.get(this.base_url1+ 'CreditTrx/getrepaycontact?compId=' + CompanyId )
+  // }
+
+  saverepay(crejson){
+    return this.http.post(this.base_url1+ 'CreditTrx/repay', crejson)
+  }
+
 }

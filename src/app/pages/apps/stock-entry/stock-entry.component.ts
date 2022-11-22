@@ -129,8 +129,8 @@ export class StockEntryComponent implements OnInit {
       // console.log(this.stockproduct)
       this.productarrayreset();
     }
-
-  }
+  
+  } 
   productarrayreset() {
     this.products.forEach(product => {
       product.selected = false;
