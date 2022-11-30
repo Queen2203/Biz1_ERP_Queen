@@ -187,11 +187,11 @@
         </td>
         <td>
           <div class="btn-group mr-2 mb-2">
-            <a (click)="crerepay()" href="javascript: void(0);" class="btn btn-sm btn-light ">
+            <a (click)="crerepay(ord.contactId)" href="javascript: void(0);" class="btn btn-sm btn-light ">
               <i class="fe fa-lg fe-dollar-sign"></i>
             </a>
-            <a href="javascript: void(0);" routerLink="/apps/creditdetails/{{ord.billTransId}}"
-              class="btn btn-sm btn-light pull-left" slot="actions">
+            <a href="javascript: void(0);" routerLink="/apps/creditdetails/{{ord.contactId}}"
+              class="btn btn-sm btn-light pull-left">
               <i class="fe fa-lg fe-info"></i>
             </a>
             <!-- <a class="btn btn-sm btn-light" href="javascript: void(0);" (click)="openCustomClass(vertical)"
@@ -202,14 +202,18 @@
                 class="btn btn-sm btn-light ">
                 <i class="fe fa-lg fe-edit" aria-hidden="true"></i>
               </a> -->
-            <a (click)="clickcredit(0)" href="javascript: void(0);"
+            <!-- <a  href="javascript: void(0);" routerLink="/apps/editcredit/{{ord.billTransId}}"
               class="btn btn-sm btn-light ">
               <i class="fe fa-lg fe-edit" aria-hidden="true"></i>
-            </a>
-            <a href="javascript: void(0);" (click)="Delete(ord.billTransId)" class="btn btn-sm btn-light pull-left"
+            </a> -->
+            <!-- <a href="javascript: void(0);" routerLink="/apps/editcredit/{{ord.contactId}}"
+              class="btn btn-sm btn-light ">
+              <i class="fe fa-lg fe-edit" aria-hidden="true"></i>
+            </a> -->
+            <!-- <a href="javascript: void(0);" (click)="Delete(ord.billTransId)" class="btn btn-sm btn-light pull-left"
               slot="actions">
               <i class="fe fa-lg fe-trash-2"></i>
-            </a>
+            </a> -->
           </div>
         </td>
       </tr>
@@ -251,7 +255,7 @@
       </div>
     </div>
     <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Credit Type</strong></label>
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select CreditType</strong></label>
       <ng-template class="w-100" #crt let-cc="result" let-ct="term">
         <ngb-highlight [result]="cc.name" [term]="ct"></ngb-highlight>
       </ng-template>
@@ -333,10 +337,7 @@
       <div class="col-md-3">
         <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Select Contact" [ngbTypeahead]="searchrecontact" [inputFormatter]="formatterrecontact"
-          [resultTemplate]="cct" (selectItem)="selectedrecontact($event.item)" (keyup.enter)="clickrepaytable()" value="" />
-        <!-- <select class="form-control" [(ngModel)]="test.contacttypeId" (ngModelChange)="contacttypeid()">
-            <option *ngFor="let pcatt of inputvalue.contactType" value="{{pcatt.id}}">{{pcatt.description}}</option>
-          </select> -->
+          [resultTemplate]="cct" (selectItem)="selectedrecontact($event.item)" (keyup.enter)="clickrepaytable()"/>
       </div>
 
       <label class="col-md-3 col-form-label" for="baseFullname"><strong>Actual Repay</strong></label>
@@ -365,7 +366,7 @@
         <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
-        <input type="number" disabled class="form-control" [(ngModel)]="test.payment" name="example_name" value=""
+        <input type="number" disabled class="form-control"  name="example_name" value=""
           (ngModelChange)="getamountfun()" placeholder="Enter Payment" />
       </div>
     </div>
@@ -403,17 +404,17 @@
     <div class="form-group row">
       <label class="col-md-3 col-form-label" for="formControlRange"> <strong>Total Balance</strong></label>
       <div class="col-md-3 pt-2">
-        <input type="text" class="form-control" [(ngModel)]="cal.balanceamount" name="example_name" value=""
+        <input type="text" class="form-control" [(ngModel)]="test.balance" name="example_name" value=""
           placeholder=" TotalBalance..." />
       </div>
     </div>
 
     <button type="button" class="btn btn-secondary px-5" (click)="back()">Go Back</button>
-    <button type="submit" class="btn btn-success px-5 pull-right" (click)="SaveCredit()">Submit</button>
+    <button type="submit" class="btn btn-success px-5 pull-right" (click)="saverepaydata()">Submit</button>
     <!-- <a href="javascript: void(0);"class="btn btn-success mt-3" (click)="testsave()"></a> -->
   </div>
   <div class="card kit__utils__cardMarked kit__utils__cardMarked--primary mx-5" *ngIf="isRepaytable"> 
-    <nz-table #basicTable class="kit__utils__table mb-4" [nzData]="getrepay"  nzSize="small" *ngIf="isRepaytable">
+    <nz-table #basicTable class="kit__utils__table mb-4" [nzData]="repay"  nzSize="small" *ngIf="isRepaytable">
       <thead>
         <tr>
           <th><strong>BillId </strong> </th>
@@ -453,105 +454,6 @@
       </tbody>
     </nz-table>
   </div> 
-<!-- </div> -->
-
-<!-- Edit Credit -->
-<h5 class="ml-3 mt-3" *ngIf="isedit">
-  <strong>Credit Edit</strong>
-</h5>
-<div *ngIf="isedit" class="card">
-  <div class="card-body" *ngIf="isedit">
-    <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact Type</strong></label>
-      <ng-template class="w-100" #cct let-qc="result" let-qt="term">
-        <ngb-highlight [result]="qc.description" [term]="qt"></ngb-highlight>
-      </ng-template>
-      <div class="col-md-3">
-        <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
-          placeholder="Search ContactType" [ngbTypeahead]="searchcontacttype" [inputFormatter]="formattercontacttype"
-          [resultTemplate]="cct" (selectItem)="selectedcontacttype($event.item)" />
-        <!-- <select class="form-control" [(ngModel)]="test.contacttypeId" (ngModelChange)="contacttypeid()">
-            <option *ngFor="let pcatt of inputvalue.contactType" value="{{pcatt.id}}">{{pcatt.description}}</option>
-          </select> -->
-      </div>
-
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact</strong></label>
-      <ng-template class="w-100" #ct let-c="result" let-t="term">
-        <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
-      </ng-template>
-      <div class="col-md-3">
-        <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
-          placeholder="Search Contact" [ngbTypeahead]="searchcontact" [inputFormatter]="formattercontact"
-          [resultTemplate]="ct" (selectItem)="selectedcontact($event.item)" />
-      </div>
-    </div>
-    <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Credit Type</strong></label>
-      <ng-template class="w-100" #crt let-cc="result" let-ct="term">
-        <ngb-highlight [result]="cc.name" [term]="ct"></ngb-highlight>
-      </ng-template>
-      <div class="col-md-3">
-        <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
-          placeholder="Search Credit type" [ngbTypeahead]="searchcredit" [inputFormatter]="formattercredit"
-          [resultTemplate]="crt" (selectItem)="selectedcredit($event.item)" />
-        <!-- <select class="form-control" [(ngModel)]="test.creditid" (ngModelChange)="credittypeid()">
-            <option *ngFor="let pcatt of inputvalue.creditType" value="{{pcatt.id}}">{{pcatt.name}}</option>
-          </select> -->
-      </div>
-
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Payment</strong></label>
-      <ng-template class="w-100" #ct let-c="result" let-t="term">
-        <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
-      </ng-template>
-      <div class="col-md-3">
-        <input type="number" class="form-control" [(ngModel)]="test.payment" name="example_name" value=""
-          (ngModelChange)="getamountfun()" placeholder="Enter Payment" />
-      </div>
-    </div>
-    <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Payment Mode</strong></label>
-      <ng-template class="w-100" #cct let-qc="result" let-qt="term">
-        <ngb-highlight [result]="qc.description" [term]="qt"></ngb-highlight>
-      </ng-template>
-      <div class="col-md-3">
-        <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
-          placeholder="Search Payment Mode" [ngbTypeahead]="searchpaymenttype" [inputFormatter]="formatterpaymenttype"
-          [resultTemplate]="cct" (selectItem)="selectedpaymenttype($event.item)" />
-      </div>
-
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Location</strong></label>
-      <ng-template class="w-100" #ct let-c="result" let-t="term">
-        <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
-      </ng-template>
-      <div class="col-md-3">
-        <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
-          placeholder="Search Location" [ngbTypeahead]="searchlocation" [inputFormatter]="formatterlocation"
-          [resultTemplate]="ct" (selectItem)="selectedlocation($event.item)" />
-      </div>
-    </div>
-    <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Responsible By</strong></label>
-      <ng-template class="w-100" #rt let-qr="result" let-qt="term">
-        <ngb-highlight [result]="qr.name" [term]="qt"></ngb-highlight>
-      </ng-template>
-      <div class="col-md-3">
-        <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
-          placeholder="Search ResponsibleBy" [ngbTypeahead]="searchresponsible" [inputFormatter]="formatterresponsible"
-          [resultTemplate]="rt" (selectItem)="selectedresponsible($event.item)" />
-      </div>
-
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Reference</strong></label>
-      <div class="col-md-3">
-        <input type="text" class="form-control" [(ngModel)]="test.reference" name="example_name" value=""
-          (ngModelChange)="getreferencefun()" placeholder="Enter Reference" />
-      </div>
-    </div>
-
-    <button type="button" class="btn btn-secondary px-5" (click)="clickcredit(1)">Go Back</button>
-    <button type="submit" class="btn btn-success px-5 pull-right" (click)="SaveCredit()">Submit</button>
-    <!-- <a href="javascript: void(0);"class="btn btn-success mt-3" (click)="testsave()"></a> -->
-  </div>
-</div>
 
 <!-- Credit Repay-List -->
 <div class="cui__utils__heading" *ngIf="isRepaymain">
@@ -574,6 +476,10 @@
     <div class="col-md-6 pt-2">
       <button class="btn btn-success" style="width: 80px; height: 30px;margin-top: 10px;"
         (click)="repaybtn()">REPAY</button>
+        <!-- <a href="javascript: void(0);" routerLink="/apps/creditrepay/{{ord.contactId}}"
+        class="btn btn-sm btn-light ">
+        <button >REPAY</button>
+      </a> -->
     </div>
     <div *ngIf="isRepaymain" class="col-md-5 pt-2">
       <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
@@ -593,7 +499,7 @@
         <th><strong>ContactType </strong></th>
         <th><strong> Location</strong></th>
         <th><strong>Amount </strong></th>
-        <th><strong>Balance </strong></th>
+        <!-- <th><strong>Balance </strong></th> -->
         <th><strong> Reference</strong> </th>
         <th><strong>TransDate </strong></th>
         <th><strong> Action</strong></th>
@@ -602,7 +508,7 @@
     <tbody>
       <tr *ngFor="let ord of basicTable.data |filter: term">
         <td>
-          {{ord.billTransId}}
+          {{ord.transactionId}}
         </td>
         <td>
           {{ord.name}}
@@ -621,11 +527,11 @@
           {{ord.location}}
         </td>
         <td>
-          &#8377; {{ord.billAmount}}
+          &#8377; {{ord.amount}}
         </td>
-        <td>
+        <!-- <td>
           &#8377; {{ord.balance}}
-        </td>
+        </td> -->
         <td>
           {{ord.description}}
         </td>
@@ -634,10 +540,10 @@
         </td>
         <td>
           <div class="btn-group mr-2 mb-2">
-            <a (click)="repaydolar(ord.contactId)" href="javascript: void(0);" class="btn btn-sm btn-light ">
+            <!-- <a (click)="repaydolar(ord.contactId)" href="javascript: void(0);" class="btn btn-sm btn-light ">
               <i class="fe fa-lg fe-dollar-sign"></i>
-            </a>
-            <a href="javascript: void(0);" routerLink="/apps/creditdetails/{{ord.billTransId}}"
+            </a> -->
+            <a href="javascript: void(0);" routerLink="/apps/creditdetails/{{ord.contactId}}"
               class="btn btn-sm btn-light pull-left" slot="actions">
               <i class="fe fa-lg fe-info"></i>
             </a>
@@ -649,7 +555,7 @@
                 class="btn btn-sm btn-light ">
                 <i class="fe fa-lg fe-edit" aria-hidden="true"></i>
               </a> -->
-            <a href="javascript: void(0);" routerLink="/apps/editcredit/{{ord.billTransId}}"
+            <a href="javascript: void(0);" routerLink="/apps/editcreditrepay/{{ord.contactId}}"
               class="btn btn-sm btn-light ">
               <i class="fe fa-lg fe-edit" aria-hidden="true"></i>
             </a>
@@ -761,7 +667,4 @@
     <!-- </div> -->
     <!-- </div> -->
   </div>
-
-  <input type="text" class="form-control" [(ngModel)]="name" name="example_name" value="" (ngModelChange)="temprfun()"
-  placeholder=" TotalBalance..." />
 </div>

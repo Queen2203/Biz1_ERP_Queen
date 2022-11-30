@@ -835,5 +835,14 @@ export class AuthService {
   saverepay(crejson){
     return this.http.post(this.base_url1+ 'CreditTrx/repay', crejson)
   }
+  getdatabyid(id){
+    return this.http.get(this.base_url1+ 'CreditTrx/getbyId?id=' + id)
+  }
+  getrepaycondatabyid(id){
+    return this.http.get(this.base_url1+ 'CreditTrx/getclickbyId?id=' + id)
+  }
+  getrepayIndex(CompanyId){
+    return this.http.get(this.base_url1+ 'CreditTrx/GetRepayIndex?CompanyId=' + CompanyId )    
+  }
 
 }

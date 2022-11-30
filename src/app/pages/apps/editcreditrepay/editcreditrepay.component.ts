@@ -33,13 +33,15 @@ export class EditcreditrepayComponent implements OnInit {
   paycred =[];
   credit =[];
   AddForm =[];
-  isTable =true;
+  // isTable =true;
+  isRepay= true
   PaymentTypeId =0;
   description ='';
   creditTypeStatus ='';
   amount =0;
   TransactionId =0;
-  isShown =false; 
+  // isShown =false; 
+  isRepaytable = true
   trans: any = {   amount: 0, creditTypeStatus:"", PaymentTypeId:1, supplier:'',
   description: "", CompanyId: 1,contactId:this.contactId,responsibleById:this.DispatchById,
   storeId:this.SuppliedById, contactType:0,Cname:'',responsibleBy:'',
@@ -47,6 +49,33 @@ export class EditcreditrepayComponent implements OnInit {
    TransDateTime:moment().format('YYYY-MM-DD HH:MM A'),TransactionId:0,
    TransDate:moment().format('YYYY-MM-DD HH:MM A'),
   CreatedDate:moment().format('YYYY-MM-DD HH:MM A')}
+
+  //queen
+  testmaster: any ={
+    name: '',
+    amount: null,
+    // billId: 0,
+    contactType: '',
+    contactTypeId: 0,
+    creditTypeId: 0 ,
+    creditType: '',
+    id: 0,
+    // paidAmount: '',
+    paymentType: '',
+    paymentTypeId: 0,
+    storeId: 0,
+    store: '',
+    description: null
+
+  }
+  Contact: any
+  testfunid = 0
+  repay: any
+  typid= 0
+
+  newdata: any ={
+    
+  }
 
   constructor(
     private _fb: FormBuilder ,
@@ -58,13 +87,54 @@ export class EditcreditrepayComponent implements OnInit {
     public location: Location )
 
     {
-      this.OrdId = this._avRoute.snapshot.params["id"];
+      this.testfunid = this._avRoute.snapshot.params["id"];
       this.users = JSON.parse(localStorage.getItem("users"));
      }
 
   ngOnInit(): void {
-    this.getStoreList();
-    this.getTransList();
+    // this.getStoreList();
+    // this.getTransList();
+    this.getrecustomer()
+    this.getcontacttype()
+  }
+  recontact: any
+  getcontact() {
+    this.Auth.getcontact(this.CompanyId, this.testmaster.contactTypeId).subscribe(data => {
+      this.Contact = data
+      this.recontact = this.Contact[0].id
+      console.log('Contact', this.recontact)
+    })
+  }
+  conty: any
+  crety: any
+  payty: any
+  stor: any
+  getcontacttype(){
+    this.Auth.getinputdata(this.CompanyId).subscribe(data =>{
+      this.conty = data['contactType']
+      this.crety = data['creditType']
+      this.payty = data['paymentType']
+      this.stor = data['store']
+      this.testmaster.contactTypeId = this.conty[0].id
+      this.testmaster.creditTypeId = this.crety[0].id
+      this.testmaster.paymentTypeId = this.payty[0].id
+      this.testmaster.storeId = this.stor[0].id
+      // console.log('testcon',  this.testcon)
+      console.log('contactTypeId', this.testmaster.contactTypeId)
+    })
+    this.getcontact()
+  }
+  tname: ''
+  // testmaster : string
+  getrecustomer(){
+    console.log(this.testfunid)
+    // this.Auth.saverepay(this.cred).subscribe(data =>{
+      this.Auth.getdatabyid(this.testfunid).subscribe(data =>{
+      this.repay = data['editdata']
+      console.log(this.repay)
+      this.testmaster = this.repay[0]
+      console.log(this.testmaster)
+    })
   }
   getTransList()
   {
@@ -181,6 +251,33 @@ Updatecredit()
 }
 goback()
 {
-  this.router.navigate(['/apps/creditrepay']);
+  this.router.navigate(['/apps/credit/']);
+}
+
+//Queen
+// contactchange(Value)
+// {
+//   console.log("rec",Value)
+//  this.typid = Value;
+// }
+newpaytype: any
+getpaymenttype(value){
+  console.log('newpaytype', value)
+  this.newpaytype = value
+}
+getpaymentfun(){
+  console.log('newamount', this.testmaster.amount)
+}
+newlocation: any
+getlocationfun(value){
+  console.log('newlocation', value)
+  this.newlocation = value
+}
+getreferencefun() {
+  console.log('description', this.testmaster.description)
+}
+
+SaveRepayEdit(){
+
 }
 }

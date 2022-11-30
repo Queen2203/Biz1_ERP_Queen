@@ -1,81 +1,106 @@
-<div class="form-group row" *ngIf="isTable">
-    <div class="hk-pg-header">
-        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
-            data-feather="archive"></i></span></span> Payments - Edit</h4>
-    </div>
-</div>
-<div class="cui__utils__heading" *ngIf="isTable">
-    <strong>Payments - Edit</strong>
-</div>
-
-<div class="card-body" *ngIf="isTable">
-    <div class="form-group row">
-        <label class="col-md-3 col-form-label" for="baseFullname" style="font-weight: bold;">Select Contact  <span style="color: red;">*</span></label>
-        <div class="col-md-3">
-            <ng-template class="w-100" #ct let-c="result" let-t="term">
-                <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
-            </ng-template>
-            <input #contactautocomplete [(ngModel)]="contact" style="height: 70%;width: 150px;border-color: black;" #instance="ngbTypeahead" type="text" class="form-control"
-                placeholder="Search ..."  [ngbTypeahead]="searchcontact" [inputFormatter]="formattercontact"
-                [resultTemplate]="ct" (selectItem)="selectedcontactitem($event.item)" />
-        </div> 
-         <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Reference</label>
-         <div class="col-md-3 pt-2">
-             <input type="text" class="form-control"  [(ngModel)]="trans.description" name="example_name" value="" style="width: 55%;font-weight: bold;border-color: black;"
-                 placeholder="Enter Reference..." />
-         </div> 
-    </div>
-    <div class="form-group row">
-        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Credit Type</label>
+<h5 class="ml-3 mt-3" *ngIf="isedit">
+    <strong>Credit Edit</strong>
+</h5>
+<div *ngIf="isedit" class="card">
+    <div class="card-body" *ngIf="isedit">
+      <div class="form-group row ">
+        <!-- <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact Type</strong></label>
+        <ng-template class="w-100" #cct let-qc="result" let-qt="term">
+          <ngb-highlight [result]="qc.description" [term]="qt"></ngb-highlight>
+        </ng-template> -->
+        <span class="col-md-3 pt-2 col-form-label"> <strong>Select ContactType</strong></span>
         <div class="col-md-3 pt-2">
-            <select class="form-control" [(ngModel)]="trans.creditTypeStatus" style="width: 55%;border-color: black">
-              <option  value=1>Salary Advance</option>
-              <option  value=2>Purchase Advance</option>
-              <option  value=3>Maintainence Advance</option>
-              <option value=4>Others</option>
+          <select [(ngModel)]="testmaster.contactTypeId" class="form-control"
+              [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
+              <option value="{{tax.id}}" *ngFor="let tax of conty">{{tax.description}}</option>
           </select>
-        </div>  
-        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment <span style="color: red;">*</span></label>
-        <div class="col-md-3 pt-2">
-            <input type="text" class="form-control" [(ngModel)]="trans.amount" name="example_name" value="" style="width: 55%;border-color: black;"/>
+          <!-- <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be Empty*</span> -->
         </div>
-    </div>
-    <div class="form-group row">
-            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;"> Payment Mode <span style="color: red;">*</span></label>
-            <div class="col-md-3 pt-2">
-                <select class="form-control" [(ngModel)]="trans.PaymentTypeId" style="width: 55%;border-color: black">
-                    <option *ngFor="let pcat of paymentType" value="{{pcat.id}}">{{pcat.description}}</option>
-                </select>
-            </div>
 
-        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Location <span style="color: red;">*</span>
-        </label>
-        <ng-template class="w-100" #ot let-o="result" let-t="term">
-            <ngb-highlight [result]="o.name" [term]="t"></ngb-highlight>
-        </ng-template>   
-        <input #Supplierautocomplete [(ngModel)]="supplier" style="height: 30%;width: 150px;;margin-top: 20px;margin-left: 20px;border-color: black;" #instance="ngbTypeahead" type="text"
-        class="form-control" placeholder="Search Location..." 
-        [ngbTypeahead]="searchsupplier" [resultTemplate]="ot" [inputFormatter]="formattersupplier"
-        (selectItem)="selectedsupplieritem($event.item)" [ngClass]="{'is-invalid': submitted && supplier == ''}"/> 
-        <span *ngIf="submitted && supplier == ''" class="text-danger">location cannot be empty*</span>
-    </div>
-    <div class="form-group row">
-        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Responsible By</label>
-        <div class="col-md-3">
-            <ng-template class="w-100" #rt let-r="result" let-t="term">
-                <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
-            </ng-template>
-            <input #dispautocomplete style="height: 70%;width:150px;border-color: black;" #instance="ngbTypeahead" type="text" class="form-control"
-                placeholder="Search ..."  [ngbTypeahead]="searchdispatch" [inputFormatter]="formatterdispatch"
-                [resultTemplate]="rt" (selectItem)="selecteddispatchitem($event.item)" />
-        </div> 
-        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Transaction Date <span style="color: red;">*</span></label>
+        <span class="col-md-3 pt-2 col-form-label"> <strong>Select Contact</strong></span>
         <div class="col-md-3 pt-2">
-            <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)" style="border-color: black;"></nz-date-picker> 
+          <select [(ngModel)]="testmaster.id" class="form-control"
+              [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
+              <option value="{{tax.id}}" *ngFor="let tax of Contact">{{tax.name}}</option>
+          </select>
+          <!-- <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be Empty*</span> -->
         </div>
+      </div>
+      <div class="form-group row ">
+        <!-- <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact Type</strong></label>
+        <ng-template class="w-100" #cct let-qc="result" let-qt="term">
+          <ngb-highlight [result]="qc.description" [term]="qt"></ngb-highlight>
+        </ng-template> -->
+        <span class="col-md-3 pt-2 col-form-label"> <strong>Select CreditType</strong></span>
+        <div class="col-md-3 pt-2">
+          <select [(ngModel)]="testmaster.creditTypeId" class="form-control"
+              [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
+              <option value="{{tax.id}}" *ngFor="let tax of crety">{{tax.name}}</option>
+          </select>
+          <!-- <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be Empty*</span> -->
+        </div>
+
+        <span class="col-md-3 pt-2 col-form-label"> <strong>Payment</strong></span>
+        <div class="col-md-3 pt-2">
+          <!-- <select [(ngModel)]="testmaster.amount" class="form-control"
+              [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
+              <option value="{{tax.id}}" *ngFor="let tax of conty">{{tax.description}}</option>
+          </select> -->
+          <input type="text" [(ngModel)]="testmaster.amount" class="form-control">
+          <!-- <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be Empty*</span> -->
+        </div>
+      </div>
+      <div class="form-group row ">
+        <!-- <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact Type</strong></label>
+        <ng-template class="w-100" #cct let-qc="result" let-qt="term">
+          <ngb-highlight [result]="qc.description" [term]="qt"></ngb-highlight>
+        </ng-template> -->
+        <span class="col-md-3 pt-2 col-form-label"> <strong>Select Payment Mode</strong></span>
+        <div class="col-md-3 pt-2">
+          <select [(ngModel)]="testmaster.paymentTypeId" class="form-control"
+              [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
+              <option value="{{tax.id}}" *ngFor="let tax of payty">{{tax.description}}</option>
+          </select>
+          <!-- <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be Empty*</span> -->
+        </div>
+
+        <span class="col-md-3 pt-2 col-form-label"> <strong>Select Location</strong></span>
+        <div class="col-md-3 pt-2">
+          <select [(ngModel)]="testmaster.storeId" class="form-control"
+              [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
+              <option value="{{tax.id}}" *ngFor="let tax of stor">{{tax.name}}</option>
+          </select>
+          <!-- <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be Empty*</span> -->
+        </div>
+      </div>
+      <div class="form-group row ">
+        <!-- <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact Type</strong></label>
+        <ng-template class="w-100" #cct let-qc="result" let-qt="term">
+          <ngb-highlight [result]="qc.description" [term]="qt"></ngb-highlight>
+        </ng-template> -->
+        <span class="col-md-3 pt-2 col-form-label"> <strong>Responsible By</strong></span>
+        <div class="col-md-3 pt-2">
+          <select [(ngModel)]="testmaster.contactTypeId" class="form-control"
+              [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
+              <option value="{{tax.id}}" *ngFor="let tax of conty">{{tax.description}}</option>
+          </select>
+          <!-- <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be Empty*</span> -->
+        </div>
+
+        <span class="col-md-3 pt-2 col-form-label"> <strong>Reference</strong></span>
+        <div class="col-md-3 pt-2">
+          <!-- <select [(ngModel)]="testmaster.contactTypeId" class="form-control"
+              [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
+              <option value="{{tax.id}}" *ngFor="let tax of conty">{{tax.description}}</option>
+          </select> -->
+          <input type="text" [(ngModel)]="testmaster.description" class="form-control">
+          <!-- <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be Empty*</span> -->
+        </div>
+      </div>
+      
+  
+      <button type="button" class="btn btn-secondary px-5" (click)="locback()">Go Back</button>
+      <button type="submit" class="btn btn-success px-5 pull-right" (click)="saveEdit()">Submit</button>
+      <!-- <a href="javascript: void(0);"class="btn btn-success mt-3" (click)="testsave()"></a> -->
     </div>
-    <button type="button" class="btn btn-secondary px-5"  (click)="locback()">Go
-        Back</button>
-    <button type="button" class="btn btn-success px-5 pull-right" (click)="Updatecredit()" >Update</button>
 </div>
-

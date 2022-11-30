@@ -1,4 +1,4 @@
-<div class="form-group row">
+<!-- <div class="form-group row">
     <div class="hk-pg-header">
         <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
                 data-feather="archive"></i></span></span> Credit - Details</h4>
@@ -60,4 +60,97 @@
     <button type="button" routerLink="/apps/credit" class="btn btn-secondary px-5"  >Go
         Back</button>
 </div>
+ -->
 
+
+ <h5 class="ml-3 mt-3" *ngIf="isdetail">
+    <strong>Credit Details</strong>
+</h5>
+<div *ngIf="isdetail" class="card">
+    <div class="card-body" *ngIf="isdetail">
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Contact Type</strong></label>
+        <ng-template class="w-100" #cct let-qc="result" let-qt="term">
+          <ngb-highlight [result]="qc.description" [term]="qt"></ngb-highlight>
+        </ng-template>
+        <div class="col-md-3">
+          <input  type="text" class="form-control"
+            placeholder="Search ContactType" disabled [(ngModel)]="testmaster.contactType" name="example_name" value="" />
+          <!-- <select class="form-control" [(ngModel)]="test.contacttypeId" (ngModelChange)="contacttypeid()">
+              <option *ngFor="let pcatt of inputvalue.contactType" value="{{pcatt.id}}">{{pcatt.description}}</option>
+            </select> -->
+        </div>
+  
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Contact</strong></label>
+        <ng-template class="w-100" #ct let-c="result" let-t="term">
+          <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+        </ng-template>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="Search Contact" disabled [(ngModel)]="testmaster.name" name="example_name" value=""  />
+        </div>
+      </div>
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Credit Type</strong></label>
+        <ng-template class="w-100" #crt let-cc="result" let-ct="term">
+          <ngb-highlight [result]="cc.name" [term]="ct"></ngb-highlight>
+        </ng-template>
+        <div class="col-md-3">
+          <input type="text" class="form-control" disabled [(ngModel)]="testmaster.creditType" name="example_name" value=""
+          (ngModelChange)="getamountfun()"
+            placeholder="Search Credit type"/>
+          <!-- <select class="form-control" [(ngModel)]="test.creditid" (ngModelChange)="credittypeid()">
+              <option *ngFor="let pcatt of inputvalue.creditType" value="{{pcatt.id}}">{{pcatt.name}}</option>
+            </select> -->
+        </div>
+  
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Payment</strong></label>
+        <ng-template class="w-100" #ct let-c="result" let-t="term">
+          <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+        </ng-template>
+        <div class="col-md-3">
+          <input type="number" class="form-control" disabled [(ngModel)]="testmaster.amount" name="example_name" value=""
+            (ngModelChange)="getamountfun()" placeholder="Enter Payment" />
+        </div>
+      </div>
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Payment Mode</strong></label>
+        <ng-template class="w-100" #cct let-qc="result" let-qt="term">
+          <ngb-highlight [result]="qc.description" [term]="qt"></ngb-highlight>
+        </ng-template>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="Search Payment Mode" disabled [(ngModel)]="testmaster.paymentType" 
+          name="example_name" value=""
+          (ngModelChange)="getamountfun()" />
+        </div>
+  
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Location</strong></label>
+        <ng-template class="w-100" #ct let-c="result" let-t="term">
+          <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+        </ng-template>
+        <div class="col-md-3">
+          <input type="text" class="form-control" disabled [(ngModel)]="testmaster.store" name="example_name" value=""
+          (ngModelChange)="getamountfun()" placeholder="Search Location" />
+        </div>
+      </div>
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Responsible By</strong></label>
+        <ng-template class="w-100" #rt let-qr="result" let-qt="term">
+          <ngb-highlight [result]="qr.name" [term]="qt"></ngb-highlight>
+        </ng-template>
+        <div class="col-md-3">
+          <input  type="text" class="form-control" disabled [(ngModel)]="testmaster.contactType" name="example_name" value=""
+          (ngModelChange)="getamountfun()"placeholder="Search ResponsibleBy"/>
+        </div>
+  
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Reference</strong></label>
+        <div class="col-md-3">
+          <input type="text" class="form-control" disabled [(ngModel)]="testmaster.description" name="example_name" value=""
+            (ngModelChange)="getreferencefun()" placeholder="Enter Reference" />
+        </div>
+      </div>
+  
+      <button type="button" class="btn btn-secondary px-5" (click)="locback()">Go Back</button>
+      <!-- <button type="submit" class="btn btn-success px-5 pull-right" (click)="SaveCredit()">Submit</button> -->
+      <!-- <a href="javascript: void(0);"class="btn btn-success mt-3" (click)="testsave()"></a> -->
+    </div>
+</div>

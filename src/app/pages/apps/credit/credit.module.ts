@@ -138,6 +138,7 @@ export class Transmodule {
   TransTypeId: number
   TransModeId: number
   CreatedBy: number
+  Bill: BillModule
 
   constructor() {
     this.CompanyId = 0
@@ -158,6 +159,7 @@ export class Transmodule {
     this.TransTypeId = 8
     this.TransModeId = 0
     this.CreatedBy = 0
+    this.Bill = new BillModule()
   }
 }
 
@@ -194,7 +196,8 @@ export class BillModule {
   OrderId: number
   // ShowallProd: boolean
   ResponsibleById: number
-  constructor() {
+  BillStatusId: number
+  constructor(contactId = 0, padamt =0) {
     this.BillId = 0
     this.InVoiceNum = ''
     this.BillAmountNoTax = 0
@@ -202,15 +205,15 @@ export class BillModule {
     this.DispathchType = 0
     this.BillAmount = 0
     this.TaxAmount = 0
-    this.PaidAmount = 0
+    this.PaidAmount = padamt
     this.Quantity = 0
     this.ProviderId = 0
-    this.ReceiverId = 0
+    this.ReceiverId = contactId
     this.DispatchById = null
     this.ReceivedById = 0
     this.BillDate = moment().format('YYYY-MM-DD HH:MM A')
     this.CreatedDate = moment().format('YYYY-MM-DD HH:MM A')
-    this.CreatedBy = 0
+    this.CreatedBy = 12
     this.DispatchedDate = moment().format('YYYY-MM-DD HH:MM A')
     // this.ReceivedDate = moment().format('YYYY-MM-DD HH:MM A');
     // this.ReceiveStatus = 0
@@ -223,9 +226,10 @@ export class BillModule {
     this.IsPaid = false
     this.CreditTypeStr = ''
     this.TotalAmount = 0
-    this.CompanyId = 0
+    this.CompanyId = 1
     this.OrderId = 0
     // this.ShowallProd = false
     this.ResponsibleById = 0
+    this.BillStatusId = 0
   }
 }

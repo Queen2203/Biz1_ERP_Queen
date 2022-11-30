@@ -29,12 +29,12 @@ export class EditcreditComponent implements OnInit {
   CompanyId =1;
   OrdId = 0;
   users = [];
-  contactId =0;
+  contactId = 0;
   contacttype =0;
   paycred =[];
   credit =[];
   AddForm =[];
-  isTable =true;
+  isTable =false;
   PaymentTypeId =0;
   description ='';
   creditTypeStatus ='';
@@ -50,6 +50,54 @@ export class EditcreditComponent implements OnInit {
    TransDate:moment().format('YYYY-MM-DD HH:MM A'),
   CreatedDate:moment().format('YYYY-MM-DD HH:MM A')}
 
+  isedit= true
+  inputvalue: any
+  Contact: any
+  Contactt: any
+  cred: any = 
+  {
+    recontactId : 0
+  }
+  test: any = {
+    contacttypeId: 0,
+    contactId: 0,
+    creditid: 0,
+    payment: '',
+    paymenttypeid: 0,
+    locationid: 0,
+    responsiblebyid: 0,
+    reference: ''
+  }
+  temp:any ={
+    tempid: ''
+  }
+  repay: any 
+  testmaster: any ={
+    name: '',
+    amount: null,
+    // billId: 0,
+    contactType: '',
+    contactTypeId: 0,
+    creditTypeId: 0 ,
+    creditType: '',
+    id: 0,
+    // paidAmount: '',
+    paymentType: '',
+    paymentTypeId: 0,
+    storeId: 0,
+    store: '',
+    description: null
+
+  }
+  tpush: any = []
+testt: any =[]
+testid: 0
+fun: any ={
+  Name: ''
+}
+testfunid = 0
+contactype: any
+
   constructor(
     private _fb: FormBuilder ,
     private modalService: NgbModal,
@@ -60,7 +108,7 @@ export class EditcreditComponent implements OnInit {
     public location: Location )
 
     {
-      this.OrdId = this._avRoute.snapshot.params["id"];
+      this.testfunid = this._avRoute.snapshot.params["id"];
       this.users = JSON.parse(localStorage.getItem("users"));
       // this.AddForm = this._fb.group({
       //   Id:[0],
@@ -72,12 +120,60 @@ export class EditcreditComponent implements OnInit {
       // })
   
      }
-
   ngOnInit(): void {
-    this.getStoreList();
-    this.getTransList();
-    this.getPaymentTypesList();
+    // this.getStoreList();
+    // this.getTransList();
+    // this.getPaymentTypesList();
+    this.getrecustomer()
+    this.GetInputdata()
+    this.getcontacttype()
   }
+
+  //Queen
+  GetInputdata(){
+    this.Auth.getinputdata(this.CompanyId).subscribe(data => {
+      this.inputvalue = data
+      console.log('inputvalue', this.inputvalue)
+    })
+  } 
+  getcontact() {
+    this.Auth.getcontact(this.CompanyId, this.testmaster.contactTypeId).subscribe(data => {
+      this.Contact = data
+      console.log('Contact', this.Contact)
+    })
+  }
+  conty: any
+  crety: any
+  payty: any
+  stor: any
+  getcontacttype(){
+    this.Auth.getinputdata(this.CompanyId).subscribe(data =>{
+      this.conty = data['contactType']
+      this.crety = data['creditType']
+      this.payty = data['paymentType']
+      this.stor = data['store']
+      this.testmaster.contactTypeId = this.conty[0].id
+      this.testmaster.creditTypeId = this.crety[0].id
+      this.testmaster.paymentTypeId = this.payty[0].id
+      this.testmaster.storeId = this.stor[0].id
+      // console.log('testcon',  this.testcon)
+      console.log('contactTypeId', this.testmaster.contactTypeId)
+    })
+    this.getcontact()
+  }
+  tname: ''
+  // testmaster : string
+  getrecustomer(){
+    console.log(this.testfunid)
+    // this.Auth.saverepay(this.cred).subscribe(data =>{
+      this.Auth.getdatabyid(this.testfunid).subscribe(data =>{
+      this.repay = data['editdata']
+      console.log(this.repay)
+      this.testmaster = this.repay[0]
+      console.log(this.testmaster)
+    })
+  }
+
 
   getPaymentTypesList() {
     this.Auth.PaymentTypesList(this.CompanyId).subscribe(data => {
@@ -201,9 +297,14 @@ Updatecredit()
     console.log(data)
   })
    this.router.navigate(['/apps/credit']);
-}
+} 
 locback()
 {
-  this.router.navigate(['/apps/credit']);
+  this.router.navigate(['/apps/credit/']);
 }
+saveEdit(){
+  console.log(this.testmaster)
+}
+
+
 }

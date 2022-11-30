@@ -10,13 +10,16 @@ import { Router, ActivatedRoute } from '@angular/router'
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast'
 import { Location } from '@angular/common'
+// Module SET
 import { Transmodule } from 'src/app/pages/apps/credit/credit.module'
+import { BillModule } from 'src/app/pages/apps/credit/credit.module'
 import {
   NzPlacementType,
   NzContextMenuService,
   NzDropdownMenuComponent,
 } from 'ng-zorro-antd/dropdown'
 import { id } from 'date-fns/locale'
+
 
 
 @Component({
@@ -27,6 +30,7 @@ import { id } from 'date-fns/locale'
 export class CreditComponent implements OnInit {
   // order: OrderModule
   transmod: Transmodule
+  billList: Array<BillModule> = null
   isIndex = true
   isShown = false
   isTable = false
@@ -49,7 +53,7 @@ export class CreditComponent implements OnInit {
   BillStatus: any= 0
   billstatusid: any = null
 
- 
+  contactId: any
   //Queen
   inputvalue: any
   Contact: any
@@ -71,8 +75,8 @@ export class CreditComponent implements OnInit {
   temp:any ={
     tempid: ''
   }
-  Test: 'Hi'
- 
+
+  
   //temp
   trans: any ={
 
@@ -103,22 +107,14 @@ export class CreditComponent implements OnInit {
     this.GetInputdata()
     this.getbstatus()
     this.getreCreditData()
-    this.temprfun()
+    this.getrepaycontactbtn()
     // this.getrepaycontact()
-    // this.getrecustomer()
+    this.getrecustomer()
+    this.getrepayclickdata()
   }
   // reloadCurrentPage() {
   //   window.location.reload();
   //  }
-credi: any
-name: ''
-  temprfun(){
-    this.Auth.getCredit(this.CompanyId, 2).subscribe(data => {
-      this.credi = data['creditdatatest']
-      this.name = this.credi[0].name
-      console.log(this.name)
-    })
-  }
 
  
   //Queen
@@ -196,16 +192,24 @@ name: ''
 
   formattercontact = (x: { name: string }) => x.name
 
-
+  repaycontact: any
+  getrepaycontactbtn() {
+    this.Auth.getCredit(this.CompanyId, 2).subscribe(data => {
+      this.repaycontact = data['creditdatatest']
+      // this.tabledata = this.CreditDatatest
+      console.log(this.repaycontact)
+      // this.isShown = true
+    })
+  };
+ 
   //repaycontact
   recontactId: any
   selectedrecontact(item) {
     this.recontactId = item.contactId
       console.log('recontactId', this.recontactId)
-      this.cred.recontactId = this.recontactId
-      this.temp.tempid = item
-      console.log(this.cred)
-      console.log(this.temp.tempid)
+      // this.cred.recontactId = this.recontactId
+      this.contactId = this.recontactId
+      console.log(this.contactId)
       this.getrecustomer()
   }
   searchrecontact = (text$: Observable<string>) =>
@@ -214,7 +218,7 @@ name: ''
     map(term =>
       term === ''
         ? []
-        : this.CreditDatatestt
+        : this.repaycontact
           .filter(s => s.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
           .slice(0, 10),
     ),
@@ -343,11 +347,15 @@ name: ''
       // this.isShown = true
     })
   };
+
   CreditDatatestt:any
+  quentest: any
   getreCreditData() {
-    this.Auth.getCredit(this.CompanyId, 2).subscribe(data => {
-      this.CreditDatatestt = data['creditdatatest']
+    this.Auth.getrepayIndex(this.CompanyId).subscribe(data => {
+      this.quentest = data
+      this.CreditDatatestt = data['creditRepayData']
       // this.tabledata = this.CreditDatatest
+      console.log(this.quentest)
       console.log(this.CreditDatatestt)
       // this.isShown = true
     }) 
@@ -421,10 +429,14 @@ name: ''
     this.isRepaytable = !this.isRepaytable
     
   }
-  crerepay(){
+  crerepay(id){
     this.isShown = !this.isShown
     this.isTable = this.isTable
     this.isRepay = !this.isRepay
+    this.isRepaytable = !this.isRepaytable
+    console.log(id)
+    this.recontactId = id
+    this.getrecustomer()
   }
 
   onChange(e) {
@@ -443,7 +455,7 @@ name: ''
   clickrepay() {
     this.isRepaymain = !this.isRepaymain
     this.isIndex = !this.isIndex
-    this.getCreditData()
+    // this.getCreditData()
     // this.getrepaycontact()
   }
   clickrepaytable(){
@@ -459,7 +471,7 @@ name: ''
     this.isTable = this.isTable
     this.isRepay = !this.isRepay
     this.isRepaymain = !this.isRepaymain
-    this.getrecustomer()
+    // this.getrecustomer()
   }
   id: any
   item: any
@@ -470,8 +482,9 @@ name: ''
     this.isRepaymain = !this.isRepaymain
     this.isRepaytable = !this.isRepaytable
     console.log(id)
-    this.cred.recontactId = id
+    this.recontactId = id
     this.getrecustomer()  
+    this.selectedrecontact(id)
 
     // this.testfun()
   }
@@ -526,6 +539,7 @@ name: ''
   //   this.paymentTypeId = null 
 
   // }   
+  savecreditdata: any
   SaveCredit(){
     this.transmod.CompanyId = this.CompanyId,
     this.transmod.ContactTypeId = this.test.contacttypeId,
@@ -542,11 +556,19 @@ name: ''
     this.transmod.TransTypeId = 8
     this.transmod.TransModeId = 2
     this.transmod.CreatedBy = this.StoreId
+    var bill = new BillModule(this.transmod.ContactId, this.totalpaidamount)
+    bill.BillAmount = this.test.payment, 
+    bill.ReceiverId = this.transmod.ContactId,
+    bill.BillStatusId = 2
+    bill.CreatedDate = moment().format('YYYY-MM-DD HH:MM A')
+    this.bill = bill
+    this.transmod.Bill = this.bill
     console.log(this.transmod)
     this.Auth.savecredit(this.transmod).subscribe(data => {
-        console.log(data)
-      })
-    // this.test = null
+      this.savecreditdata = data
+      console.log(this.savecreditdata)
+    })
+
     this.test.payment = null
     this.test.reference = null
     this.isShown = !this.isShown 
@@ -563,7 +585,7 @@ name: ''
       this.visibleIndex = ind
     }
   }
-  repay: any
+  repay: any ={}
 
   getrepay: any
   // saverepay(){
@@ -574,33 +596,104 @@ name: ''
 cal: any ={
   balanceamount: 0 ,
   cid:0,
-  cname: ''
+  cname: '' ,
+  paidamount: 0
+  
 } 
-
+// paidamount: any
+alreadypaidamt : number
   getrecustomer(){
-    this.Auth.saverepay(this.cred).subscribe(data =>{
+    // this.Auth.saverepay(this.cred).subscribe(data =>{
+    this.Auth.getdatabyid(this.recontactId).subscribe(data =>{
       this.repay = data
-      this.getrepay = this.repay.datatest
-      this.cal.cname = this.getrepay[0].name
-      console.log(this.cal.cname)
+      // this.alreadypaidamt = this.repay[0].paidAmount
+      // console.log(this.alreadypaidamt)
 
-      // this.cal.balanceamount = this.getrepay[0].balance
+      // this.getrepay = this.repay['datatest']
+      // this.cal.cname = this.getrepay[0].name
+      // console.log(this.cal.cname)
+
+      // this.cal.balanceamount = this.repay[0].balance
       // console.log('balance', this.cal.balanceamount)
       // console.log(this.recontactId)
-      console.log(this.getrepay)
+      // this.cal.paidamount = this.repay[0].paidAmount
+      // console.log(this.cal.paidamount)
+      console.log(this.repay)
+      // console.log(this.getrepay)
     })
   }
+  memdata: any
+  getrepayclickdata(){
+    this.Auth.getrepaycondatabyid(this.recontactId).subscribe(data =>{
+      this.memdata = data['editdata']
+      console.log(this.memdata)
+    })
+  }
+  
  
-  testfun(id){
-    console.log(id)
-  }
+  // testfun(id){
+  //   console.log(id)
+  // }
+  // Repay : any ={
+  //   recontactId: 0,
+  //   repaymenttypeid: 0,
+  //   repayment: '',
+  //   reReference: '',
+  //   relocation: '',
+  //   billId: 0,
+  //   billDate: 0,
+  //   paidamount: 0,
+  //   balance: 0
+  // }
 
-  contestfun(value){
-    this.recontactId = value
-    console.log('tempid', this.recontactId)
-  }
+  bill : BillModule 
+  savedata: any
+  totalpaidamount: any
+  saverepaydata(){
+    this.transmod.CompanyId = this.CompanyId
+    this.transmod.ContactId = this.recontactId,
+    this.transmod.PaymentTypeId = this.test.paymenttypeid,
+    this.transmod.Amount = this.test.payment,
+    this.transmod.Description = this.test.reference,
+    this.transmod.StoreId = this.test.locationid
+    this.totalpaidamount = this.repay[0].paidAmount + this.test.payment
+    // console.log(this.totalpaidamount)
+    var bill = new BillModule(this.transmod.ContactId, this.totalpaidamount)
+   
+    bill.BillId = this.repay[0].billId,
+    bill.BillDate = this.repay[0].billDate,
+    bill.BillAmount = this.repay[0].billAmount, 
 
-  mastertest = "MAster";
+    // bill.PaidAmount = this.repay[0].paidAmount + this.test.payment,
+
+    console.log("Already Payed", this.alreadypaidamt)
+    console.log("New Pay", this.test.payment)
+    // console.log("TotAL pAID", this.bill.PaidAmount)
+    // console.log(this.bill.PaidAmount)
+    // console.log(this.test.payment)
+    bill.ReceiverId = this.transmod.ContactId,
+    bill.CreatedDate = moment().format('YYYY-MM-DD HH:MM A')
+    if(bill.BillAmount == bill.PaidAmount){
+      bill.IsPaid = true
+    }
+    else{
+      bill.IsPaid = false
+    }
+    if(bill.BillAmount == bill.PaidAmount && bill.PaidAmount != 0){
+      bill.BillStatusId = 3
+    }
+    else{
+      bill.BillStatusId = 2
+    }
+    this.bill = bill
+    this.transmod.Bill = this.bill
+    console.log(this.transmod)
+    this.Auth.saverepay(this.transmod).subscribe(data =>{
+      this.savedata = data
+      console.log(this.savedata)
+    })
+    this.getreCreditData()
+  }
 }
 
  

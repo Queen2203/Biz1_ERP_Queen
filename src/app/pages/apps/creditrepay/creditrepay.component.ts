@@ -17,8 +17,8 @@ import { Location } from '@angular/common';
   styleUrls: ['./creditrepay.component.scss']
 })
 export class CreditrepayComponent implements OnInit {
-  isShown = true;
-  isTable =false;
+  // isShown = true;
+  // isTable =false;
   users = [];
   CompanyId =1;
   stores :any= [];
@@ -55,22 +55,118 @@ export class CreditrepayComponent implements OnInit {
   CreatedDate:moment().format('YYYY-MM-DD HH:MM A')}
     // contactId:this.contactId,
     // responsibleById:this.DispatchById, contactType:this.contacttype,
+    isRepay = true
+    isRepaytable = false
+    inputvalue: any
+    Contact: any
+    Contactt: any
+    cred: any = 
+    {
+      recontactId : 0
+    }
+    test: any = {
+      contacttypeId: 0,
+      contactId: 0,
+      creditid: 0,
+      payment: '',
+      paymenttypeid: 0,
+      locationid: 0,
+      responsiblebyid: 0,
+      reference: ''
+    }
+    temp:any ={
+      tempid: ''
+    }
+    repay: any 
+
+    //queen
+  testmaster: any ={
+    name: '',
+    amount: null,
+    // billId: 0,
+    contactType: '',
+    contactTypeId: 0,
+    creditTypeId: 0 ,
+    creditType: '',
+    id: 0,
+    // paidAmount: '',
+    paymentType: '',
+    paymentTypeId: 0,
+    storeId: 0,
+    store: '',
+    description: null
+  }
+  testfunid = 0
+
+
   constructor(
     private modalService: NgbModal,
      private Auth: AuthService,
     private notification: NzNotificationService,
     private router: Router ,
+    private _avRoute: ActivatedRoute,
     private route: ActivatedRoute,
     public location: Location )
      { 
+      this.testfunid = this._avRoute.snapshot.params["id"];
       this.users = JSON.parse(localStorage.getItem("users"));
 
     }
 
   ngOnInit(): void {
-    this.getStoreList();
-     this.getcreditrepayData();
+    // this.getStoreList();
+    //  this.getcreditrepayData();
+    this.getrecustomer()
+    this.GetInputdata()
+    this.getcontacttype()
   }
+
+  //Queen
+  GetInputdata(){
+    this.Auth.getinputdata(this.CompanyId).subscribe(data => {
+      this.inputvalue = data
+      console.log('inputvalue', this.inputvalue)
+    })
+  } 
+  getcontact() {
+    this.Auth.getcontact(this.CompanyId, this.testmaster.contactTypeId).subscribe(data => {
+      this.Contact = data
+      console.log('Contact', this.Contact)
+    })
+  }
+  conty: any
+  crety: any
+  payty: any
+  stor: any 
+  getcontacttype(){
+    this.Auth.getinputdata(this.CompanyId).subscribe(data =>{
+      this.conty = data['contactType']
+      this.crety = data['creditType']
+      this.payty = data['paymentType']
+      this.stor = data['store']
+      this.testmaster.contactTypeId = this.conty[0].id
+      this.testmaster.creditTypeId = this.crety[0].id
+      this.testmaster.paymentTypeId = this.payty[0].id
+      this.testmaster.storeId = this.stor[0].id
+      // console.log('testcon',  this.testcon)
+      console.log('contactTypeId', this.testmaster.contactTypeId)
+    })
+    this.getcontact()
+  }
+  tname: ''
+  // testmaster : string
+  getrecustomer(){
+    console.log(this.testfunid)
+    // this.Auth.saverepay(this.cred).subscribe(data =>{
+      this.Auth.getdatabyid(this.testfunid).subscribe(data =>{
+      this.repay = data['editdata']
+      console.log(this.repay)
+      this.testmaster = this.repay[0]
+      console.log(this.testmaster)
+    })
+  }
+
+
   getStoreList() {
     this.Auth.getstores(this.CompanyId).subscribe(data => {
       this.stores = data;
@@ -109,19 +205,19 @@ export class CreditrepayComponent implements OnInit {
       })
     
   }
-  getTransList(id)
-  {
-    this.isShown =  !this.isShown;
-    this.isTable =  !this.isTable;
-    this.credData.push({
-      companyId:this.CompanyId,
-      id:id
-    })
-    this.Auth.getTransdata(this.credData).subscribe(data => {
-      this.trans = data;
-      console.log("EditCredit",this.trans)
-      })
-  }
+  // getTransList(id)
+  // {
+  //   this.isShown =  !this.isShown;
+  //   this.isTable =  !this.isTable;
+  //   this.credData.push({
+  //     companyId:this.CompanyId,
+  //     id:id
+  //   })
+  //   this.Auth.getTransdata(this.credData).subscribe(data => {
+  //     this.trans = data;
+  //     console.log("EditCredit",this.trans)
+  //     })
+  // }
 
   Billstatus(val)
   {
@@ -233,8 +329,8 @@ this.paymentmode =Value;
     })
     this.Auth.Creditpay(this.paycred).subscribe(data => {
       console.log(data)
-      this.isShown =  !this.isShown;
-      this.isTable =  !this.isTable;
+      // this.isShown =  !this.isShown;
+      // this.isTable =  !this.isTable;
       // this.getcreditrepayData();
     })
   }
