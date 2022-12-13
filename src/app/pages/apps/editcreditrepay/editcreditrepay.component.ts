@@ -10,6 +10,8 @@ import { Router , ActivatedRoute} from '@angular/router';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Location } from '@angular/common';
+import { Transmodule } from './editcreditrepay.module';
+import { BillModule } from './editcreditrepay.module';
 
 @Component({
   selector: 'app-editcreditrepay',
@@ -17,6 +19,8 @@ import { Location } from '@angular/common';
   styleUrls: ['./editcreditrepay.component.scss']
 })
 export class EditcreditrepayComponent implements OnInit {
+  transmod: Transmodule
+  billList: Array<BillModule> = null
   paymentmode =0;
   OrderedById = 0;
   SuppliedById = 0;
@@ -25,7 +29,7 @@ export class EditcreditrepayComponent implements OnInit {
   EditCredit:any =[];
   stores :any= [];
   credData:any =[];
-  CompanyId =1;
+  CompanyId = 1;
   OrdId = 0;
   users = [];
   contactId =0;
@@ -66,16 +70,29 @@ export class EditcreditrepayComponent implements OnInit {
     storeId: 0,
     store: '',
     description: null
-
   }
+  
   Contact: any
   testfunid = 0
-  repay: any
+  contid = 0
+  // repay: any
   typid= 0
 
   newdata: any ={
     
   }
+  test: any = {
+    contacttypeId: 0,
+    contactId: 0,
+    creditid: 0,
+    amount: 0,
+    paymenttypeid: 0,
+    locationid: 0,
+    responsiblebyid: 0,
+    reference: ''
+  }
+  recontactId : 0
+  StoreId: any
 
   constructor(
     private _fb: FormBuilder ,
@@ -88,14 +105,22 @@ export class EditcreditrepayComponent implements OnInit {
 
     {
       this.testfunid = this._avRoute.snapshot.params["id"];
+      // this.contid = this._avRoute.snapshot.params["id"];
       this.users = JSON.parse(localStorage.getItem("users"));
      }
 
   ngOnInit(): void {
+    const user = JSON.parse(localStorage.getItem('user'))
+    const store = JSON.parse(localStorage.getItem('store'))
+    this.transmod = new Transmodule()
+    this.CompanyId = user.companyId
+    this.StoreId = user.storeid
     // this.getStoreList();
     // this.getTransList();
-    this.getrecustomer()
+    // this.getrecustomer()
     this.getcontacttype()
+    this.gettotbls()
+    this.gettabledata()
   }
   recontact: any
   getcontact() {
@@ -126,16 +151,16 @@ export class EditcreditrepayComponent implements OnInit {
   }
   tname: ''
   // testmaster : string
-  getrecustomer(){
-    console.log(this.testfunid)
-    // this.Auth.saverepay(this.cred).subscribe(data =>{
-      this.Auth.getdatabyid(this.testfunid).subscribe(data =>{
-      this.repay = data['editdata']
-      console.log(this.repay)
-      this.testmaster = this.repay[0]
-      console.log(this.testmaster)
-    })
-  }
+  // getrecustomer(){
+  //   console.log(this.testfunid)
+  //   // this.Auth.saverepay(this.cred).subscribe(data =>{
+  //     this.Auth.getrepaycondatabyid(this.testfunid).subscribe(data =>{
+  //     this.repay = data['editdata']
+  //     console.log(this.repay)
+  //     this.testmaster = this.repay[0]
+  //     console.log(this.testmaster)
+  //   })
+  // }
   getTransList()
   {
     this.Auth.getrepaydata(this.CompanyId,this.OrdId).subscribe(data => {
@@ -277,7 +302,92 @@ getreferencefun() {
   console.log('description', this.testmaster.description)
 }
 
-SaveRepayEdit(){
 
+CreditDatatestt:any
+quentest: any
+getreCreditData() {
+  this.Auth.getrepayIndex(this.CompanyId).subscribe(data => {
+    this.quentest = data
+    this.CreditDatatestt = data['creditRepayData']
+    // this.tabledata = this.CreditDatatest
+    console.log(this.quentest)
+    console.log(this.CreditDatatestt)
+    // this.isShown = true
+  }) 
+};
+bill : BillModule 
+savedata: any
+totalpaidamount: any
+saverepaydata(){
+  this.transmod.TransactionId = this.testfunid
+  this.transmod.CompanyId = this.CompanyId
+  this.transmod.ContactId = this.testmaster.id,
+  this.transmod.PaymentTypeId = this.testmaster.paymentTypeId,
+  this.transmod.Amount = this.camount,
+  this.transmod.Description = this.testmaster.description,
+  this.transmod.StoreId = this.testmaster.storeId,
+  this.transmod.CreditTypeId = this.testmaster.creditTypeId
+  this.totalpaidamount = this.repay[0].paidAmount
+  // console.log(this.totalpaidamount)
+  var bill = new BillModule(this.transmod.ContactId, this.totalpaidamount)
+ 
+  bill.BillId = this.repay[0].billId,
+  bill.BillDate = this.repay[0].billDate,
+  bill.BillAmount = this.repay[0].billAmount, 
+  bill.ReceiverId = this.transmod.ContactId,
+  bill.CreatedDate = moment().format('YYYY-MM-DD HH:MM A')
+  bill.CreditTypeStr = this.testmaster.creditType
+  if(bill.BillAmount == bill.PaidAmount){
+    bill.IsPaid = true
+  }
+  else{
+    bill.IsPaid = false
+  }
+  if(bill.BillAmount == bill.PaidAmount && bill.PaidAmount != 0){
+    bill.BillStatusId = 3
+  }
+  else{
+    bill.BillStatusId = 2
+  }
+  this.bill = bill
+  this.transmod.Bill = this.bill
+  console.log(this.transmod)
+  this.Auth.saveeditdata(this.transmod).subscribe(data =>{
+    this.savedata = data
+    console.log(this.savedata)
+  })
+  this.getreCreditData()
+}
+totabls: any
+totalbls = 0
+gettotbls(){
+  // this.Auth.saverepay(this.cred).subscribe(data =>{
+  this.Auth.geteditcontbyid(this.testfunid).subscribe(data =>{
+    this.totabls = data['bls']
+    console.log(this.totabls)
+    this.totalbls = this.totabls[0].totbls
+    console.log(this.totalbls)
+  })
+  // this.sumofrepay()
+}
+
+// repay:any = {
+//   name: ''
+// }
+repay: any
+cname: any
+camount: any
+ref: any
+bildate: any
+gettabledata(){
+  this.Auth.geteditcontbyid(this.testfunid).subscribe(data =>{
+    this.repay = data['edit']
+    this.cname = this.repay[0].name
+    this.camount = this.repay[0].amount
+    this.ref = this.repay[0].description
+    this.bildate = this.repay[0].billDate
+    console.log(this.repay)
+    console.log(this.cname)
+  })
 }
 }

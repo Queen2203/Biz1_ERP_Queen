@@ -8,16 +8,16 @@
       class="fa fa-search"></i> Advance Search </button>
   <div class="row" *ngIf="visibleIndex === index" style="background-color: aliceblue;height: 108px; margin-top: 20px;">
       <div class="col-xl-2 mt-1 text-left">
-          <ng-template class="w-100" #catrgy let-r="result" let-t="term">
-              <ngb-highlight [result]="r.billTransId" [term]="t"></ngb-highlight>
-          </ng-template>
-          <div style="height: 84%; position: relative;">
-              <input id="typeahead-template" style="height: 100%;" #instance="ngbTypeahead" type="text"
-                  (input)="filtersearchtest(); searchField = 'billTransId'" autocomplete="off"
-                  class="form-control" [(ngModel)]="term" placeholder="Transaction ID"
-                  [ngbTypeahead]="c_search" [resultTemplate]="catrgy" [inputFormatter]="formatter"
-                  (selectItem)="selectedItem($event.item)" />
-          </div>
+        <ng-template class="w-100" #catrgy let-r="result" let-t="term">
+          <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+        </ng-template>
+        <div style="height: 84%; position: relative;">
+          <input id="typeahead-template" style="height: 100%;" #instance="ngbTypeahead" type="text"
+              (input)="arrayName = ''; searchField = 'name'"
+              class="form-control" [(ngModel)]="term" placeholder="Order ID..."
+              [ngbTypeahead]="c_search" [resultTemplate]="catrgy" [inputFormatter]="formatter"
+              (selectItem)="selectedItem($event.item)" />
+        </div>
       </div>
       <div class="col-xl-2">
           <div>
@@ -25,11 +25,11 @@
                   <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
               </ng-template>
               <div style="height: 84%; position: relative;">
-                  <input id="typeahead-template" style="height: 100%;" #instance="ngbTypeahead" type="text"
+                  <!-- <input id="typeahead-template" style="height: 100%;" #instance="ngbTypeahead" type="text"
                       (input)="arrayName = 'products'; searchField = 'name'" autocomplete="off"
                       class="form-control"  placeholder="Search Products"
                       [ngbTypeahead]="c_search" [resultTemplate]="prd" [inputFormatter]="formatter"
-                      (selectItem)="selectedItem($event.item)" />
+                      (selectItem)="selectedItem($event.item)" /> -->
               </div>
           </div>
       </div>
@@ -38,10 +38,10 @@
               <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
           </ng-template>
           <div style="height: 84%; position: relative;">
-              <input id="typeahead-template" style="height: 100%;" #instance="ngbTypeahead" type="text"
+              <!-- <input id="typeahead-template" style="height: 100%;" #instance="ngbTypeahead" type="text"
                   (input)="arrayName = ''; searchField = 'name'" autocomplete="off" class="form-control"
                    placeholder="Search Products Text" [ngbTypeahead]="c_search"
-                  [resultTemplate]="prdtxt" [inputFormatter]="formatter" (selectItem)="selectedItem($event.item)" />
+                  [resultTemplate]="prdtxt" [inputFormatter]="formatter" (selectItem)="selectedItem($event.item)" /> -->
           </div>
       </div>
       <div class="col-xl-2 mt-1 text-left">
@@ -52,10 +52,10 @@
               <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
           </ng-template>
           <div style="height: 84%; position: relative;">
-              <input id="typeahead-template" style="height: 100%;" #instance="ngbTypeahead" type="text"
+              <!-- <input id="typeahead-template" style="height: 100%;" #instance="ngbTypeahead" type="text"
                   (input)="arrayName ='vendors'; searchField ='name'" autocomplete="off" class="form-control"
                    placeholder="Search Vendors" [ngbTypeahead]="c_search"
-                  [resultTemplate]="vndr" [inputFormatter]="formatter" (selectItem)="selectedItem($event.item)" />
+                  [resultTemplate]="vndr" [inputFormatter]="formatter" (selectItem)="selectedItem($event.item)" /> -->
           </div>
       </div>
       <div class="col-md-2 mt-1">
@@ -153,7 +153,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let ord of basicTable.data |filter: term">
+      <tr *ngFor="let ord of basicTable.data| filter:term">
         <td>
           {{ord.billTransId}}
         </td>
@@ -190,30 +190,14 @@
             <a (click)="crerepay(ord.contactId)" href="javascript: void(0);" class="btn btn-sm btn-light ">
               <i class="fe fa-lg fe-dollar-sign"></i>
             </a>
+            <!-- <a  href="javascript: void(0);"  routerLink="/apps/creditrepay/{{ord.contactId}}" 
+            class="btn btn-sm btn-light pull-left">
+              <i class="fe fa-lg fe-dollar-sign"></i>
+            </a>  -->
             <a href="javascript: void(0);" routerLink="/apps/creditdetails/{{ord.contactId}}"
               class="btn btn-sm btn-light pull-left">
               <i class="fe fa-lg fe-info"></i>
             </a>
-            <!-- <a class="btn btn-sm btn-light" href="javascript: void(0);" (click)="openCustomClass(vertical)"
-              class="btn btn-sm btn-light pull-left" slot="actions">
-              <i class="fe fa-lg fe-info"></i>
-            </a>             -->
-            <!-- <a href="javascript: void(0);" (click)="getCreditData(ord.billId,contentdetail1);"
-                class="btn btn-sm btn-light ">
-                <i class="fe fa-lg fe-edit" aria-hidden="true"></i>
-              </a> -->
-            <!-- <a  href="javascript: void(0);" routerLink="/apps/editcredit/{{ord.billTransId}}"
-              class="btn btn-sm btn-light ">
-              <i class="fe fa-lg fe-edit" aria-hidden="true"></i>
-            </a> -->
-            <!-- <a href="javascript: void(0);" routerLink="/apps/editcredit/{{ord.contactId}}"
-              class="btn btn-sm btn-light ">
-              <i class="fe fa-lg fe-edit" aria-hidden="true"></i>
-            </a> -->
-            <!-- <a href="javascript: void(0);" (click)="Delete(ord.billTransId)" class="btn btn-sm btn-light pull-left"
-              slot="actions">
-              <i class="fe fa-lg fe-trash-2"></i>
-            </a> -->
           </div>
         </td>
       </tr>
@@ -337,8 +321,12 @@
       <div class="col-md-3">
         <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Select Contact" [ngbTypeahead]="searchrecontact" [inputFormatter]="formatterrecontact"
-          [resultTemplate]="cct" (selectItem)="selectedrecontact($event.item)" (keyup.enter)="clickrepaytable()"/>
+          [resultTemplate]="cct" (selectItem)="selectedrecontact($event.item)" (keyup.enter)="clickrepaytable()" style="font-weight: bold;"/>
+
       </div>
+
+      <!-- <strong *ngIf="taxgroup.id==0">Add TaxGroup</strong>
+      <strong *ngIf="taxgroup.id > 0">Edit TaxGroup</strong> -->
 
       <label class="col-md-3 col-form-label" for="baseFullname"><strong>Actual Repay</strong></label>
       <ng-template  class="w-100" #ct let-c="result" let-t="term">
@@ -346,7 +334,7 @@
       </ng-template>
       <div class="col-md-3">
         <input #contactautocomplete disabled #instance="ngbTypeahead" type="text" class="form-control"
-          placeholder="Search Contact" [ngbTypeahead]="searchcontact" [inputFormatter]="formattercontact"
+          placeholder="Actual Repay" [ngbTypeahead]="searchcontact" [inputFormatter]="formattercontact"
           [resultTemplate]="ct" (selectItem)="selectedcontact($event.item)" />
       </div>
     </div>
@@ -396,6 +384,8 @@
           placeholder="Search Location" [ngbTypeahead]="searchlocation" [inputFormatter]="formatterlocation"
           [resultTemplate]="crt" (selectItem)="selectedlocation($event.item)" />
       </div>
+
+
       <label class="col-md-3 col-form-label" for="formControlRange"><strong>Transaction Date</strong></label>
       <div class="col-md-3 pt-2">
         <nz-date-picker class="form-control" [(ngModel)]="date" (ngModelChange)="onChangetime($event)"></nz-date-picker>
@@ -404,7 +394,7 @@
     <div class="form-group row">
       <label class="col-md-3 col-form-label" for="formControlRange"> <strong>Total Balance</strong></label>
       <div class="col-md-3 pt-2">
-        <input type="text" class="form-control" [(ngModel)]="test.balance" name="example_name" value=""
+        <input type="text" class="form-control" disabled [(ngModel)]="totalbls" name="example_name" value="" style="font-weight: bold;"
           placeholder=" TotalBalance..." />
       </div>
     </div>
@@ -447,7 +437,7 @@
             &#8377;{{ord.billAmount - ord.paidAmount}}
           </td>
           <td>
-            <input type="text" [(ngModel)]="ord.pay">
+            <input type="text" class="form-control" [(ngModel)]="test.payment">
           </td>
 
         </tr>
@@ -543,7 +533,7 @@
             <!-- <a (click)="repaydolar(ord.contactId)" href="javascript: void(0);" class="btn btn-sm btn-light ">
               <i class="fe fa-lg fe-dollar-sign"></i>
             </a> -->
-            <a href="javascript: void(0);" routerLink="/apps/creditdetails/{{ord.contactId}}"
+            <a href="javascript: void(0);" routerLink="/apps/editcreditdetails/{{ord.id}}"
               class="btn btn-sm btn-light pull-left" slot="actions">
               <i class="fe fa-lg fe-info"></i>
             </a>
@@ -555,7 +545,7 @@
                 class="btn btn-sm btn-light ">
                 <i class="fe fa-lg fe-edit" aria-hidden="true"></i>
               </a> -->
-            <a href="javascript: void(0);" routerLink="/apps/editcreditrepay/{{ord.contactId}}"
+            <a href="javascript: void(0);" routerLink="/apps/editcreditrepay/{{ord.transactionId}}"
               class="btn btn-sm btn-light ">
               <i class="fe fa-lg fe-edit" aria-hidden="true"></i>
             </a>
@@ -668,3 +658,136 @@
     <!-- </div> -->
   </div>
 </div>
+
+
+<h5 class="ml-3 mt-3" *ngIf="isedit">
+  <strong>Credit Repay</strong>
+</h5>
+<!-- <div *ngIf="isRepay" class="card"> -->
+  <div class="card-body" *ngIf="isedit">
+    <div class="form-group row ">
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact</strong></label>
+      <ng-template class="w-100" #cct let-qc="result" let-qt="term">
+        <ngb-highlight [result]="qc.name" [term]="qt"></ngb-highlight>
+      </ng-template>
+      <div class="col-md-3">
+        <input type="text" class="form-control"
+          placeholder="Select Contact" disabled [(ngModel)]="cal.cname" name="example_name" value="" style="font-weight: bold;" />
+      </div>
+
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Actual Repay</strong></label>
+      <ng-template  class="w-100" #ct let-c="result" let-t="term">
+        <ngb-highlight [result]="" [term]="t"></ngb-highlight>
+      </ng-template>
+      <div class="col-md-3">
+        <input #contactautocomplete disabled #instance="ngbTypeahead" type="text" class="form-control"
+          placeholder="Actual Repay" [ngbTypeahead]="searchcontact" [inputFormatter]="formattercontact"
+          [resultTemplate]="ct" (selectItem)="selectedcontact($event.item)" />
+      </div>
+    </div>
+    <div class="form-group row ">
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Payment Mode</strong></label>
+      <ng-template class="w-100" #cctp let-qcp="result" let-qpt="term">
+        <ngb-highlight [result]="qcp.description" [term]="qpt"></ngb-highlight>
+      </ng-template>
+      <div class="col-md-3">
+        <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
+          placeholder="Search Payment Mode" [ngbTypeahead]="searchpaymenttype" [inputFormatter]="formatterpaymenttype"
+          [resultTemplate]="cctp" (selectItem)="selectedpaymenttype($event.item)" />
+      </div>
+
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Commission%</strong></label>
+      <ng-template class="w-100" #ct let-c="result" let-t="term">
+        <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+      </ng-template>
+      <div class="col-md-3">
+        <input type="number" disabled class="form-control"  name="example_name" value=""
+          (ngModelChange)="getamountfun()" placeholder="Enter Payment" />
+      </div>
+    </div>
+    <div class="form-group row ">
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Payment</strong></label>
+      <ng-template class="w-100" #ct let-c="result" let-t="term">
+        <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+      </ng-template>
+      <div class="col-md-3">
+        <input type="number"  class="form-control" [(ngModel)]="test.payment" name="example_name" value=""
+          (ngModelChange)="getamountfun()" placeholder="Enter Payment" />
+      </div>
+
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Reference</strong></label>
+      <div class="col-md-3">
+        <input type="text" class="form-control" [(ngModel)]="test.reference" name="example_name" value=""
+          (ngModelChange)="getreferencefun()" placeholder="Enter Reference" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Location</strong></label>
+      <ng-template class="w-100" #crt let-c="result" let-t="term">
+        <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+      </ng-template>
+      <div class="col-md-3">
+        <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
+          placeholder="Search Location" [ngbTypeahead]="searchlocation" [inputFormatter]="formatterlocation"
+          [resultTemplate]="crt" (selectItem)="selectedlocation($event.item)" />
+      </div>
+
+
+      <label class="col-md-3 col-form-label" for="formControlRange"><strong>Transaction Date</strong></label>
+      <div class="col-md-3 pt-2">
+        <nz-date-picker class="form-control" [(ngModel)]="date" (ngModelChange)="onChangetime($event)"></nz-date-picker>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="formControlRange"> <strong>Total Balance</strong></label>
+      <div class="col-md-3 pt-2">
+        <input type="text" class="form-control" disabled [(ngModel)]="totalbls" name="example_name" value="" style="font-weight: bold;"
+          placeholder=" TotalBalance..." />
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-secondary px-5" (click)="repaydolarback()">Go Back</button>
+    <button type="submit" class="btn btn-success px-5 pull-right" (click)="saverepaydata()">Submit</button>
+    <!-- <a href="javascript: void(0);"class="btn btn-success mt-3" (click)="testsave()"></a> -->
+  </div>
+  <div class="card kit__utils__cardMarked kit__utils__cardMarked--primary mx-5" *ngIf="iseditRepaytable"> 
+    <nz-table #basicTable class="kit__utils__table mb-4" [nzData]="repay"  nzSize="small" *ngIf="iseditRepaytable">
+      <thead>
+        <tr>
+          <th><strong>BillId </strong> </th>
+          <th><strong>Contact </strong></th>
+          <th><strong>Bill Date</strong> </th>
+          <th><strong>Credit Amount </strong> </th>
+          <th><strong>Paid Amount </strong></th>
+          <th><strong>Balance Amount </strong> </th>
+          <th><strong> Payment</strong></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ord of basicTable.data">
+          <td>
+            {{ord.billId}}
+          </td>
+          <td>
+            {{ord.name}}
+          </td>
+          <td>
+            {{ord.billDate}}
+          </td>
+          <td>
+            &#8377;{{ord.billAmount}}
+          </td>
+          <td>
+            &#8377;{{ord.paidAmount}}
+          </td>
+          <td>
+            &#8377;{{ord.billAmount - ord.paidAmount}}
+          </td>
+          <td>
+            <input type="text" class="form-control" [(ngModel)]="test.payment">
+          </td>
+
+        </tr>
+      </tbody>
+    </nz-table>
+  </div> 

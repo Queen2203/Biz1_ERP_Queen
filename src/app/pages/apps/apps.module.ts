@@ -63,8 +63,8 @@ import { LocationComponent } from './location/location.component'
 import { BankaccountsComponent } from './bankaccounts/bankaccounts.component'
 import { BankaccountdetailComponent } from './bankaccountdetail/bankaccountdetail.component'
 import { BillbyvendorComponent } from './billbyvendor/billbyvendor.component'
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { CreditrepayComponent } from './creditrepay/creditrepay.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter'
+import { CreditrepayComponent } from './creditrepay/creditrepay.component'
 // import { CreditpayComponent } from './creditpay/creditpay.component';
 // import { CreditindexComponent } from './creditindex/creditindex.component'
 

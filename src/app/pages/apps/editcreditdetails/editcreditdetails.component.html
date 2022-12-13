@@ -1,64 +1,133 @@
-<div class="form-group row">
-    <div class="hk-pg-header">
-        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
-                data-feather="archive"></i></span></span> Credit - Details</h4>
-      </div>
-          </div>
-<div class="card-body">
-    <div class="form-group row">
-        <label class="col-md-3 col-form-label" for="baseFullname">Select Contact</label>
+<h5 class="ml-3 mt-3" *ngIf="isRepay">
+    <strong>Credit Repay-Details</strong>
+  </h5>
+  <!-- <div *ngIf="isRepay" class="card"> -->
+    <div class="card-body" *ngIf="isRepay">
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact</strong></label>
+        <ng-template class="w-100" #cct let-qc="result" let-qt="term">
+          <ngb-highlight [result]="qc.name" [term]="qt"></ngb-highlight>
+        </ng-template>
         <div class="col-md-3">
-            <input type="text" class="form-control" disabled [(ngModel)]="trans.name" name="example_name" value="" style="width: 50%"
-            placeholder="Contact..." />
-         </div> 
-         <label class="col-md-3 col-form-label" for="formControlRange">Payment</label>
-         <div class="col-md-3 pt-2">
-             <input type="text" class="form-control" [(ngModel)]="trans.amount" name="example_name" value="" style="width: 50%"
-                 placeholder="Payment..." />
-         </div>
-    </div>
-
-    <div class="form-group row">
-            <label class="col-md-3 col-form-label" for="formControlRange"> Payment Mode</label>
-        <div  class="col-md-3 pt-2">
-            <input type="text" class="form-control"  [(ngModel)]="trans.paymentTypeId" name="example_name" value="" style="width: 50%"
-            placeholder="Payment mode..." />
-          </div> 
-
-        <label class="col-md-3 col-form-label" for="formControlRange">Location</label>
-        <div class="col-md-3 pt-2">
-            <input type="text" class="form-control"  [(ngModel)]="trans.supplier" name="example_name" value=""  style="width: 50%"
-                placeholder="Location..." />
-        </div>    
-    </div>
-    <div class="form-group row">
-        <label class="col-md-3 col-form-label" for="formControlRange">Responsible By</label>
-        <div class="col-md-3 pt-2">
-            <input type="text" class="form-control"  name="example_name" value="" style="width: 50%"
-                placeholder="Responsible..." />
+            <input type="text"  class="form-control" disabled [(ngModel)]="testmaster.name" name="example_name" value=""
+             placeholder="Enter Payment" />
+          </div>
+  
+        <label class="col-md-3 col-form-label"  for="baseFullname"><strong>Actual Repay</strong></label>
+        <ng-template  class="w-100" #ct let-c="result" let-t="term">
+          <ngb-highlight [result]="" [term]="t"></ngb-highlight>
+        </ng-template>
+        <div class="col-md-3">
+          <input disabled #instance="ngbTypeahead" type="text" class="form-control"
+            placeholder="Search Contact" [ngbTypeahead]="searchcontact" [inputFormatter]="formattercontact"
+            [resultTemplate]="ct" (selectItem)="selectedcontact($event.item)" />
         </div>
-        <label class="col-md-3 col-form-label" for="formControlRange"> IsCommission</label>
-    <div class="col-md-3 pt-2">
-        <input type="checkbox" class="form-control" disabled  name="example_name" value="" style="width:10%"
-            placeholder="Commission..." />
+      </div>
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Payment Mode</strong></label>
+        <ng-template class="w-100" #cctp let-qcp="result" let-qpt="term">
+          <ngb-highlight [result]="qcp.description" [term]="qpt"></ngb-highlight>
+        </ng-template>
+        <div class="col-md-3 pt-2"> 
+            <select disabled [(ngModel)]="testmaster.paymentTypeId" class="form-control" (ngModelChange)="getpaymenttype($event)"
+                [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
+                <option value="{{tax.id}}" *ngFor="let tax of payty">{{tax.description}}</option>
+            </select>
+            <!-- <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be Empty*</span> -->
+          </div>
+  
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Commission%</strong></label>
+        <ng-template class="w-100" #ct let-c="result" let-t="term">
+          <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+        </ng-template>
+        <div class="col-md-3">
+          <input type="number" disabled class="form-control" name="example_name" value=""
+             placeholder="Enter Payment" />
+        </div>
+      </div>
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Payment</strong></label>
+        <ng-template class="w-100" #ct let-c="result" let-t="term">
+          <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+        </ng-template>
+        <div class="col-md-3">
+          <input type="number" disabled  class="form-control" [(ngModel)]="testmaster.paidAmount" name="example_name" value="" (ngModelChange)="getpaymentfun()"
+           placeholder="Enter Payment" />
+        </div>
+  
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Reference</strong></label>
+        <div class="col-md-3">
+          <input type="text" disabled class="form-control" [(ngModel)]="testmaster.description" name="example_name" value=""
+            (ngModelChange)="getreferencefun()" placeholder="Enter Reference" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="baseFullname"><strong>Location</strong></label>
+        <ng-template class="w-100" #crt let-c="result" let-t="term">
+          <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+        </ng-template>
+        <div class="col-md-3 pt-2">
+            <select disabled [(ngModel)]="testmaster.storeId" class="form-control" (ngModelChange)="getlocationfun($event)"
+                [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
+                <option value="{{tax.id}}" *ngFor="let tax of stor">{{tax.name}}</option>
+            </select>
+            <!-- <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be Empty*</span> -->
+          </div>
+        <label class="col-md-3 col-form-label" for="formControlRange"><strong>Transaction Date</strong></label>
+        <div class="col-md-3 pt-2">
+          <nz-date-picker class="form-control" [(ngModel)]="testmaster.billDate" (ngModelChange)="onChangetime($event)"></nz-date-picker>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange"> <strong>Total Balance</strong></label>
+        <div class="col-md-3 pt-2">
+          <input type="text" class="form-control" disabled [(ngModel)]="totalbls" name="example_name" value=""
+            placeholder=" TotalBalance..." />
+        </div>
+      </div>
+  
+      <button type="button" class="btn btn-secondary px-5" (click)="locback()">Go Back</button>
+      <!-- <button type="submit" class="btn btn-success px-5 pull-right" (click)="saverepaydata()">Submit</button> -->
+      <!-- <a href="javascript: void(0);"class="btn btn-success mt-3" (click)="testsave()"></a> -->
     </div>
-    </div>
-    <div class="form-group row">
-        <!-- <label class="col-md-3 col-form-label" for="formControlRange">Transaction Date</label> -->
-        <!-- <div class="col-md-3 pt-2">
-            <nz-date-picker (ngModelChange)="onChange($event)"></nz-date-picker>
-   </div> -->
-            <label class="col-md-3 col-form-label" for="formControlRange">Commission%</label>
-    <div class="col-md-3 pt-2">
-        <input type="text" class="form-control" disabled  name="example_name" value="" style="width: 50%"
-            placeholder="Commission..." />
-    </div>
-    <label class="col-md-3 col-form-label" for="formControlRange">Reference</label>
-    <div class="col-md-3 pt-2">
-        <input type="text" class="form-control"  [(ngModel)]="trans.description"  style="width: 50%"
-            placeholder="Reference..." />
-    </div>
-</div>
-    <button type="button" routerLink="/apps/creditrepay" class="btn btn-secondary px-5"  >Go
-        Back</button>
-</div>
+    <div class="card kit__utils__cardMarked kit__utils__cardMarked--primary mx-5" *ngIf="isRepaytable"> 
+      <nz-table #basicTable class="kit__utils__table mb-4" [nzData]="repay"  nzSize="small" *ngIf="isRepaytable">
+        <thead>
+          <tr>
+            <th><strong>BillId </strong> </th>
+            <th><strong>Contact </strong></th>
+            <th><strong>Bill Date</strong> </th>
+            <th><strong>Credit Amount </strong> </th>
+            <th><strong>Paid Amount </strong></th>
+            <th><strong>Balance Amount </strong> </th>
+            <th><strong> Payment</strong></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ord of basicTable.data">
+            <td >
+              {{ord.billId}}
+            </td>
+            <td>
+              {{ord.name}}
+            </td>
+            <td>
+              {{ord.billDate}}
+            </td>
+            <td>
+              &#8377;{{ord.billAmount}}
+            </td>
+            <td>
+              &#8377;{{ord.paidAmount}}
+            </td>
+            <td>
+              &#8377;{{ord.billAmount - ord.paidAmount}}
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="testmaster.paidAmount" class="form-control" disabled>
+            </td>
+  
+          </tr>
+        </tbody>
+      </nz-table>
+    </div> 

@@ -130,7 +130,7 @@ export class CreditdetailsComponent implements OnInit {
     })
   }
 
-
+ 
   getTransList()
   {
     this.credData.push({

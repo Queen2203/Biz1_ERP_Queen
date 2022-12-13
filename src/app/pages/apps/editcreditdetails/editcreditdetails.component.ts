@@ -33,13 +33,15 @@ export class EditcreditdetailsComponent implements OnInit {
   paycred =[];
   credit =[];
   AddForm =[];
-  isTable =true;
+  // isTable =true;
   PaymentTypeId =0;
   description ='';
   creditTypeStatus ='';
   amount =0;
   TransactionId =0;
-  isShown =false; 
+  // isShown =false; 
+  isRepay = true
+  isRepaytable = true
   trans: any = {   amount: 0, creditTypeStatus:"", PaymentTypeId:1, supplier:'',
   description: "", CompanyId: 1,contactId:this.contactId,responsibleById:this.DispatchById,
   storeId:this.SuppliedById, contactType:0,Cname:'',responsibleBy:'',
@@ -47,7 +49,41 @@ export class EditcreditdetailsComponent implements OnInit {
    TransDate:moment().format('YYYY-MM-DD HH:MM A'),
   CreatedDate:moment().format('YYYY-MM-DD HH:MM A')}
 
+  //queen
+  repay: any 
+  testmaster: any ={
+    name: '',
+    billAmount: '',
+    billId: 0,
+    contactType: '',
+    contactTypeId: 0,
+    creditTypeId: 0 ,
+    id: 0,
+    // paidAmount: '',
+    paymentType: '',
+    paymentTypeId: 0,
+    store: ''
+  }
+  isedit= true
+  inputvalue: any
+  Contact: any
+  Contactt: any
+  cred: any = 
+  {
+    recontactId : 0
+  }
+  test: any = {
+    contacttypeId: 0,
+    contactId: 0,
+    creditid: 0,
+    payment: '',
+    paymenttypeid: 0,
+    locationid: 0,
+    responsiblebyid: 0,
+    reference: ''
+  }
 
+testfunid= 0
   constructor(
     private modalService: NgbModal,
      private Auth: AuthService,
@@ -57,14 +93,17 @@ export class EditcreditdetailsComponent implements OnInit {
     public location: Location )
 
     {
-      this.OrdId = this._avRoute.snapshot.params["id"];
+      this.testfunid = this._avRoute.snapshot.params["id"];
       this.users = JSON.parse(localStorage.getItem("users"));
   
      }
 
 
   ngOnInit(): void {
-    this.getTransList();``
+    // this.getTransList();
+    this.getrecustomer()
+    this.getcontacttype()
+    this.gettotbls()
   }
   getTransList()
   {
@@ -94,4 +133,79 @@ export class EditcreditdetailsComponent implements OnInit {
     this.orderDate =e;
   }
 
+   //queen
+   GetInputdata(){
+    this.Auth.getinputdata(this.CompanyId).subscribe(data => {
+      this.inputvalue = data
+      console.log('inputvalue', this.inputvalue)
+    })
+  } 
+  getcontact() {
+    this.Auth.getcontact(this.CompanyId, this.test.contacttypeId).subscribe(data => {
+      this.Contact = data
+      console.log('Contact', this.Contact)
+    })
+  }
+  tname: ''
+  // testmaster : string
+  getrecustomer(){
+    console.log(this.testfunid)
+    // this.Auth.saverepay(this.cred).subscribe(data =>{
+      this.Auth.getrepaycondatabyid(this.testfunid).subscribe(data =>{
+      this.repay = data['editdata']
+      console.log(this.repay)
+      this.testmaster = this.repay[0]
+      console.log(this.testmaster)
+    })
+  }
+  conty: any
+  crety: any
+  payty: any
+  stor: any
+  getcontacttype(){
+    this.Auth.getinputdata(this.CompanyId).subscribe(data =>{
+      this.conty = data['contactType']
+      this.crety = data['creditType']
+      this.payty = data['paymentType']
+      this.stor = data['store']
+      this.testmaster.contactTypeId = this.conty[0].id
+      this.testmaster.creditTypeId = this.crety[0].id
+      this.testmaster.paymentTypeId = this.payty[0].id
+      this.testmaster.storeId = this.stor[0].id
+      // console.log('testcon',  this.testcon)
+      console.log('contactTypeId', this.testmaster.contactTypeId)
+    })
+    this.getcontact()
+  }
+  totabls: any
+totalbls = 0
+gettotbls(){
+  // this.Auth.saverepay(this.cred).subscribe(data =>{
+  this.Auth.getdatabyid(this.testfunid).subscribe(data =>{
+    this.totabls = data['bls']
+    this.totalbls = this.totabls[0].totbls
+    console.log(this.totalbls)
+  })
+  // this.sumofrepay()
+}
+  newpaytype: any
+  getpaymenttype(value){
+    console.log('newpaytype', value)
+    this.newpaytype = value
+  }
+  getpaymentfun(){
+    console.log('newamount', this.testmaster.amount)
+  }
+  newlocation: any
+  getlocationfun(value){
+    console.log('newlocation', value)
+    this.newlocation = value
+  }
+  getreferencefun() {
+    console.log('description', this.testmaster.description)
+  }
+  locback()
+{
+  this.router.navigate(['/apps/credit/']);
+}
 }

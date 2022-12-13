@@ -33,7 +33,7 @@ export class CreditrepayComponent implements OnInit {
   Accountdata =0;
   DispatchById = 0;
   contactId =0;
-  orderDate ='';
+  orderDate =''; 
   paymentmode =2;
   creditTypeStatus =" ";                                                                                                        
   contacttype =2;
@@ -56,10 +56,10 @@ export class CreditrepayComponent implements OnInit {
     // contactId:this.contactId,
     // responsibleById:this.DispatchById, contactType:this.contacttype,
     isRepay = true
-    isRepaytable = false
+    isRepaytable = true
     inputvalue: any
     Contact: any
-    Contactt: any
+    Contactt: any 
     cred: any = 
     {
       recontactId : 0
@@ -103,9 +103,9 @@ export class CreditrepayComponent implements OnInit {
     private modalService: NgbModal,
      private Auth: AuthService,
     private notification: NzNotificationService,
-    private router: Router ,
+    private router: Router,
     private _avRoute: ActivatedRoute,
-    private route: ActivatedRoute,
+    // private route: ActivatedRoute,
     public location: Location )
      { 
       this.testfunid = this._avRoute.snapshot.params["id"];
@@ -164,6 +164,18 @@ export class CreditrepayComponent implements OnInit {
       this.testmaster = this.repay[0]
       console.log(this.testmaster)
     })
+  }
+
+  totabls: any
+  totalbls=0
+  gettotbls(){
+    // this.Auth.saverepay(this.cred).subscribe(data =>{
+    this.Auth.getdatabyid(this.testfunid).subscribe(data =>{
+      this.totabls = data['bls']
+      this.totalbls = this.totabls[0].totbls
+      console.log(this.totalbls)
+    })
+    // this.sumofrepay()
   }
 
 

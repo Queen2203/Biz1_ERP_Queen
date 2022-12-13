@@ -139,6 +139,7 @@ export class Transmodule {
   TransModeId: number
   CreatedBy: number
   Bill: BillModule
+  BillStatusId: number
 
   constructor() {
     this.CompanyId = 0
@@ -160,6 +161,7 @@ export class Transmodule {
     this.TransModeId = 0
     this.CreatedBy = 0
     this.Bill = new BillModule()
+    this.BillStatusId = 0
   }
 }
 

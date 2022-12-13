@@ -40,7 +40,7 @@ import { ReceiveOrdComponent } from './receive-ord/receive-ord.component'
 import { EditreceiveComponent } from './editreceive/editreceive.component'
 import { CreditComponent } from './credit/credit.component'
 import { EditcreditComponent } from './editcredit/editcredit.component'
-// import { CreditrepayComponent } from './creditrepay/creditrepay.component'
+import { CreditrepayComponent } from './creditrepay/creditrepay.component'
 import { PurchasemaintComponent } from './purchasemaint/purchasemaint.component'
 import { PurchasebillComponent } from './purchasebill/purchasebill.component'
 import { BillpaybyvendorComponent } from './billpaybyvendor/billpaybyvendor.component'
@@ -142,11 +142,11 @@ const routes: Routes = [
     component: EditreceiveComponent,
     data: { title: 'EditReceive App' },
   },
-  // {
-  //   path: 'creditrepay',
-  //   component: CreditrepayComponent,
-  //   data: { title: 'CreditRepay App' },
-  // },
+  {
+    path: 'creditrepay/:id',
+    component: CreditrepayComponent,
+    data: { title: 'CreditRepay App' },
+  },
 
   {
     path: 'vendors',

@@ -9,7 +9,7 @@
           <ngb-highlight [result]="qc.name" [term]="qt"></ngb-highlight>
         </ng-template>
         <div class="col-md-3">
-            <input type="text"  class="form-control" disabled [(ngModel)]="testmaster.name" name="example_name" value=""
+            <input type="text"  class="form-control" disabled [(ngModel)]="cname" name="example_name" value=""
              placeholder="Enter Payment" />
           </div>
   
@@ -51,13 +51,13 @@
           <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
         </ng-template>
         <div class="col-md-3">
-          <input type="number"  class="form-control" [(ngModel)]="testmaster.amount" name="example_name" value="" (ngModelChange)="getpaymentfun()"
+          <input type="number"  class="form-control" [(ngModel)]="camount" name="example_name" value="" (ngModelChange)="getpaymentfun()"
            placeholder="Enter Payment" />
         </div>
   
         <label class="col-md-3 col-form-label" for="baseFullname"><strong>Reference</strong></label>
         <div class="col-md-3">
-          <input type="text" class="form-control" [(ngModel)]="testmaster.description" name="example_name" value=""
+          <input type="text" class="form-control" [(ngModel)]="ref" name="example_name" value=""
             (ngModelChange)="getreferencefun()" placeholder="Enter Reference" />
         </div>
       </div>
@@ -75,19 +75,19 @@
           </div>
         <label class="col-md-3 col-form-label" for="formControlRange"><strong>Transaction Date</strong></label>
         <div class="col-md-3 pt-2">
-          <nz-date-picker class="form-control" [(ngModel)]="testmaster.billDate" (ngModelChange)="onChangetime($event)"></nz-date-picker>
+          <nz-date-picker class="form-control" [(ngModel)]="bildate" (ngModelChange)="onChangetime($event)"></nz-date-picker>
         </div>
       </div>
       <div class="form-group row">
         <label class="col-md-3 col-form-label" for="formControlRange"> <strong>Total Balance</strong></label>
-        <!-- <div class="col-md-3 pt-2">
-          <input type="text" class="form-control" [(ngModel)]="cal.balanceamount" name="example_name" value=""
+        <div class="col-md-3 pt-2">
+          <input type="text" class="form-control" disabled [(ngModel)]="totalbls" name="example_name" value=""
             placeholder=" TotalBalance..." />
-        </div> -->
+        </div>
       </div>
   
       <button type="button" class="btn btn-secondary px-5" (click)="goback()">Go Back</button>
-      <button type="submit" class="btn btn-success px-5 pull-right" (click)="SaveCredit()">Submit</button>
+      <button type="submit" class="btn btn-success px-5 pull-right" (click)="saverepaydata()">Submit</button>
       <!-- <a href="javascript: void(0);"class="btn btn-success mt-3" (click)="testsave()"></a> -->
     </div>
     <div class="card kit__utils__cardMarked kit__utils__cardMarked--primary mx-5" *ngIf="isRepaytable"> 
@@ -98,9 +98,10 @@
             <th><strong>Contact </strong></th>
             <th><strong>Bill Date</strong> </th>
             <th><strong>Credit Amount </strong> </th>
-            <th><strong>Paid Amount </strong></th>
-            <th><strong>Balance Amount </strong> </th>
-            <th><strong> Payment</strong></th>
+            <!-- <th><strong>Paid Amount </strong></th> -->
+            <th><strong>Balance Amount(Before)</strong> </th>
+            <th><strong>Balance Amount(After)</strong> </th>
+            <th><strong>Payment</strong></th>
           </tr>
         </thead>
         <tbody>
@@ -116,15 +117,18 @@
             </td>
             <td>
               &#8377;{{ord.billAmount}}
-            </td>
-            <td>
+            </td>           
+            <!-- <td>
               &#8377;{{ord.paidAmount}}
-            </td>
+            </td> -->
             <td>
               &#8377;{{ord.billAmount - ord.paidAmount}}
             </td>
             <td>
-              <input type="text" [(ngModel)]="testmaster.amount">
+              &#8377;{{(ord.billAmount - ord.paidAmount)-ord.amount}}
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="camount" class="form-control">
             </td>
   
           </tr>

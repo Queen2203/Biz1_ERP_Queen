@@ -844,5 +844,11 @@ export class AuthService {
   getrepayIndex(CompanyId){
     return this.http.get(this.base_url1+ 'CreditTrx/GetRepayIndex?CompanyId=' + CompanyId )    
   }
+  geteditcontbyid(id){
+    return this.http.get(this.base_url1+ 'CreditTrx/getbyIdforedit?transid=' + id)
+  }
+  saveeditdata(editjson){
+    return this.http.post(this.base_url1+ 'CreditTrx/EditRepay', editjson)
+  }
 
 }
