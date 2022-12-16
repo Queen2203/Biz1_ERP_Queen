@@ -637,33 +637,33 @@ export class CreditComponent implements OnInit {
     this.submitted = true
     if (this.validation()) {
     this.transmod.CompanyId = this.CompanyId,
-      this.transmod.ContactTypeId = this.test.contacttypeId,
-      this.transmod.ContactId = this.test.contactId,
-      this.transmod.CreditTypeId = this.test.creditid,
-      this.transmod.Amount = this.test.payment,
-      this.transmod.PaymentTypeId = this.test.paymenttypeid,
-      this.transmod.StoreId = this.test.locationid,
-      this.transmod.ResponsibleById = this.test.responsiblebyid,
-      this.transmod.Description = this.test.reference,
-      this.transmod.TransDate = moment().format('YYYY-MM-DD HH:MM A'),
-      this.transmod.CreatedDate = moment().format('YYYY-MM-DD HH:MM A'),
-      this.transmod.TransDateTime = moment().format('YYYY-MM-DD HH:MM A'),
-      this.transmod.TransTypeId = 8
+    this.transmod.ContactTypeId = this.test.contacttypeId,
+    this.transmod.ContactId = this.test.contactId,
+    this.transmod.CreditTypeId = this.test.creditid,
+    this.transmod.Amount = this.test.payment,
+    this.transmod.PaymentTypeId = this.test.paymenttypeid,
+    this.transmod.StoreId = this.test.locationid,
+    this.transmod.ResponsibleById = this.test.responsiblebyid,
+    this.transmod.Description = this.test.reference,
+    this.transmod.TransDate = moment().format('YYYY-MM-DD HH:MM A'),
+    this.transmod.CreatedDate = moment().format('YYYY-MM-DD HH:MM A'),
+    this.transmod.TransDateTime = moment().format('YYYY-MM-DD HH:MM A'),
+    this.transmod.TransTypeId = 8
     this.transmod.TransModeId = 2
     this.transmod.BillStatusId = 2
     this.transmod.CreatedBy = this.StoreId
     var bill = new BillModule(this.transmod.ContactId, this.totalpaidamount)
     bill.BillAmount = this.test.payment,
-      bill.ReceiverId = this.transmod.ContactId,
-      bill.BillStatusId = 2
+    bill.ReceiverId = this.transmod.ContactId,
+    bill.BillStatusId = 2
     bill.CreatedDate = moment().format('YYYY-MM-DD HH:MM A')
     this.bill = bill
     this.transmod.Bill = this.bill
     console.log(this.transmod)
-    // this.Auth.savecredit(this.transmod).subscribe(data => {
-    //   this.savecreditdata = data
-    //   console.log(this.savecreditdata)
-    // })
+    this.Auth.savecredit(this.transmod).subscribe(data => {
+      this.savecreditdata = data
+      console.log(this.savecreditdata)
+    })
     this.test.payment = null
     this.test.reference = null
     this.isShown = !this.isShown
@@ -795,22 +795,19 @@ export class CreditComponent implements OnInit {
     if (this.validationrepay()) {
     this.transmod.CompanyId = this.CompanyId
     this.transmod.ContactId = this.recontactId,
-      this.transmod.PaymentTypeId = this.test.paymenttypeid,
-      this.transmod.Amount = this.test.payment,
-      this.transmod.Description = this.test.reference,
-      this.transmod.StoreId = this.test.locationid
+    this.transmod.PaymentTypeId = this.test.paymenttypeid,
+    this.transmod.Amount = this.test.payment,
+    this.transmod.Description = this.test.reference,
+    this.transmod.StoreId = this.test.locationid
     this.transmod.CreditTypeId = this.test.creditid
     this.totalpaidamount = this.repay[0].paidAmount + this.test.payment
     // console.log(this.totalpaidamount)
     var bill = new BillModule(this.transmod.ContactId, this.totalpaidamount)
-
     bill.BillId = this.repay[0].billId,
-      bill.BillDate = this.repay[0].billDate,
-      bill.BillAmount = this.repay[0].billAmount,
-
+    bill.BillDate = this.repay[0].billDate,
+    bill.BillAmount = this.repay[0].billAmount,
       // bill.PaidAmount = this.repay[0].paidAmount + this.test.payment,
-
-      console.log("Already Payed", this.alreadypaidamt)
+    console.log("Already Payed", this.alreadypaidamt)
     console.log("New Pay", this.test.payment)
     // console.log("TotAL pAID", this.bill.PaidAmount)
     // console.log(this.bill.PaidAmount)
@@ -832,10 +829,10 @@ export class CreditComponent implements OnInit {
     this.bill = bill
     this.transmod.Bill = this.bill
     console.log(this.transmod)
-    // this.Auth.saverepay(this.transmod).subscribe(data => {
-    //   this.savedata = data
-    //   console.log(this.savedata)
-    // })
+    this.Auth.saverepay(this.transmod).subscribe(data => {
+      this.savedata = data
+      console.log(this.savedata)
+    })
 
     this.test.payment = null
     this.test.reference = null
@@ -922,14 +919,11 @@ export class CreditComponent implements OnInit {
     console.log(this.transactionId)
     console.log(this.bilid)
     console.log(this.amount)
-
-
     this.Auth.Deleterepaydata(this.transactionId, this.bilid, this.amount).subscribe(data => {
       this.testcontadata = data
       console.log('Deleted',this.testcontadata)
     })
     this.isRepaymain = this.isRepaymain
-   
   }
  
 }
