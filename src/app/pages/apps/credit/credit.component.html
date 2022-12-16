@@ -215,27 +215,30 @@
 <div *ngIf="isTable" class="card">
   <div class="card-body" *ngIf="isTable">
     <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact Type</strong></label>
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact Type</strong><span style="color: red;">*</span></label>
       <ng-template class="w-100" #cct let-qc="result" let-qt="term">
         <ngb-highlight [result]="qc.description" [term]="qt"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
         <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Search ContactType" [ngbTypeahead]="searchcontacttype" [inputFormatter]="formattercontacttype"
-          [resultTemplate]="cct" (selectItem)="selectedcontacttype($event.item)" />
+          [resultTemplate]="cct" (selectItem)="selectedcontacttype($event.item)" 
+          [ngClass]="{'is-invalid': submitted && test.contacttypeId == 0}"/>
         <!-- <select class="form-control" [(ngModel)]="test.contacttypeId" (ngModelChange)="contacttypeid()">
             <option *ngFor="let pcatt of inputvalue.contactType" value="{{pcatt.id}}">{{pcatt.description}}</option>
           </select> -->
       </div>
 
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact</strong></label>
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact</strong>
+        <span style="color: red;">*</span></label>
       <ng-template class="w-100" #ct let-c="result" let-t="term">
         <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
         <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Search Contact" [ngbTypeahead]="searchcontact" [inputFormatter]="formattercontact"
-          [resultTemplate]="ct" (selectItem)="selectedcontact($event.item)" />
+          [resultTemplate]="ct" (selectItem)="selectedcontact($event.item)"
+          [ngClass]="{'is-invalid': submitted && test.contactId == 0}" />
       </div>
     </div>
     <div class="form-group row ">
@@ -252,34 +255,40 @@
           </select> -->
       </div>
 
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Payment</strong></label>
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Payment</strong>
+        <span style="color: red;">*</span></label>
       <ng-template class="w-100" #ct let-c="result" let-t="term">
         <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
         <input type="number" class="form-control" [(ngModel)]="test.payment" name="example_name" value=""
-          (ngModelChange)="getamountfun()" placeholder="Enter Payment" />
+          (ngModelChange)="getamountfun()" placeholder="Enter Payment" 
+          [ngClass]="{'is-invalid': submitted && test.payment == 0}" />
       </div>
     </div>
     <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Payment Mode</strong></label>
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Payment Mode</strong>
+        <span style="color: red;">*</span></label>
       <ng-template class="w-100" #cct let-qc="result" let-qt="term">
         <ngb-highlight [result]="qc.description" [term]="qt"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
         <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Search Payment Mode" [ngbTypeahead]="searchpaymenttype" [inputFormatter]="formatterpaymenttype"
-          [resultTemplate]="cct" (selectItem)="selectedpaymenttype($event.item)" />
+          [resultTemplate]="cct" (selectItem)="selectedpaymenttype($event.item)" 
+          [ngClass]="{'is-invalid': submitted && test.paymenttypeid == 0}"/>
       </div>
 
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Location</strong></label>
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Location</strong>
+        <span style="color: red;">*</span></label>
       <ng-template class="w-100" #ct let-c="result" let-t="term">
         <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
         <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Search Location" [ngbTypeahead]="searchlocation" [inputFormatter]="formatterlocation"
-          [resultTemplate]="ct" (selectItem)="selectedlocation($event.item)" />
+          [resultTemplate]="ct" (selectItem)="selectedlocation($event.item)" 
+          [ngClass]="{'is-invalid': submitted && test.locationid == 0}"/>
       </div>
     </div>
     <div class="form-group row ">
@@ -314,17 +323,17 @@
 <!-- <div *ngIf="isRepay" class="card"> -->
   <div class="card-body" *ngIf="isRepay">
     <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact</strong></label>
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Contact</strong>
+        <span style="color: red;">*</span></label>
       <ng-template class="w-100" #cct let-qc="result" let-qt="term">
         <ngb-highlight [result]="qc.name" [term]="qt"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
         <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Select Contact" [ngbTypeahead]="searchrecontact" [inputFormatter]="formatterrecontact"
-          [resultTemplate]="cct" (selectItem)="selectedrecontact($event.item)" (keyup.enter)="clickrepaytable()" style="font-weight: bold;"/>
-
+          [resultTemplate]="cct" (selectItem)="selectedrecontact($event.item)" (keyup.enter)="clickrepaytable()" 
+          style="font-weight: bold;"/>
       </div>
-
       <!-- <strong *ngIf="taxgroup.id==0">Add TaxGroup</strong>
       <strong *ngIf="taxgroup.id > 0">Edit TaxGroup</strong> -->
 
@@ -339,14 +348,16 @@
       </div>
     </div>
     <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Payment Mode</strong></label>
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Payment Mode</strong>
+        <span style="color: red;">*</span></label>
       <ng-template class="w-100" #cctp let-qcp="result" let-qpt="term">
         <ngb-highlight [result]="qcp.description" [term]="qpt"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
         <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Search Payment Mode" [ngbTypeahead]="searchpaymenttype" [inputFormatter]="formatterpaymenttype"
-          [resultTemplate]="cctp" (selectItem)="selectedpaymenttype($event.item)" />
+          [resultTemplate]="cctp" (selectItem)="selectedpaymenttype($event.item)" 
+          [ngClass]="{'is-invalid': submitted && test.paymenttypeid == 0}"/>
       </div>
 
       <label class="col-md-3 col-form-label" for="baseFullname"><strong>Commission%</strong></label>
@@ -359,13 +370,15 @@
       </div>
     </div>
     <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Payment</strong></label>
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Payment</strong>
+        <span style="color: red;">*</span></label>
       <ng-template class="w-100" #ct let-c="result" let-t="term">
         <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
         <input type="number"  class="form-control" [(ngModel)]="test.payment" name="example_name" value=""
-          (ngModelChange)="getamountfun()" placeholder="Enter Payment" />
+          (ngModelChange)="getamountfun()" placeholder="Enter Payment" 
+          [ngClass]="{'is-invalid': submitted && test.payment == 0}"/>
       </div>
 
       <label class="col-md-3 col-form-label" for="baseFullname"><strong>Reference</strong></label>
@@ -375,14 +388,16 @@
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Location</strong></label>
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Location</strong>
+        <span style="color: red;">*</span></label>
       <ng-template class="w-100" #crt let-c="result" let-t="term">
         <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
         <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Search Location" [ngbTypeahead]="searchlocation" [inputFormatter]="formatterlocation"
-          [resultTemplate]="crt" (selectItem)="selectedlocation($event.item)" />
+          [resultTemplate]="crt" (selectItem)="selectedlocation($event.item)" 
+          [ngClass]="{'is-invalid': submitted && test.locationid == 0}"/>
       </div>
 
 
@@ -533,7 +548,7 @@
             <!-- <a (click)="repaydolar(ord.contactId)" href="javascript: void(0);" class="btn btn-sm btn-light ">
               <i class="fe fa-lg fe-dollar-sign"></i>
             </a> -->
-            <a href="javascript: void(0);" routerLink="/apps/editcreditdetails/{{ord.id}}"
+            <a href="javascript: void(0);" routerLink="/apps/editcreditdetails/{{ord.transactionId}}"
               class="btn btn-sm btn-light pull-left" slot="actions">
               <i class="fe fa-lg fe-info"></i>
             </a>
@@ -549,7 +564,7 @@
               class="btn btn-sm btn-light ">
               <i class="fe fa-lg fe-edit" aria-hidden="true"></i>
             </a>
-            <a href="javascript: void(0);" (click)="Delete(ord.billTransId)" class="btn btn-sm btn-light pull-left"
+            <a href="javascript: void(0);" (click)="Delete(ord.transactionId, ord.billId, ord.amount)" class="btn btn-sm btn-light pull-left"
               slot="actions">
               <i class="fe fa-lg fe-trash-2"></i>
             </a>
@@ -661,7 +676,7 @@
 
 
 <h5 class="ml-3 mt-3" *ngIf="isedit">
-  <strong>Credit Repay</strong>
+  <strong>Credit Repayment</strong>
 </h5>
 <!-- <div *ngIf="isRepay" class="card"> -->
   <div class="card-body" *ngIf="isedit">
@@ -686,14 +701,16 @@
       </div>
     </div>
     <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Payment Mode</strong></label>
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Select Payment Mode</strong>
+        <span style="color: red;">*</span></label>
       <ng-template class="w-100" #cctp let-qcp="result" let-qpt="term">
         <ngb-highlight [result]="qcp.description" [term]="qpt"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
         <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Search Payment Mode" [ngbTypeahead]="searchpaymenttype" [inputFormatter]="formatterpaymenttype"
-          [resultTemplate]="cctp" (selectItem)="selectedpaymenttype($event.item)" />
+          [resultTemplate]="cctp" (selectItem)="selectedpaymenttype($event.item)" 
+          [ngClass]="{'is-invalid': submitted && test.paymenttypeid == 0}"/>
       </div>
 
       <label class="col-md-3 col-form-label" for="baseFullname"><strong>Commission%</strong></label>
@@ -706,13 +723,15 @@
       </div>
     </div>
     <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Payment</strong></label>
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Payment</strong>
+        <span style="color: red;">*</span></label>
       <ng-template class="w-100" #ct let-c="result" let-t="term">
         <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
         <input type="number"  class="form-control" [(ngModel)]="test.payment" name="example_name" value=""
-          (ngModelChange)="getamountfun()" placeholder="Enter Payment" />
+          (ngModelChange)="getamountfun()" placeholder="Enter Payment" 
+          [ngClass]="{'is-invalid': submitted && test.payment == 0}"/>
       </div>
 
       <label class="col-md-3 col-form-label" for="baseFullname"><strong>Reference</strong></label>
@@ -722,14 +741,16 @@
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Location</strong></label>
+      <label class="col-md-3 col-form-label" for="baseFullname"><strong>Location</strong>
+        <span style="color: red;">*</span></label>
       <ng-template class="w-100" #crt let-c="result" let-t="term">
         <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
         <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Search Location" [ngbTypeahead]="searchlocation" [inputFormatter]="formatterlocation"
-          [resultTemplate]="crt" (selectItem)="selectedlocation($event.item)" />
+          [resultTemplate]="crt" (selectItem)="selectedlocation($event.item)" 
+          [ngClass]="{'is-invalid': submitted && test.locationid == 0}"/>
       </div>
 
 

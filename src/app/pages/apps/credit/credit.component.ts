@@ -53,7 +53,7 @@ export class CreditComponent implements OnInit {
   CreditDatatest: any
   tabledata: []
   billstatus: any
-  BillStatus: any= 0
+  BillStatus: any = 0
   billstatusid: any = null
 
   contactId: any
@@ -61,10 +61,10 @@ export class CreditComponent implements OnInit {
   inputvalue: any
   Contact: any
   Contactt: any
-  cred: any = 
-  {
-    recontactId : 0
-  }
+  cred: any =
+    {
+      recontactId: 0
+    }
   test: any = {
     contacttypeId: 0,
     contactId: 0,
@@ -75,25 +75,33 @@ export class CreditComponent implements OnInit {
     responsiblebyid: 0,
     reference: ''
   }
-  temp:any ={
+  temp: any = {
     tempid: ''
   }
-  totalbls = 0 
+  totalbls = 0
   // ={
   //   totbls:0
   // }
-  
+
   //temp
-  trans: any ={
+  trans: any = {
 
   }
-  testmaster: any ={
+
+  deldata: any = {
+    amount: 0,
+    billId: 0,
+    transactionId: 0,
+    billpayid: 0
+  }
+
+  testmaster: any = {
     name: '',
     amount: null,
     // billId: 0,
     contactType: '',
     contactTypeId: 0,
-    creditTypeId: 0 ,
+    creditTypeId: 0,
     creditType: '',
     id: 0,
     // paidAmount: '',
@@ -104,7 +112,7 @@ export class CreditComponent implements OnInit {
     description: null
 
   }
-  
+  tnsid: any
 
   StoreId: any
   // contactId:this.contactId,
@@ -136,40 +144,41 @@ export class CreditComponent implements OnInit {
     this.getrecustomer()
     this.getrepayclickdata()
     // this.gettotbls()
-    this.getcontacttype()
-  } 
+    // this.getcontacttype()
+    // this.Delete(this.tnsid)
+  }
   // reloadCurrentPage() {
   //   window.location.reload();
   //  }
 
- 
+
   //Queen
-  GetInputdata(){
+  GetInputdata() {
     this.Auth.getinputdata(this.CompanyId).subscribe(data => {
       this.inputvalue = data
       console.log('inputvalue', this.inputvalue)
     })
-  } 
+  }
   conty: any
   crety: any
   payty: any
   stor: any
-  
-  getcontacttype(){
-    this.Auth.getinputdata(this.CompanyId).subscribe(data =>{
-      this.conty = data['contactType']
-      this.crety = data['creditType']
-      this.payty = data['paymentType']
-      this.stor = data['store']
-      this.testmaster.contactTypeId = this.conty[0].id
-      this.testmaster.creditTypeId = this.crety[0].id
-      this.testmaster.paymentTypeId = this.payty[0].id
-      this.testmaster.storeId = this.stor[0].id
-      // console.log('testcon',  this.testcon)
-      console.log('contactTypeId', this.testmaster.contactTypeId)
-    })
-    this.getcontact()
-  }
+
+  // getcontacttype() {
+  //   this.Auth.getinputdata(this.CompanyId).subscribe(data => {
+  //     this.conty = data['contactType']
+  //     this.crety = data['creditType']
+  //     this.payty = data['paymentType']
+  //     this.stor = data['store']
+  //     this.testmaster.contactTypeId = this.conty[0].id
+  //     this.testmaster.creditTypeId = this.crety[0].id
+  //     this.testmaster.paymentTypeId = this.payty[0].id
+  //     this.testmaster.storeId = this.stor[0].id
+  //     // console.log('testcon',  this.testcon)
+  //     console.log('contactTypeId', this.testmaster.contactTypeId)
+  //   })
+  //   this.getcontact()
+  // }
   getcontact() {
     this.Auth.getcontact(this.CompanyId, this.test.contacttypeId).subscribe(data => {
       this.Contact = data
@@ -182,8 +191,8 @@ export class CreditComponent implements OnInit {
   //     console.log('Contactt', this.Contactt)
   //   })
   // }
-  getbstatus(){
-    this.Auth.getbillstatus(this.CompanyId).subscribe(data =>{
+  getbstatus() {
+    this.Auth.getbillstatus(this.CompanyId).subscribe(data => {
       this.BillStatus = data
       console.log('BillStatus', this.BillStatus)
     })
@@ -195,16 +204,16 @@ export class CreditComponent implements OnInit {
     this.getcontact()
   }
   searchcontacttype = (text$: Observable<string>) =>
-  text$.pipe(
-    debounceTime(200),
-    map(term =>
-      term === ''
-        ? []
-        : this.inputvalue.contactType
-          .filter(s => s.description.toLowerCase().indexOf(term.toLowerCase()) > -1)
-          .slice(0, 10),
-    ),
-  ) 
+    text$.pipe(
+      debounceTime(200),
+      map(term =>
+        term === ''
+          ? []
+          : this.inputvalue.contactType
+            .filter(s => s.description.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10),
+      ),
+    )
 
   formattercontacttype = (x: { description: string }) => x.description
 
@@ -225,16 +234,16 @@ export class CreditComponent implements OnInit {
     console.log('contactId', this.test.contactId)
   }
   searchcontact = (text$: Observable<string>) =>
-  text$.pipe(
-    debounceTime(200),
-    map(term =>
-      term === ''
-        ? []
-        : this.Contact
-          .filter(s => s.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
-          .slice(0, 10),
-    ),
-  ) 
+    text$.pipe(
+      debounceTime(200),
+      map(term =>
+        term === ''
+          ? []
+          : this.Contact
+            .filter(s => s.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10),
+      ),
+    )
 
   formattercontact = (x: { name: string }) => x.name
 
@@ -247,30 +256,30 @@ export class CreditComponent implements OnInit {
       // this.isShown = true
     })
   };
-  
+
   //repaycontact
   recontactId: any
   selectedrecontact(item) {
     this.recontactId = item.contactId
-      console.log('recontactId', this.recontactId)
-      // this.cred.recontactId = this.recontactId
-      this.contactId = this.recontactId
-      console.log(this.contactId)
-      this.getrecustomer()
-      this.gettotbls()
+    console.log('recontactId', this.recontactId)
+    // this.cred.recontactId = this.recontactId
+    this.contactId = this.recontactId
+    console.log(this.contactId)
+    this.getrecustomer()
+    this.gettotbls()
   }
   searchrecontact = (text$: Observable<string>) =>
-  text$.pipe(
-    debounceTime(200),
-    map(term =>
-      term === ''
-        ? []
-        : this.repaycontact
-          .filter(s => s.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
-          .slice(0, 10),
-    ),
-  ) 
-  
+    text$.pipe(
+      debounceTime(200),
+      map(term =>
+        term === ''
+          ? []
+          : this.repaycontact
+            .filter(s => s.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10),
+      ),
+    )
+ 
   formatterrecontact = (x: { name: string }) => x.name
 
   //CreditType
@@ -279,16 +288,16 @@ export class CreditComponent implements OnInit {
     console.log('creditid', this.test.creditid)
   }
   searchcredit = (text$: Observable<string>) =>
-  text$.pipe(
-    debounceTime(200),
-    map(term =>
-      term === ''
-        ? []
-        : this.inputvalue.creditType
-          .filter(s => s.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
-          .slice(0, 10),
-    ),
-  ) 
+    text$.pipe(
+      debounceTime(200),
+      map(term =>
+        term === ''
+          ? []
+          : this.inputvalue.creditType
+            .filter(s => s.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10),
+      ),
+    )
   formattercredit = (x: { name: string }) => x.name
   credittypeid() {
     console.log('creditType', this.test.creditid);
@@ -302,23 +311,23 @@ export class CreditComponent implements OnInit {
   getamountfun() {
     console.log('payment', this.test.payment)
   }
-  
+
   //paymentType
   selectedpaymenttype(item) {
     this.test.paymenttypeid = item.id
     console.log('paymenttypeid', this.test.paymenttypeid)
   }
   searchpaymenttype = (text$: Observable<string>) =>
-  text$.pipe(
-    debounceTime(200),
-    map(term =>
-      term === ''
-        ? []
-        : this.inputvalue.paymentType
-          .filter(s => s.description.toLowerCase().indexOf(term.toLowerCase()) > -1)
-          .slice(0, 10),
-    ),
-  ) 
+    text$.pipe(
+      debounceTime(200),
+      map(term =>
+        term === ''
+          ? []
+          : this.inputvalue.paymentType
+            .filter(s => s.description.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10),
+      ),
+    )
   formatterpaymenttype = (x: { description: string }) => x.description
 
   //Location
@@ -327,16 +336,16 @@ export class CreditComponent implements OnInit {
     console.log('locationid', this.test.locationid)
   }
   searchlocation = (text$: Observable<string>) =>
-  text$.pipe(
-    debounceTime(200),
-    map(term =>
-      term === ''
-        ? []
-        : this.inputvalue.store
-          .filter(s => s.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
-          .slice(0, 10),
-    ),
-  ) 
+    text$.pipe(
+      debounceTime(200),
+      map(term =>
+        term === ''
+          ? []
+          : this.inputvalue.store
+            .filter(s => s.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10),
+      ),
+    )
   formatterlocation = (x: { name: string }) => x.name
 
   //ResponsibleBy
@@ -345,17 +354,17 @@ export class CreditComponent implements OnInit {
     console.log('responsiblebyid', this.test.responsiblebyid)
   }
   searchresponsible = (text$: Observable<string>) =>
-  text$.pipe(
-    debounceTime(200),
-    map(term =>
-      term === ''
-        ? []
-        : this.Contact
-          .filter(s => s.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
-          .slice(0, 10),
-    ),
-  ) 
-  formatterresponsible = (x: { name: string }) => x.name 
+    text$.pipe(
+      debounceTime(200),
+      map(term =>
+        term === ''
+          ? []
+          : this.Contact
+            .filter(s => s.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10),
+      ),
+    )
+  formatterresponsible = (x: { name: string }) => x.name
 
   //Reference
   getreferencefun() {
@@ -385,7 +394,7 @@ export class CreditComponent implements OnInit {
     this.billstatusid = Value
   }
 
-// CreditIndex
+  // CreditIndex
   getCreditData() {
     this.Auth.getCredit(this.CompanyId, this.billstatusid).subscribe(data => {
       this.CreditDatatest = data['creditdatatest']
@@ -395,7 +404,7 @@ export class CreditComponent implements OnInit {
     })
   };
 
-  CreditDatatestt:any
+  CreditDatatestt: any
   quentest: any
   getreCreditData() {
     this.Auth.getrepayIndex(this.CompanyId).subscribe(data => {
@@ -405,7 +414,7 @@ export class CreditComponent implements OnInit {
       console.log(this.quentest)
       console.log(this.CreditDatatestt)
       // this.isShown = true
-    }) 
+    })
   };
   // getcreditid: any 
   // getcreditdatabyid(){
@@ -466,10 +475,11 @@ export class CreditComponent implements OnInit {
   //   console.log(this.filteredvaluestest)
   // } 
 
- 
+
   locback() {
     this.isShown = !this.isShown
     this.isTable = !this.isTable
+    this.submitted = false
   }
   back() {
     this.isShown = this.isShown
@@ -477,15 +487,18 @@ export class CreditComponent implements OnInit {
     this.isRepay = !this.isRepay
     this.isRepaymain = !this.isRepaymain
     // this.isRepaytable = !this.isRepaytable
-    if(this.isRepaytable == false){
+    if (this.isRepaytable == false) {
       this.isRepaytable = this.isRepaytable
     }
     else
-    this.isRepaytable = !this.isRepaytable
-    
+      this.isRepaytable = !this.isRepaytable
+    this.totalbls =  null
+    // this.date = null
+    this.submitted = false
+
   }
-  
-  crerepay(id){
+
+  crerepay(id) {
     // this.isShown = !this.isShown
     // this.isTable = this.isTable
     // this.isRepay = !this.isRepay
@@ -500,7 +513,7 @@ export class CreditComponent implements OnInit {
     this.getrecustomer()
     // this.gettabledata()
     this.gettotbls()
-  } 
+  }
 
   onChange(e) {
     console.log('date', e)
@@ -521,11 +534,11 @@ export class CreditComponent implements OnInit {
     // this.getCreditData()
     // this.getrepaycontact()
   }
-  clickrepaytable(){
+  clickrepaytable() {
     this.isRepay = this.isRepay
     this.isRepaytable = !this.isRepaytable
   }
-  clickcredit(){
+  clickcredit() {
     this.isShown = !this.isShown
     // this.isedit = !this.isedit
   }
@@ -540,20 +553,22 @@ export class CreditComponent implements OnInit {
   item: any
 
 
-  repaydolar(id){
+  repaydolar(id) {
     this.isRepay = !this.isRepay
     this.isRepaymain = !this.isRepaymain
     this.isRepaytable = !this.isRepaytable
     console.log(id)
     this.recontactId = id
-    this.getrecustomer()  
+    this.getrecustomer()
     this.selectedrecontact(id)
   }
 
-  repaydolarback(){
+  repaydolarback() {
     this.isRepaymain = !this.isRepaymain
     this.iseditRepaytable = !this.iseditRepaytable
     this.isedit = !this.isedit
+    this.totalbls = null
+    this.submitted = false
   }
   // contactid() {
   //   console.log('contactType', this.contacttypeId);
@@ -606,42 +621,57 @@ export class CreditComponent implements OnInit {
   //   this.paymentTypeId = null 
 
   // }   
+
+  validation() {
+    var isvalid = true
+    if (this.test.contacttypeId == 0) isvalid = false
+    if (this.test.contactId == 0) isvalid = false
+    if (this.test.payment == 0) isvalid = false
+    if (this.test.paymenttypeid == 0) isvalid = false
+    if (this.test.locationid == 0) isvalid = false
+    return isvalid
+  }
+  submitted: boolean = false
   savecreditdata: any
-  SaveCredit(){
+  SaveCredit() {
+    this.submitted = true
+    if (this.validation()) {
     this.transmod.CompanyId = this.CompanyId,
-    this.transmod.ContactTypeId = this.test.contacttypeId,
-    this.transmod.ContactId = this.test.contactId,
-    this.transmod.CreditTypeId = this.test.creditid,
-    this.transmod.Amount = this.test.payment,
-    this.transmod.PaymentTypeId = this.test.paymenttypeid,
-    this.transmod.StoreId = this.test.locationid,
-    this.transmod.ResponsibleById = this.test.responsiblebyid,
-    this.transmod.Description = this.test.reference,
-    this.transmod.TransDate = moment().format('YYYY-MM-DD HH:MM A'),
-    this.transmod.CreatedDate = moment().format('YYYY-MM-DD HH:MM A'),
-    this.transmod.TransDateTime = moment().format('YYYY-MM-DD HH:MM A'),
-    this.transmod.TransTypeId = 8
+      this.transmod.ContactTypeId = this.test.contacttypeId,
+      this.transmod.ContactId = this.test.contactId,
+      this.transmod.CreditTypeId = this.test.creditid,
+      this.transmod.Amount = this.test.payment,
+      this.transmod.PaymentTypeId = this.test.paymenttypeid,
+      this.transmod.StoreId = this.test.locationid,
+      this.transmod.ResponsibleById = this.test.responsiblebyid,
+      this.transmod.Description = this.test.reference,
+      this.transmod.TransDate = moment().format('YYYY-MM-DD HH:MM A'),
+      this.transmod.CreatedDate = moment().format('YYYY-MM-DD HH:MM A'),
+      this.transmod.TransDateTime = moment().format('YYYY-MM-DD HH:MM A'),
+      this.transmod.TransTypeId = 8
     this.transmod.TransModeId = 2
     this.transmod.BillStatusId = 2
     this.transmod.CreatedBy = this.StoreId
     var bill = new BillModule(this.transmod.ContactId, this.totalpaidamount)
-    bill.BillAmount = this.test.payment, 
-    bill.ReceiverId = this.transmod.ContactId,
-    bill.BillStatusId = 2
+    bill.BillAmount = this.test.payment,
+      bill.ReceiverId = this.transmod.ContactId,
+      bill.BillStatusId = 2
     bill.CreatedDate = moment().format('YYYY-MM-DD HH:MM A')
     this.bill = bill
     this.transmod.Bill = this.bill
     console.log(this.transmod)
-    this.Auth.savecredit(this.transmod).subscribe(data => {
-      this.savecreditdata = data
-      console.log(this.savecreditdata)
-    })
-
+    // this.Auth.savecredit(this.transmod).subscribe(data => {
+    //   this.savecreditdata = data
+    //   console.log(this.savecreditdata)
+    // })
     this.test.payment = null
     this.test.reference = null
-    this.isShown = !this.isShown 
+    this.isShown = !this.isShown
     this.isTable = !this.isTable
     this.getCreditData()
+  }else{
+    this.notification.error('Error', 'Check All Data')
+  }
   }
 
   //AdvanceSearch
@@ -653,7 +683,7 @@ export class CreditComponent implements OnInit {
       this.visibleIndex = ind
     }
   }
-  repay: any ={}
+  repay: any = {}
 
   getrepay: any
   // saverepay(){
@@ -661,22 +691,22 @@ export class CreditComponent implements OnInit {
   //     repay = data
   //   })
   // }
-cal: any ={
-  balanceamount: 0 ,
-  cid:0,
-  cname: '' ,
-  paidamount: 0
-  
-} 
-// paidamount: any
-alreadypaidamt : number
-testpaid : number
-testbill : number
-sumbill: any
+  cal: any = {
+    balanceamount: 0,
+    cid: 0,
+    cname: '',
+    paidamount: 0
 
-  getrecustomer(){
+  }
+  // paidamount: any
+  alreadypaidamt: number
+  testpaid: number
+  testbill: number
+  sumbill: any
+
+  getrecustomer() {
     // this.Auth.saverepay(this.cred).subscribe(data =>{
-    this.Auth.getdatabyid(this.recontactId).subscribe(data =>{
+    this.Auth.getdatabyid(this.recontactId).subscribe(data => {
       this.repay = data['bill']
       // this.sumofrepay(this.repay.)
       // this.alreadypaidamt = this.repay[0].paidAmount
@@ -706,35 +736,35 @@ sumbill: any
     // this.sumofrepay()
   }
   totabls: any = 0
-  gettotbls(){
+  gettotbls() {
     // this.Auth.saverepay(this.cred).subscribe(data =>{
-    this.Auth.getdatabyid(this.recontactId).subscribe(data =>{
+    this.Auth.getdatabyid(this.recontactId).subscribe(data => {
       this.totabls = data['bls']
       this.totalbls = this.totabls[0].totbls
       console.log(this.totalbls)
     })
     // this.sumofrepay()
   }
-  
-  sumtest : any
+
+  sumtest: any
   balancetest = 0
 
- sumofrepay(data){
-  this.sumtest = data.billAmount
-  for (let sum = 0; sum < data.length; sum ++){
-    this.balancetest += this.sumtest[sum]
-    console.log(this.balancetest)
-  }
+  sumofrepay(data) {
+    this.sumtest = data.billAmount
+    for (let sum = 0; sum < data.length; sum++) {
+      this.balancetest += this.sumtest[sum]
+      console.log(this.balancetest)
+    }
   }
   memdata: any
-  getrepayclickdata(){
-    this.Auth.getrepaycondatabyid(this.recontactId).subscribe(data =>{
+  getrepayclickdata() {
+    this.Auth.getrepaycondatabyid(this.recontactId).subscribe(data => {
       this.memdata = data['editdata']
       console.log(this.memdata)
     })
   }
-   
- 
+
+
   // testfun(id){
   //   console.log(id)
   // }
@@ -749,60 +779,72 @@ sumbill: any
   //   paidamount: 0,
   //   balance: 0
   // }
- 
-  bill : BillModule 
+  validationrepay() {
+    var isvalid = true
+    // if (this.recontactId == 0) isvalid = false
+    if (this.test.payment == 0) isvalid = false
+    if (this.test.paymenttypeid == 0) isvalid = false
+    if (this.test.locationid == 0) isvalid = false
+    return isvalid
+  }
+  bill: BillModule
   savedata: any
   totalpaidamount: any
-  saverepaydata(){
+  saverepaydata() {
+    this.submitted = true
+    if (this.validationrepay()) {
     this.transmod.CompanyId = this.CompanyId
     this.transmod.ContactId = this.recontactId,
-    this.transmod.PaymentTypeId = this.test.paymenttypeid,
-    this.transmod.Amount = this.test.payment,
-    this.transmod.Description = this.test.reference,
-    this.transmod.StoreId = this.test.locationid
+      this.transmod.PaymentTypeId = this.test.paymenttypeid,
+      this.transmod.Amount = this.test.payment,
+      this.transmod.Description = this.test.reference,
+      this.transmod.StoreId = this.test.locationid
     this.transmod.CreditTypeId = this.test.creditid
     this.totalpaidamount = this.repay[0].paidAmount + this.test.payment
     // console.log(this.totalpaidamount)
     var bill = new BillModule(this.transmod.ContactId, this.totalpaidamount)
-   
-    bill.BillId = this.repay[0].billId,
-    bill.BillDate = this.repay[0].billDate,
-    bill.BillAmount = this.repay[0].billAmount, 
 
-    // bill.PaidAmount = this.repay[0].paidAmount + this.test.payment,
- 
-    console.log("Already Payed", this.alreadypaidamt)
+    bill.BillId = this.repay[0].billId,
+      bill.BillDate = this.repay[0].billDate,
+      bill.BillAmount = this.repay[0].billAmount,
+
+      // bill.PaidAmount = this.repay[0].paidAmount + this.test.payment,
+
+      console.log("Already Payed", this.alreadypaidamt)
     console.log("New Pay", this.test.payment)
     // console.log("TotAL pAID", this.bill.PaidAmount)
     // console.log(this.bill.PaidAmount)
     // console.log(this.test.payment)
     bill.ReceiverId = this.transmod.ContactId,
-    bill.CreatedDate = moment().format('YYYY-MM-DD HH:MM A')
-    if(bill.BillAmount == bill.PaidAmount){
+      bill.CreatedDate = moment().format('YYYY-MM-DD HH:MM A')
+    if (bill.BillAmount == bill.PaidAmount) {
       bill.IsPaid = true
     }
-    else{
+    else {
       bill.IsPaid = false
     }
-    if(bill.BillAmount == bill.PaidAmount && bill.PaidAmount != 0){
+    if (bill.BillAmount == bill.PaidAmount) {
       bill.BillStatusId = 3
     }
-    else{
+    else {
       bill.BillStatusId = 2
     }
     this.bill = bill
     this.transmod.Bill = this.bill
     console.log(this.transmod)
-    this.Auth.saverepay(this.transmod).subscribe(data =>{
-      this.savedata = data
-      console.log(this.savedata)
-    })
+    // this.Auth.saverepay(this.transmod).subscribe(data => {
+    //   this.savedata = data
+    //   console.log(this.savedata)
+    // })
 
     this.test.payment = null
     this.test.reference = null
     this.isRepaymain = !this.isRepaymain
     this.isRepay = !this.isRepay
     this.isRepaytable = !this.isRepaytable
+  }else{
+    this.notification.error('Error', 'Check All Data')
+  }
     // this.getreCreditData()
   }
 
@@ -815,8 +857,8 @@ sumbill: any
         term === ''
           ? []
           : this.CreditDatatest
-              .filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10),
+            .filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10),
       ),
     )
   c_search = (text$: Observable<string>) => {
@@ -825,8 +867,8 @@ sumbill: any
         term === ''
           ? []
           : this[this.arrayName]
-              .filter(v => v[this.searchField].toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10),
+            .filter(v => v[this.searchField].toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10),
       ),
     )
   }
@@ -848,24 +890,47 @@ sumbill: any
   }
 
   cname: any
-camount: any
-ref: any
-bildate: any
-cont: any
-contt: any={
-  cname: ''
-}
-gettabledata(){
-  this.Auth.geteditcontbyid(this.recontactId).subscribe(data =>{
-    this.cont = data['edit']
-    this.cont.cname = this.cont.name
-    // this.camount = this.cont[0].amount
-    // this.ref = this.cont[0].description
-    // this.bildate = this.cont[0].billDate
-    console.log(this.cont)
-    console.log(this.cname)
-  })
-}
+  camount: any
+  ref: any
+  bildate: any
+  cont: any
+  gettabledata() {
+    this.Auth.geteditcontbyid(this.recontactId).subscribe(data => {
+      this.cont = data['edit']
+      this.cont.cname = this.cont.name
+      // this.camount = this.cont[0].amount
+      // this.ref = this.cont[0].description
+      // this.bildate = this.cont[0].billDate
+      console.log(this.cont)
+      console.log(this.cname)
+    })
+  }
+  transactionId: any
+  bilid: any
+  amount: any
+  del: any
+  contt: any = {
+  }
+  deldat: any = {}
+  objdata: any = {}
+  testcontadata : any
+
+  Delete(transid, billid, amt) {
+    this.transactionId = transid
+    this.bilid = billid
+    this.amount = amt
+    console.log(this.transactionId)
+    console.log(this.bilid)
+    console.log(this.amount)
+
+
+    this.Auth.Deleterepaydata(this.transactionId, this.bilid, this.amount).subscribe(data => {
+      this.testcontadata = data
+      console.log('Deleted',this.testcontadata)
+    })
+    this.isRepaymain = this.isRepaymain
+   
+  }
+ 
 }
 
- 

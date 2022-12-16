@@ -181,8 +181,9 @@ testfunid= 0
 totalbls = 0
 gettotbls(){
   // this.Auth.saverepay(this.cred).subscribe(data =>{
-  this.Auth.getdatabyid(this.testfunid).subscribe(data =>{
+  this.Auth.geteditcontbyid(this.testfunid).subscribe(data =>{
     this.totabls = data['bls']
+    console.log(this.totabls)
     this.totalbls = this.totabls[0].totbls
     console.log(this.totalbls)
   })

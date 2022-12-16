@@ -75,7 +75,7 @@
           </div>
         <label class="col-md-3 col-form-label" for="formControlRange"><strong>Transaction Date</strong></label>
         <div class="col-md-3 pt-2">
-          <nz-date-picker class="form-control" [(ngModel)]="bildate" (ngModelChange)="onChangetime($event)"></nz-date-picker>
+          <nz-date-picker class="form-control" [(ngModel)]="date" (ngModelChange)="onChangetime($event)"></nz-date-picker>
         </div>
       </div>
       <div class="form-group row">
@@ -122,11 +122,14 @@
               &#8377;{{ord.paidAmount}}
             </td> -->
             <td>
-              &#8377;{{ord.billAmount - ord.paidAmount}}
+              &#8377;{{ord.amount-(ord.billAmount - ord.paidAmount)}}
             </td>
             <td>
-              &#8377;{{(ord.billAmount - ord.paidAmount)-ord.amount}}
+              &#8377;{{ord.billAmount - ord.paidAmount}}
             </td>
+            <!-- <td>
+              &#8377;{{(ord.billAmount - ord.paidAmount)-ord.amount}}
+            </td> -->
             <td>
               <input type="text" [(ngModel)]="camount" class="form-control">
             </td>

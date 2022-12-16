@@ -217,8 +217,12 @@ this.paymentmode =Value;
     this.creditStatus = Val;
   }
   onChange(e) {
-    console.log("date",e);
-    this.orderDate =e;
+    console.log('date', e)
+    this.orderDate = e
+  }
+  date = new Date()
+  onChangetime(e) {
+    console.log(e, moment(e), this.date)
   }
 
   selecteddispatchitem(item) {
@@ -389,5 +393,5 @@ gettabledata(){
     console.log(this.repay)
     console.log(this.cname)
   })
-}
+} 
 }

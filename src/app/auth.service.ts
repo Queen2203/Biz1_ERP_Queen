@@ -850,5 +850,8 @@ export class AuthService {
   saveeditdata(editjson){
     return this.http.post(this.base_url1+ 'CreditTrx/EditRepay', editjson)
   }
+  Deleterepaydata(transid, billid, amt){
+    return this.http.get(this.base_url1+ 'CreditTrx/DeleteRepaydata?transid=' +transid + '&billid=' + billid + '&amount=' +amt)
+  }
 
 }
