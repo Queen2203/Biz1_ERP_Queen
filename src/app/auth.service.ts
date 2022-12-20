@@ -853,5 +853,8 @@ export class AuthService {
   Deleterepaydata(transid, billid, amt){
     return this.http.get(this.base_url1+ 'CreditTrx/DeleteRepaydata?transid=' +transid + '&billid=' + billid + '&amount=' +amt)
   }
+  getcreditdetail(transid){
+    return this.http.get(this.base_url1+ 'CreditTrx/creditdetail?id=' + transid)
+  }
 
 }

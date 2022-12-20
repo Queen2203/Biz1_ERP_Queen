@@ -52,16 +52,19 @@ export class CreditdetailsComponent implements OnInit {
   repay: any 
   testmaster: any ={
     name: '',
-    billAmount: '',
+    amount: '',
+    // billAmount: '',
     // billId: 0,
-    contactType: '',
+    contacttype: '',
     // contactTypeId: 0,
-    creditTypeId: 0 ,
+    credittype: 0 ,
     // id: 0,
     // paidAmount: '',
-    paymentType: '',
+    paymenttype: '',
     // paymentTypeId: 0,
-    store: ''
+    store: '',
+    responsible: 0,
+    description: ''
   }
   isedit= true
   inputvalue: any
@@ -119,16 +122,34 @@ export class CreditdetailsComponent implements OnInit {
   }
   tname: ''
   // testmaster : string
+  // getrecustomer(){
+  //   console.log(this.testfunid)
+  //   // this.Auth.saverepay(this.cred).subscribe(data =>{
+  //     this.Auth.getrepaycondatabyid(this.testfunid).subscribe(data =>{
+  //     this.repay = data['editdata']
+  //     console.log(this.repay)
+  //     this.testmaster = this.repay[0]
+  //     console.log(this.testmaster)
+  //   })
+  // }
+  responsbile: any
+  response: any = {
+    responsibleById: 0
+  }
   getrecustomer(){
     console.log(this.testfunid)
     // this.Auth.saverepay(this.cred).subscribe(data =>{
-      this.Auth.getrepaycondatabyid(this.testfunid).subscribe(data =>{
-      this.repay = data['editdata']
+      this.Auth.getcreditdetail(this.testfunid).subscribe(data =>{
+      this.repay = data['detail']
       console.log(this.repay)
       this.testmaster = this.repay[0]
       console.log(this.testmaster)
+      this.responsbile = data['responsbileby']
+      console.log(this.responsbile)
+      this.response = this.responsbile[0]
+      console.log(this.response)
     })
-  }
+  } 
 
  
   getTransList()

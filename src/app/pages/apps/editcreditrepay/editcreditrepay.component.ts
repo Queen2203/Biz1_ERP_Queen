@@ -69,7 +69,8 @@ export class EditcreditrepayComponent implements OnInit {
     paymentTypeId: 0,
     storeId: 0,
     store: '',
-    description: null
+    description: null,
+    storeid: 0
   }
   
   Contact: any
@@ -78,9 +79,6 @@ export class EditcreditrepayComponent implements OnInit {
   // repay: any
   typid= 0
 
-  newdata: any ={
-    
-  }
   test: any = {
     contacttypeId: 0,
     contactId: 0,
@@ -93,6 +91,21 @@ export class EditcreditrepayComponent implements OnInit {
   }
   recontactId : 0
   StoreId: any
+
+  newdata:any = {
+    newlocation: 0,
+    newpaytype: 0,
+    amount: '',
+    description : ''
+
+  }
+  repayyy:any = {
+    name: '',
+    camount: '',
+    paymettypeid: 0,
+    description: ''
+  }
+  
 
   constructor(
     private _fb: FormBuilder ,
@@ -206,16 +219,16 @@ formattercontact = (x: { name: string }) => x.name;
       })
   }
 
-  recStatus(Value)
-  {
-    console.log("rec",Value)
-this.paymentmode =Value;
-  }
-  creditStatus(Val)
-  {
-    console.log("credit",Val)
-    this.creditStatus = Val;
-  }
+//   recStatus(Value)
+//   {
+//     console.log("rec",Value)
+// this.paymentmode =Value;
+//   }
+//   creditStatus(Val)
+//   {
+//     console.log("credit",Val)
+//     this.creditStatus = Val;
+//   }
   onChange(e) {
     console.log('date', e)
     this.orderDate = e
@@ -292,18 +305,18 @@ goback()
 newpaytype: any
 getpaymenttype(value){
   console.log('newpaytype', value)
-  this.newpaytype = value
+  this.newdata.newpaytype = value
 }
 getpaymentfun(){
-  console.log('newamount', this.testmaster.amount)
+  console.log('newamount', this.repayyy.amount)
 }
-newlocation: any
+// newlocation: 0
 getlocationfun(value){
   console.log('newlocation', value)
-  this.newlocation = value
+  this.newdata.newlocation = value
 }
 getreferencefun() {
-  console.log('description', this.testmaster.description)
+  console.log('description', this.repayyy.description)
 }
 
 
@@ -326,12 +339,11 @@ saverepaydata(){
   this.transmod.TransactionId = this.testfunid
   this.transmod.CompanyId = this.CompanyId
   this.transmod.ContactId = this.testmaster.id,
-  this.transmod.PaymentTypeId = this.testmaster.paymentTypeId,
-  this.transmod.Amount = this.camount,
-  this.transmod.Description = this.testmaster.description,
-  this.transmod.StoreId = this.testmaster.storeId,
-  this.transmod.CreditTypeId = this.testmaster.creditTypeId
-  this.totalpaidamount = this.repay[0].paidAmount
+  this.transmod.PaymentTypeId = this.repayyy.paymettypeid,
+  this.transmod.Amount = this.repayyy.camount,
+  this.transmod.Description = this.repayyy.description,
+  this.transmod.StoreId = this.repayyy.storeid,
+  this.totalpaidamount = this.repayyy.camount
   // console.log(this.totalpaidamount)
   var bill = new BillModule(this.transmod.ContactId, this.totalpaidamount)
  
@@ -360,7 +372,7 @@ saverepaydata(){
     this.savedata = data
     console.log(this.savedata)
   })
-  this.getreCreditData()
+  this.router.navigate(['/apps/credit/']);
 }
 totabls: any
 totalbls = 0
@@ -375,23 +387,27 @@ gettotbls(){
   // this.sumofrepay()
 }
 
-// repay:any = {
-//   name: ''
+// repayyy:any = {
+//   name: '',
+//   camount: ''
 // }
 repay: any
 cname: any
-camount: any
+camount: ''
 ref: any
 bildate: any
 gettabledata(){
-  this.Auth.geteditcontbyid(this.testfunid).subscribe(data =>{
-    this.repay = data['edit']
+  this.Auth.getrepaycondatabyid(this.testfunid).subscribe(data =>{
+    this.repay = data['editdata']
     this.cname = this.repay[0].name
-    this.camount = this.repay[0].amount
-    this.ref = this.repay[0].description
-    this.bildate = this.repay[0].billDate
+    this.repayyy.camount = this.repay[0].amount
+    this.repayyy.paymettypeid = this.repay[0].paymentTypeId
+    this.repayyy.storeid = this.repay[0].storeId
+    this.repayyy.description = this.repay[0].description
+    // this.ref = this.repay[0].description
+    // this.bildate = this.repay[0].billDate
     console.log(this.repay)
-    console.log(this.cname)
+    // console.log(this.cname)
   })
 } 
 }

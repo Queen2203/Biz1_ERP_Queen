@@ -62,7 +62,9 @@ export class EditcreditdetailsComponent implements OnInit {
     // paidAmount: '',
     paymentType: '',
     paymentTypeId: 0,
-    store: ''
+    storeId: 0,
+    store: '',
+    storeid: 0
   }
   isedit= true
   inputvalue: any
@@ -171,9 +173,10 @@ testfunid= 0
       this.testmaster.contactTypeId = this.conty[0].id
       this.testmaster.creditTypeId = this.crety[0].id
       this.testmaster.paymentTypeId = this.payty[0].id
-      this.testmaster.storeId = this.stor[0].id
+      this.testmaster.storeid = this.stor[0].id
       // console.log('testcon',  this.testcon)
       console.log('contactTypeId', this.testmaster.contactTypeId)
+      console.log('storeid', this.testmaster.storeid)
     })
     this.getcontact()
   }

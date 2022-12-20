@@ -19,6 +19,7 @@ import {
   NzDropdownMenuComponent,
 } from 'ng-zorro-antd/dropdown'
 import { id } from 'date-fns/locale'
+import { min } from 'date-fns'
 
 
 
@@ -58,24 +59,24 @@ export class CreditComponent implements OnInit {
 
   contactId: any
   //Queen
-  inputvalue: any
+  inputvalue: any 
   Contact: any
   Contactt: any
   cred: any =
     {
       recontactId: 0
-    }
+    } 
   test: any = {
-    contacttypeId: 0,
-    contactId: 0,
-    creditid: 0,
+    contacttypeId: null, 
+    contactId: null, 
+    creditid: null,
     payment: '',
-    paymenttypeid: 0,
-    locationid: 0,
-    responsiblebyid: 0,
+    paymenttypeid: null,
+    locationid: null, 
+    responsiblebyid: null,
     reference: ''
   }
-  temp: any = {
+  temp: any = { 
     tempid: ''
   }
   totalbls = 0
@@ -110,10 +111,10 @@ export class CreditComponent implements OnInit {
     storeId: 0,
     store: '',
     description: null
-
+ 
   }
   tnsid: any
-
+ 
   StoreId: any
   // contactId:this.contactId,
   // responsibleById:this.DispatchById, contactType:this.contacttype,
@@ -144,7 +145,7 @@ export class CreditComponent implements OnInit {
     this.getrecustomer()
     this.getrepayclickdata()
     // this.gettotbls()
-    // this.getcontacttype()
+    this.getcontacttype()
     // this.Delete(this.tnsid)
   }
   // reloadCurrentPage() {
@@ -164,21 +165,22 @@ export class CreditComponent implements OnInit {
   payty: any
   stor: any
 
-  // getcontacttype() {
-  //   this.Auth.getinputdata(this.CompanyId).subscribe(data => {
-  //     this.conty = data['contactType']
-  //     this.crety = data['creditType']
-  //     this.payty = data['paymentType']
-  //     this.stor = data['store']
-  //     this.testmaster.contactTypeId = this.conty[0].id
-  //     this.testmaster.creditTypeId = this.crety[0].id
-  //     this.testmaster.paymentTypeId = this.payty[0].id
-  //     this.testmaster.storeId = this.stor[0].id
-  //     // console.log('testcon',  this.testcon)
-  //     console.log('contactTypeId', this.testmaster.contactTypeId)
-  //   })
-  //   this.getcontact()
-  // }
+  getcontacttype() {
+    this.Auth.getinputdata(this.CompanyId).subscribe(data => {
+      this.conty = data['contactType']
+      this.crety = data['creditType']
+      this.payty = data['paymentType']
+      this.stor = data['store']
+      this.testmaster.contactTypeId = this.conty[0].id
+      this.testmaster.creditTypeId = this.crety[0].id
+      this.testmaster.paymentTypeId = this.payty[0].id
+      this.testmaster.storeId = this.stor[0].id
+      // console.log('testcon',  this.testcon)
+      console.log('contactTypeId', this.testmaster.contactTypeId)
+    })
+    // this.getcontact()
+  }
+
   getcontact() {
     this.Auth.getcontact(this.CompanyId, this.test.contacttypeId).subscribe(data => {
       this.Contact = data
@@ -198,6 +200,11 @@ export class CreditComponent implements OnInit {
     })
   }
   // ContactType
+
+  getcontacttypeid(){
+    console.log('ContactType', this.test.contacttypeId)
+    this.getcontact()
+  }
   selectedcontacttype(item) {
     this.test.contacttypeId = item.id
     console.log('contacttypeId', this.test.contacttypeId)
@@ -229,6 +236,10 @@ export class CreditComponent implements OnInit {
   // }
 
   //Contact
+  getcontactid(){
+    console.log('ContactId', this.test.contactId)
+  }
+  
   selectedcontact(item) {
     this.test.contactId = item.id
     console.log('contactId', this.test.contactId)
@@ -313,6 +324,10 @@ export class CreditComponent implements OnInit {
   }
 
   //paymentType
+
+  getpaymenttypeid(){
+    console.log('PaymentType', this.test.paymenttypeid)
+  }
   selectedpaymenttype(item) {
     this.test.paymenttypeid = item.id
     console.log('paymenttypeid', this.test.paymenttypeid)
@@ -331,6 +346,9 @@ export class CreditComponent implements OnInit {
   formatterpaymenttype = (x: { description: string }) => x.description
 
   //Location
+  getlocationid(){
+    console.log('locationid', this.test.locationid)
+  }
   selectedlocation(item) {
     this.test.locationid = item.id
     console.log('locationid', this.test.locationid)
@@ -347,6 +365,11 @@ export class CreditComponent implements OnInit {
       ),
     )
   formatterlocation = (x: { name: string }) => x.name
+  newlocation:any
+  getlocationfun(value){
+    console.log('newlocation', value)
+    this.newlocation = value
+  }
 
   //ResponsibleBy
   selectedresponsible(item) {
@@ -480,6 +503,15 @@ export class CreditComponent implements OnInit {
     this.isShown = !this.isShown
     this.isTable = !this.isTable
     this.submitted = false
+    this.test.contacttypeId = null,
+    this.test.contacttypeId= null,
+    this.test.contactId= null,
+    this.test.creditid= null,
+    this.test.payment= null,
+    this.test.paymenttypeid= null,
+    this.test.locationid= null, 
+    this.test.responsiblebyid= null,
+    this.test.reference= null
   }
   back() {
     this.isShown = this.isShown
@@ -492,6 +524,8 @@ export class CreditComponent implements OnInit {
     }
     else
       this.isRepaytable = !this.isRepaytable
+
+    this.test.payment = null
     this.totalbls =  null
     // this.date = null
     this.submitted = false
@@ -537,8 +571,9 @@ export class CreditComponent implements OnInit {
   clickrepaytable() {
     this.isRepay = this.isRepay
     this.isRepaytable = !this.isRepaytable
+    this.totalbls = null
   }
-  clickcredit() {
+  clickcredit() { 
     this.isShown = !this.isShown
     // this.isedit = !this.isedit
   }
@@ -630,6 +665,7 @@ export class CreditComponent implements OnInit {
     if (this.test.paymenttypeid == 0) isvalid = false
     if (this.test.locationid == 0) isvalid = false
     return isvalid
+
   }
   submitted: boolean = false
   savecreditdata: any
@@ -656,6 +692,7 @@ export class CreditComponent implements OnInit {
     bill.BillAmount = this.test.payment,
     bill.ReceiverId = this.transmod.ContactId,
     bill.BillStatusId = 2
+    bill.ResponsibleById = this.test.responsiblebyid
     bill.CreatedDate = moment().format('YYYY-MM-DD HH:MM A')
     this.bill = bill
     this.transmod.Bill = this.bill
@@ -665,7 +702,7 @@ export class CreditComponent implements OnInit {
       console.log(this.savecreditdata)
     })
     this.test.payment = null
-    this.test.reference = null
+    this.test.reference = null 
     this.isShown = !this.isShown
     this.isTable = !this.isTable
     this.getCreditData()
@@ -713,8 +750,8 @@ export class CreditComponent implements OnInit {
       // console.log(this.alreadypaidamt)
 
       // this.getrepay = this.repay['datatest']
-      this.cal.cname = this.repay[0].name
-      console.log(this.cal.cname)
+      // this.cal.cname = this.repay[0].name
+      // console.log(this.cal.cname)
 
       // this.cal.balanceamount = this.repay[0].balance
       // console.log('balance', this.cal.balanceamount)
@@ -863,7 +900,7 @@ export class CreditComponent implements OnInit {
       map(term =>
         term === ''
           ? []
-          : this[this.arrayName]
+          : this[this.arrayName] 
             .filter(v => v[this.searchField].toLowerCase().indexOf(term.toLowerCase()) > -1)
             .slice(0, 10),
       ),
@@ -924,6 +961,7 @@ export class CreditComponent implements OnInit {
       console.log('Deleted',this.testcontadata)
     })
     this.isRepaymain = this.isRepaymain
+    this.getreCreditData()
   }
  
 }

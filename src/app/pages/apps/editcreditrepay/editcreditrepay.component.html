@@ -29,7 +29,7 @@
           <ngb-highlight [result]="qcp.description" [term]="qpt"></ngb-highlight>
         </ng-template>
         <div class="col-md-3 pt-2"> 
-            <select [(ngModel)]="testmaster.paymentTypeId" class="form-control" (ngModelChange)="getpaymenttype($event)"
+            <select [(ngModel)]="repayyy.paymettypeid" class="form-control" (ngModelChange)="getpaymenttype($event)"
                 [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
                 <option value="{{tax.id}}" *ngFor="let tax of payty">{{tax.description}}</option>
             </select>
@@ -51,13 +51,13 @@
           <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
         </ng-template>
         <div class="col-md-3">
-          <input type="number"  class="form-control" [(ngModel)]="camount" name="example_name" value="" (ngModelChange)="getpaymentfun()"
+          <input type="number"  class="form-control" [(ngModel)]="repayyy.camount" name="example_name" value="" (ngModelChange)="getpaymentfun()"
            placeholder="Enter Payment" />
         </div>
   
         <label class="col-md-3 col-form-label" for="baseFullname"><strong>Reference</strong></label>
         <div class="col-md-3">
-          <input type="text" class="form-control" [(ngModel)]="ref" name="example_name" value=""
+          <input type="text" class="form-control" [(ngModel)]="repayyy.description" name="example_name" value=""
             (ngModelChange)="getreferencefun()" placeholder="Enter Reference" />
         </div>
       </div>
@@ -67,7 +67,7 @@
           <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
         </ng-template>
         <div class="col-md-3 pt-2">
-            <select [(ngModel)]="testmaster.storeId" class="form-control" (ngModelChange)="getlocationfun($event)"
+            <select [(ngModel)]="repayyy.storeid" class="form-control" (ngModelChange)="getlocationfun($event)"
                 [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
                 <option value="{{tax.id}}" *ngFor="let tax of stor">{{tax.name}}</option>
             </select>

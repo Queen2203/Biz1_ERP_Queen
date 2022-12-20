@@ -75,7 +75,7 @@
         </ng-template>
         <div class="col-md-3">
           <input  type="text" class="form-control"
-            placeholder="Search ContactType" disabled [(ngModel)]="testmaster.contactType" name="example_name" value="" />
+            placeholder="Search ContactType" disabled [(ngModel)]="testmaster.contacttype" name="example_name" value="" />
           <!-- <select class="form-control" [(ngModel)]="test.contacttypeId" (ngModelChange)="contacttypeid()">
               <option *ngFor="let pcatt of inputvalue.contactType" value="{{pcatt.id}}">{{pcatt.description}}</option>
             </select> -->
@@ -95,7 +95,7 @@
           <ngb-highlight [result]="cc.name" [term]="ct"></ngb-highlight>
         </ng-template>
         <div class="col-md-3">
-          <input type="text" class="form-control" disabled [(ngModel)]="testmaster.creditType" name="example_name" value=""
+          <input type="text" class="form-control" disabled [(ngModel)]="testmaster.credittype" name="example_name" value=""
           (ngModelChange)="getamountfun()"
             placeholder="Search Credit type"/>
           <!-- <select class="form-control" [(ngModel)]="test.creditid" (ngModelChange)="credittypeid()">
@@ -118,7 +118,7 @@
           <ngb-highlight [result]="qc.description" [term]="qt"></ngb-highlight>
         </ng-template>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="Search Payment Mode" disabled [(ngModel)]="testmaster.paymentType" 
+          <input type="text" class="form-control" placeholder="Search Payment Mode" disabled [(ngModel)]="testmaster.paymenttype" 
           name="example_name" value=""
           (ngModelChange)="getamountfun()" />
         </div>
@@ -138,7 +138,7 @@
           <ngb-highlight [result]="qr.name" [term]="qt"></ngb-highlight>
         </ng-template>
         <div class="col-md-3">
-          <input  type="text" class="form-control" disabled [(ngModel)]="testmaster.contactType" name="example_name" value=""
+          <input  type="text" class="form-control" disabled [(ngModel)]="response.response" name="example_name" value=""
           (ngModelChange)="getamountfun()"placeholder="Search ResponsibleBy"/>
         </div>
   
