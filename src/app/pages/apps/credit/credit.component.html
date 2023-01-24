@@ -1,7 +1,7 @@
 <!-- <div> -->
 <div class="cui__utils__heading" *ngIf="isShown">
   <strong>Credit Transactions - Index</strong>
-  <button style="width: 80px;height: 30px; margin-left: 55%;" class="btn btn-primary " (click)="clickpay(1)">
+  <button style="width: 80px;height: 30px; margin-left: 60%;" class="btn btn-primary " (click)="clickpay(1)">
     Back
   </button>
   <button type="button" class="btn btn-squared btn-success  pull-right" (click)="showSubItem(index)"> <i
@@ -189,7 +189,7 @@
         </td>
         <td>
           <div class="btn-group mr-2 mb-2">
-            <a (click)="crerepay(ord.contactId)" href="javascript: void(0);" class="btn btn-sm btn-light ">
+            <a (click)="crerepay(ord.contactId)" href="javascript: void(0);" class="btn btn-sm btn-light " nzTooltipTitle="Repay" nz-tooltip>
               <i class="fe fa-lg fe-dollar-sign"></i>
             </a>
             <!-- <a  href="javascript: void(0);"  routerLink="/apps/creditrepay/{{ord.contactId}}" 
@@ -197,7 +197,7 @@
               <i class="fe fa-lg fe-dollar-sign"></i>
             </a>  -->
             <a href="javascript: void(0);" routerLink="/apps/creditdetails/{{ord.transactionId}}"
-              class="btn btn-sm btn-light pull-left">
+              class="btn btn-sm btn-light pull-left" nzTooltipTitle="Details" nz-tooltip>
               <i class="fe fa-lg fe-info"></i>
             </a>
           </div>
@@ -224,7 +224,7 @@
       </ng-template>
       <div class="col-md-3">
         <select class="form-control" [(ngModel)]="test.contacttypeId" (ngModelChange)="getcontacttypeid()" 
-        [ngClass]="{'is-invalid': submitted && test.contacttypeId == 0}">
+        [ngClass]="{'is-invalid': submitted && test.contacttypeId == 0}" autofocus="autofocus">
           <option value=null>Select ContactType</option>
             <option *ngFor="let pcatt of inputvalue.contactType" value="{{pcatt.id}}">{{pcatt.description}}</option>
           </select>
@@ -337,10 +337,10 @@
         <ngb-highlight [result]="qc.name" [term]="qt"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
-        <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
+        <input id="contact" #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Select Contact" [ngbTypeahead]="searchrecontact" [inputFormatter]="formatterrecontact"
-          [resultTemplate]="cct" (selectItem)="selectedrecontact($event.item)" (keyup.enter)="paymode.focus();clickrepaytable()"
-          style="font-weight: bold;"/>
+          [resultTemplate]="cct" (selectItem)="selectedrecontact($event.item)" (keyup.enter)="clickrepaytable();paymode.focus()"
+          style="font-weight: bold;" autofocus="autofocus"/>
       </div>
       <!-- <strong *ngIf="taxgroup.id==0">Add TaxGroup</strong>
       <strong *ngIf="taxgroup.id > 0">Edit TaxGroup</strong> -->
@@ -362,10 +362,15 @@
         <ngb-highlight [result]="qcp.description" [term]="qpt"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
-        <input #paymode #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
+        <!-- <input #paymode #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Search Payment Mode" [ngbTypeahead]="searchpaymenttype" [inputFormatter]="formatterpaymenttype"
           [resultTemplate]="cctp" (selectItem)="selectedpaymenttype($event.item)" 
-          [ngClass]="{'is-invalid': submitted && test.paymenttypeid == 0}" (keyup.enter)="pmt.focus()"/>
+          [ngClass]="{'is-invalid': submitted && test.paymenttypeid == 0}" (keyup.enter)="pmt.focus()"/> -->
+
+          <select #paymode class="form-control" [(ngModel)]="test.paymenttypeid" (ngModelChange)="getpaymenttypeid()">
+            <option value=null>Select PaymentMode</option>
+              <option *ngFor="let pcatt of inputvalue.paymentType" value="{{pcatt.id}}">{{pcatt.description}}</option>
+            </select>
       </div>
 
       <label class="col-md-3 col-form-label" for="baseFullname"><strong>Commission%</strong></label>
@@ -483,30 +488,13 @@
 <!-- Credit Repay-List -->
 <div class="cui__utils__heading" *ngIf="isRepaymain">
   <strong>Credit Repay - Index</strong>
-  <button style="width: 80px;height: 30px;" class="btn btn-primary " (click)="clickrepay(1)">
+  <button style="width: 80px;height: 30px; margin-left: 80%;" class="btn btn-primary " (click)="clickrepay(1)">
     Back
   </button>
 </div>
 <div class="card" *ngIf="isRepaymain">
   <div class="card-header card-header-flex" *ngIf="isRepaymain">
-    <!-- <div class="form-group row">
-      <label class="col-md-9 col-form-label"></label>
-      <div class="col-md-12">
-          <select class="form-control" [(ngModel)]="billstatusid" (ngModelChange)="BillstsId()">
-              <option value=null disabled><strong>BillStatus</strong></option>
-              <option *ngFor="let pcat of BillStatus" value="{{pcat.id}}">{{pcat.status}}</option>
-          </select>
-      </div>
-    </div> -->
-    <div class="col-md-6 pt-2">
-      <button class="btn btn-success" style="width: 80px; height: 30px;margin-top: 10px;"
-        (click)="repaybtn()">REPAY</button>
-        <!-- <a href="javascript: void(0);" routerLink="/apps/creditrepay/{{ord.contactId}}"
-        class="btn btn-sm btn-light ">
-        <button >REPAY</button>
-      </a> -->
-    </div>
-    <div *ngIf="isRepaymain" class="col-md-5 pt-2">
+    <div class="d-flex flex-column justify-content-center mr-auto">
       <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
         <input type="text" [(ngModel)]="term" nz-input placeholder="input search text" (input)="filtersearch()" />
       </nz-input-group>
@@ -514,6 +502,25 @@
         <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
       </ng-template>
     </div>
+    <div class="d-flex flex-column justify-content-center">
+      <button class="btn btn-success"
+      (click)="repaybtn()">REPAY</button>
+    </div>
+    <!-- <div class="col-md-3 pt-3"> -->
+      <!-- <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+        <input type="text" [(ngModel)]="term" nz-input placeholder="input search text" (input)="filtersearch()" />
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+      </ng-template> -->
+      <!-- <button class="btn btn-success" style="width: 80px; height: 30px;margin-top: 10px;"
+        (click)="repaybtn()">REPAY</button> -->
+        <!-- <a href="javascript: void(0);" routerLink="/apps/creditrepay/{{ord.contactId}}"
+        class="btn btn-sm btn-light ">
+        <button >REPAY</button>
+      </a> -->
+    <!-- </div> -->
+
     <!-- <button type="button" class="btn btn-primary" (click)="clickpay(1)">Back</button> -->
   </div>
   <nz-table #basicTable [nzData]="CreditDatatestt" class="kit__utils__table mb-4" nzSize="small" *ngIf="isRepaymain">
@@ -523,7 +530,9 @@
         <th><strong> Contact</strong></th>
         <th><strong>ContactType </strong></th>
         <th><strong> Location</strong></th>
+        <th><strong>CreditAmount</strong></th>
         <th><strong>Amount </strong></th>
+        <th><strong>Balance</strong> </th>
         <!-- <th><strong>Balance </strong></th> -->
         <th><strong> Reference</strong> </th>
         <th><strong>TransDate </strong></th>
@@ -552,7 +561,13 @@
           {{ord.location}}
         </td>
         <td>
+          &#8377; {{ord.billAmount}}
+        </td>
+        <td>
           &#8377; {{ord.amount}}
+        </td>
+        <td>
+          &#8377; {{ord.balance}}
         </td>
         <!-- <td>
           &#8377; {{ord.balance}}
@@ -569,7 +584,7 @@
               <i class="fe fa-lg fe-dollar-sign"></i>
             </a> -->
             <a href="javascript: void(0);" routerLink="/apps/editcreditdetails/{{ord.transactionId}}"
-              class="btn btn-sm btn-light pull-left" slot="actions">
+              class="btn btn-sm btn-light pull-left" slot="actions" nzTooltipTitle="Details" nz-tooltip>
               <i class="fe fa-lg fe-info"></i>
             </a>
             <!-- <a class="btn btn-sm btn-light" href="javascript: void(0);" (click)="openCustomClass(vertical)"
@@ -581,11 +596,11 @@
                 <i class="fe fa-lg fe-edit" aria-hidden="true"></i>
               </a> -->
             <a href="javascript: void(0);" routerLink="/apps/editcreditrepay/{{ord.transactionId}}"
-              class="btn btn-sm btn-light ">
+              class="btn btn-sm btn-light " nzTooltipTitle="Edit" nz-tooltip>
               <i class="fe fa-lg fe-edit" aria-hidden="true"></i>
             </a>
             <a href="javascript: void(0);" (click)="Delete(ord.transactionId, ord.billId, ord.amount)" class="btn btn-sm btn-light pull-left"
-              slot="actions">
+              slot="actions" nzTooltipTitle="Delete" nz-tooltip>
               <i class="fe fa-lg fe-trash-2"></i>
             </a>
           </div>
@@ -727,10 +742,14 @@
         <ngb-highlight [result]="qcp.description" [term]="qpt"></ngb-highlight>
       </ng-template>
       <div class="col-md-3">
-        <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
+        <!-- <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
           placeholder="Search Payment Mode" [ngbTypeahead]="searchpaymenttype" [inputFormatter]="formatterpaymenttype"
           [resultTemplate]="cctp" (selectItem)="selectedpaymenttype($event.item)" 
-          [ngClass]="{'is-invalid': submitted && test.paymenttypeid == 0}"/>
+          [ngClass]="{'is-invalid': submitted && test.paymenttypeid == 0}"/> -->
+          <select class="form-control" [(ngModel)]="test.paymenttypeid" (ngModelChange)="getpaymenttypeid()" autofocus="autofocuss">
+            <option value=null>Select PaymentMode</option>
+              <option *ngFor="let pcatt of inputvalue.paymentType" value="{{pcatt.id}}">{{pcatt.description}}</option>
+            </select>
       </div>
 
       <label class="col-md-3 col-form-label" for="baseFullname"><strong>Commission%</strong></label>
@@ -800,7 +819,7 @@
           <th><strong>Bill Date</strong> </th>
           <th><strong>Credit Amount </strong> </th>
           <th><strong>Paid Amount </strong></th>
-          <th><strong>Balance Amount </strong> </th>
+          <th><strong>Balance</strong> </th>
           <th><strong> Payment</strong></th>
         </tr>
       </thead>

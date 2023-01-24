@@ -148,8 +148,8 @@ export class CreditdetailsComponent implements OnInit {
       console.log(this.responsbile)
       this.response = this.responsbile[0]
       console.log(this.response)
-    })
-  } 
+    }) 
+  }  
 
  
   getTransList()

@@ -79,7 +79,7 @@ export class CreditComponent implements OnInit {
   temp: any = { 
     tempid: ''
   }
-  totalbls = 0
+  totalbls = null
   // ={
   //   totbls:0
   // }
@@ -161,7 +161,7 @@ export class CreditComponent implements OnInit {
     })
   }
   conty: any
-  crety: any
+  crety: any 
   payty: any
   stor: any
 
@@ -372,7 +372,7 @@ export class CreditComponent implements OnInit {
   }
 
   //ResponsibleBy
-  selectedresponsible(item) {
+  selectedresponsible(item) { 
     this.test.responsiblebyid = item.id
     console.log('responsiblebyid', this.test.responsiblebyid)
   }
@@ -483,12 +483,13 @@ export class CreditComponent implements OnInit {
     this.modalService.open(content, { centered: true })
   }
   filteredvalues = []
-  // filtersearch(): void {
-  //   this.filteredvalues = this.term
-  //     ? this.CreditDatatest.filter(x => x.contactType.toLowerCase().includes(this.term.toLowerCase()))
-  //     : this.CreditDatatest
-  //   console.log(this.filteredvalues)
-  // } 
+  term: any
+  filtersearch(): void {
+    this.filteredvalues = this.term
+      ? this.CreditDatatest.filter(x => x.contactType.toLowerCase().includes(this.term.toLowerCase()))
+      : this.CreditDatatest
+    console.log(this.filteredvalues)
+  } 
 
   // filteredvaluestest: number
   // filtersearchtest(): void {
@@ -556,7 +557,7 @@ export class CreditComponent implements OnInit {
   date = new Date()
   onChangetime(e) {
     console.log(e, moment(e), this.date)
-  }
+  } 
 
   clickpay() {
     this.isShown = !this.isShown
@@ -567,6 +568,7 @@ export class CreditComponent implements OnInit {
     this.isIndex = !this.isIndex
     // this.getCreditData()
     // this.getrepaycontact()
+    this.test.paymenttypeid = null
   }
   clickrepaytable() {
     this.isRepay = this.isRepay
@@ -582,10 +584,12 @@ export class CreditComponent implements OnInit {
     this.isTable = this.isTable
     this.isRepay = !this.isRepay
     this.isRepaymain = !this.isRepaymain
+    this.test.paymenttypeid =  null
     // this.getrecustomer()
-  }
-  id: any
-  item: any
+    // document.getElementById("contact").focus();
+  } 
+  id: any 
+  item: any 
 
 
   repaydolar(id) {
@@ -749,9 +753,9 @@ export class CreditComponent implements OnInit {
       // this.alreadypaidamt = this.repay[0].paidAmount
       // console.log(this.alreadypaidamt)
 
-      // this.getrepay = this.repay['datatest']
-      // this.cal.cname = this.repay[0].name
-      // console.log(this.cal.cname)
+      this.getrepay = this.repay['datatest']
+      this.cal.cname = this.repay[0].name
+      console.log(this.cal.cname)
 
       // this.cal.balanceamount = this.repay[0].balance
       // console.log('balance', this.cal.balanceamount)
@@ -836,7 +840,7 @@ export class CreditComponent implements OnInit {
     this.transmod.Amount = this.test.payment,
     this.transmod.Description = this.test.reference,
     this.transmod.StoreId = this.test.locationid
-    this.transmod.CreditTypeId = this.test.creditid
+    // this.transmod.CreditTypeId = this.test.creditid
     this.totalpaidamount = this.repay[0].paidAmount + this.test.payment
     // console.log(this.totalpaidamount)
     var bill = new BillModule(this.transmod.ContactId, this.totalpaidamount)
@@ -920,7 +924,7 @@ export class CreditComponent implements OnInit {
       // this.tabledata = this.CreditDatatest
       console.log(this.queentest)
       // this.isShown = true
-    })
+    }) 
   }
 
   cname: any

@@ -102,8 +102,9 @@ export class EditcreditrepayComponent implements OnInit {
   repayyy:any = {
     name: '',
     camount: '',
-    paymettypeid: 0,
-    description: ''
+    paymettypeid: null,
+    description: '',
+    locationid: 0
   }
   
 
@@ -302,6 +303,27 @@ goback()
 //   console.log("rec",Value)
 //  this.typid = Value;
 // }
+
+//Location
+getlocationid(){
+  console.log('locationid', this.test.locationid)
+}
+selectedlocation(item) {
+  this.repayyy.locationid = item.id
+  console.log('locationid', this.repayyy.locationid)
+}
+searchlocation = (text$: Observable<string>) =>
+  text$.pipe(
+    debounceTime(200),
+    map(term =>
+      term === ''
+        ? []
+        : this.stor
+          .filter(s => s.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
+          .slice(0, 10),
+    ),
+  )
+formatterlocation = (x: { name: string }) => x.name
 newpaytype: any
 getpaymenttype(value){
   console.log('newpaytype', value)
@@ -313,7 +335,7 @@ getpaymentfun(){
 // newlocation: 0
 getlocationfun(value){
   console.log('newlocation', value)
-  this.newdata.newlocation = value
+  this.repayyy.locationid = value
 }
 getreferencefun() {
   console.log('description', this.repayyy.description)

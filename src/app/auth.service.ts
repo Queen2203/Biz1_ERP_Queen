@@ -857,4 +857,13 @@ export class AuthService {
     return this.http.get(this.base_url1+ 'CreditTrx/creditdetail?id=' + transid)
   }
 
+  //19-01-2023
+  getvendorserach(CompanyId){
+    return this.http.get(this.base_url1+ 'PurchaseTrx/getvendors?CompanyId=' + CompanyId ) 
+  }
+  //20-01-2023
+  getbilldatabyid(CompanyId, vendorid, storeid){
+    return this.http.get(this.base_url1+ 'PurchaseTrx/getbillData?companyid=' +CompanyId + '&vendorid=' + vendorid + '&storeid=' +storeid)
+  }
+
 }

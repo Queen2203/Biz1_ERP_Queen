@@ -29,8 +29,9 @@
           <ngb-highlight [result]="qcp.description" [term]="qpt"></ngb-highlight>
         </ng-template>
         <div class="col-md-3 pt-2"> 
-            <select [(ngModel)]="repayyy.paymettypeid" class="form-control" (ngModelChange)="getpaymenttype($event)"
+            <select [(ngModel)]="repayyy.paymettypeid" class="form-control" (ngModelChange)="getpaymenttype($event)" autofocus="autofocus"
                 [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
+                <option value=null>Select PaymentMode</option>
                 <option value="{{tax.id}}" *ngFor="let tax of payty">{{tax.description}}</option>
             </select>
             <!-- <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be Empty*</span> -->
@@ -67,11 +68,15 @@
           <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
         </ng-template>
         <div class="col-md-3 pt-2">
-            <select [(ngModel)]="repayyy.storeid" class="form-control" (ngModelChange)="getlocationfun($event)"
+            <!-- <select [(ngModel)]="repayyy.storeid" class="form-control" (ngModelChange)="getlocationfun($event)"
                 [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
                 <option value="{{tax.id}}" *ngFor="let tax of stor">{{tax.name}}</option>
-            </select>
+            </select> -->
             <!-- <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be Empty*</span> -->
+            <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control"
+            placeholder="Search Location" [ngbTypeahead]="searchlocation" [inputFormatter]="formatterlocation"
+            [resultTemplate]="crt" (selectItem)="selectedlocation($event.item)" ([ngModel])="repayyy.locationid"
+            [ngClass]="{'is-invalid': submitted && test.locationid == 0}"/>
           </div>
         <label class="col-md-3 col-form-label" for="formControlRange"><strong>Transaction Date</strong></label>
         <div class="col-md-3 pt-2">
@@ -122,7 +127,7 @@
               &#8377;{{ord.paidAmount}}
             </td> -->
             <td>
-              &#8377;{{ord.amount-(ord.billAmount - ord.paidAmount)}}
+              &#8377;{{(ord.billAmount - ord.paidAmount)+ord.amount}}
             </td>
             <td>
               &#8377;{{ord.billAmount - ord.paidAmount}}

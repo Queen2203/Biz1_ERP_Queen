@@ -75,7 +75,9 @@
           </div>
         <label class="col-md-3 col-form-label" for="formControlRange"><strong>Transaction Date</strong></label>
         <div class="col-md-3 pt-2">
-          <nz-date-picker class="form-control" [(ngModel)]="testmaster.billDate" (ngModelChange)="onChangetime($event)"></nz-date-picker>
+          <nz-date-picker class="form-control" disabled  [(ngModel)]="testmaster.billDate" (ngModelChange)="onChangetime($event)"></nz-date-picker>
+          <!-- <input type="text" class="form-control" disabled [(ngModel)]="testmaster.billDate" name="example_name" value=""
+          placeholder=" Transaction Date..." /> -->
         </div>
       </div>
       <div class="form-group row">
