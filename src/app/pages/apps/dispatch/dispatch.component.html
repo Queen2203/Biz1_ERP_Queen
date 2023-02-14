@@ -37,10 +37,10 @@
                 <tr *ngFor="let ord of  basicTable.data; let i = index" >
                     <td>{{i+1}}</td>
                     <td>
-                        <!-- <a class="btn btn-sm btn-light" href="javascript: void(0);"
-                            (click)="getorderid(ord.Id,contentdetail1);"> -->
+                        <a class="btn btn-sm btn-light" href="javascript: void(0);"
+                            (click)="getorderid(ord.id,contentdetail1);">
                         {{ord.orderNo}}
-                        <!-- </a> -->
+                        </a>
                     </td>
                     <td>
                         {{ord.receiver}}
@@ -68,7 +68,7 @@
                             <!-- <a routerLink="/apps/editinternal/{{ord.Id}}" href="javascript: void(0);" class="btn btn-sm btn-light ">
                     <i class="fe fa-lg fe-edit "></i>
                   </a> -->
-                            <a (click)="getorderPrd(ord.id)" class="btn btn-sm btn-light ">
+                            <a (click)="getorderPrd(ord.id);getstorename(ord.id) " class="btn btn-sm btn-light ">
                                 <i class="fa fa-lg fa-truck" aria-hidden="true"></i>
                             </a>
                         </div>
@@ -92,18 +92,18 @@
 <div *ngIf="isEditting">
     <div class="card">
         <div class="card-header card-header-flex">
-            <div class="form-group row" *ngFor="let prd of  ordPrdDetails.order">
+            <div class="form-group row">
                 <strong style="margin-top:20px;" for="baseFullname">Ordered By:</strong>
                 <div class="col-md-6" style="margin-top:12px;">
                     <input type="text" class="form-control" placeholder="Enter OrderedBy..."
-                        [(ngModel)]="prd.orderedBy" />
+                        [(ngModel)]="storedata.receiver" />
                 </div>
             </div>
-            <div class="form-group row" *ngFor="let prd of  ordPrdDetails.order">
+            <div class="form-group row">
                 <strong style="margin-top:20px;" for="baseFullname">Supplied By:</strong>
                 <div class="col-md-6" style="margin-top:12px;">
                     <input type="text" class="form-control" placeholder="Enter SuppliedBy..."
-                        [(ngModel)]="prd.suppliedBy" />
+                        [(ngModel)]="storedata.supplier" />
                 </div>
             </div>
 
@@ -113,10 +113,10 @@
                     <ng-template class="w-100" #rtt let-r="result" let-t="term">
                         <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
                     </ng-template>
-                    <input #dispautocomplete #instance="ngbTypeahead" type="text" class="form-control"
-                        placeholder="Search ..." [(ngModel)]="model" [ngbTypeahead]="searchdispatch"
-                        [inputFormatter]="formatterdispatch" [resultTemplate]="rtt"
-                        (selectItem)="selecteddispatchitem($event.item)" />
+                    <input type="text" class="form-control"
+                        placeholder="Search ..." [resultTemplate]="rtt"
+                        [(ngModel)]="username" name="example_name" value=""
+                        />
                 </div>
             </div>
 
@@ -224,13 +224,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let prod of ordPrdDetails.orderProd;let i = index">
+                            <tr *ngFor="let prod of ordPrdDetails.orderProd; let i = index" >
                                 <td>{{i+1}}</td>
                                 <td>
-                                    <a class="btn btn-sm btn-light" href="javascript: void(0);">
-                                        <input type="text" nz-input nzSize='small' [(ngModel)]="prod.description"
+                                    <!-- <a  class="btn btn-sm btn-light" href="javascript: void(0);">
+                                        <input  type="text" nz-input nzSize='small' [(ngModel)]="prod.name"
                                             style="width: 150px;">
-                                    </a>
+                                    </a> -->{{prod.name}}
                                 </td>
                                 <td>
                                     <input type="text" nz-input nzSize='small' [(ngModel)]="prod.orderQuantity"
@@ -247,9 +247,14 @@
                                 <td><input type="text" nz-input nzSize='small' [(ngModel)]="prod.tax2"
                                         style="width: 40px;">
                                 </td>
-                                <td><input type="text" nz-input nzSize='small' [(ngModel)]="prod.description"
+                                <td><input type="text" nz-input nzSize='small' [(ngModel)]="prod.name"
                                         style="width: 150px;"></td>
                                 <td class="text-right">
+                                    <!-- <a href="javascript: void(0);"
+                                     class="btn btn-sm btn-light pull-left" >
+                                    <label nz-checkbox
+                                    (change)="onCheckboxChange(prod,$event);"></label>
+                                    </a> -->
                                     <a href="javascript: void(0);" (click)="deleteItem(prod)"
                                         class="btn btn-sm btn-light pull-left" slot="actions">
                                         <i class="fe fe-trash mr-1"></i>
@@ -299,24 +304,24 @@
 
 <ng-template #contentdetail1 let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Order details</h4>
+        <h4 class="modal-title" id="modal-basic-title">Order Details</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <nz-table class="table table-sm mb-0">
+    <nz-table class="table table-sm mb-0" [nzFrontPagination]="false" [nzData]="popupData.receipts">
         <thead>
             <tr>
-                <td>Product</td>
-                <td>Quantity</td>
-                <td>Price</td>
+                <td><strong>Product</strong></td>
+                <td><strong>Quantity</strong></td>
+                <td><strong>Price</strong></td>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let ord of popupData.order">
-                <td>{{ord.product}}</td>
-                <td>{{ord.qty}}</td>
-                <td>&#8377;{{ord.totalsales | number:".2"}}</td>
+            <tr *ngFor="let ord of OrderDetail.itemDetails.Items">
+                <td>{{ord.ProductName}}</td>
+                <td>{{ord.OrderQuantity}}</td>
+                <td>&#8377;{{ord.Price | number:".2"}}</td>
             </tr>
             <!-- <tr>
               <td></td>

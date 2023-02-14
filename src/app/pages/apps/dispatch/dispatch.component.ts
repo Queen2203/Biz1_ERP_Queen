@@ -143,6 +143,7 @@ export class DispatchComponent implements OnInit {
   cartitems: any = []
   ordDetails: any = []
   ordPrdDetails: any = []
+  testproduct: any 
   subtotal = 0
   OrdItemId = 0
   searchTerm = ''
@@ -266,6 +267,16 @@ export class DispatchComponent implements OnInit {
   createby: ''
   billId: 0
   array: any = []
+
+//Queen
+  storedata: any = {
+    receiver: null,
+    supplier: null 
+  }
+  isDisabled: boolean = true
+
+
+
   // quantityfc = new FormControl('', [Validators.required, Validators.min(1)]);
 
   constructor(
@@ -316,15 +327,17 @@ export class DispatchComponent implements OnInit {
 
   formatterreceiver = (x: { name: string }) => x.name
 
-  isEditting: boolean = false
-
-  getorderPrd(orderId) {
+  isEditting: boolean = false 
+  // testproduct: any  
+  getorderPrd(orderId) { 
     this.isEditting = true
     this.OrdId = orderId
     if (this.OrdId != 0) {
       this.Auth.getorderPrd(this.CompanyId, this.OrdId).subscribe(data => {
         this.ordPrdDetails = data
         console.log('hhhhhhhhhhrtughggg', this.ordPrdDetails)
+        this.testproduct = this.ordPrdDetails['orderProd']
+        console.log('productid', this.testproduct)
         this.ordPrdDetails.orderProd.forEach(element => {
           element.Action = 'Chk'
           ;(element['Action'] = 'Chk'), (element['ordItemType'] = 2)
@@ -365,6 +378,27 @@ export class DispatchComponent implements OnInit {
       })
     }
   }
+
+  //queen
+  batch: any
+  productId: any
+  orderId: any
+  
+
+  // getbatchprod(orderId, prodid){ 
+  //   this.isEditting = true
+  //   this.OrdId = orderId
+  //   this.productId = prodid
+  //   console.log(this.OrdId)
+  //   console.log(this.productId)
+  //   if (this.OrdId != 0) {
+  //   this.Auth.getbatchdata(this.OrdId, this.productId).subscribe(data =>{
+  //     this.batch = data['batches']
+  //     console.log(this.batch)
+  //   }) 
+  // }
+  // }
+  
   getorderedList: any
   NewArr: any = []
   deleteOrder(Id) {
@@ -390,18 +424,26 @@ export class DispatchComponent implements OnInit {
       this.Stocks = data
     })
   }
+  username: any
+  teststoreid: any
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user'))
     const store = JSON.parse(localStorage.getItem('store'))
     this.CompanyId = user.companyId
     this.StoreId = user.storeid
+    this.username = user.name
+    console.log(this.StoreId)
+    console.log(this.users)
+    console.log(this.username)
     this.order = new OrderModule(2, this.OrdId)
     this.products = []
     this.getBarcodeProduct()
     this.getStockContainer()
     this.getStoreList()
     this.GetDispatchList()
+    // this.getstorename() 
+    // this.getbatchprod()
 
     // this.Auth.getdbdata(['loginfo']).subscribe(data => {
     //   this.loginfo = data['loginfo'][0]
@@ -425,6 +467,20 @@ export class DispatchComponent implements OnInit {
       product.amount = 0
     })
   }
+
+  // getbatchprod(){ 
+  //   this.isEditting = true
+  //   // this.OrdId = orderId
+  //   // this.productId = prodid
+  //   // console.log(this.OrdId)
+  //   // console.log(this.productId)
+  //   if (this.OrdId != 0) {
+  //   this.Auth.getbatchdata(this.OrdId, this.productId).subscribe(data =>{
+  //     this.batch = data['batches']
+  //     console.log(this.batch)
+  //   }) 
+  // }
+  // }
   // getOrderList() {
   //   this.Auth.getorder(this.Ordprd).subscribe(data => {
   //     this.OrdData = data
@@ -628,72 +684,107 @@ export class DispatchComponent implements OnInit {
     })
   }
 
-  OrdDispatch() {
-    this.order.BillDate = moment().format('YYYY-MM-DD HH:MM A')
-    this.order.CreatedDate = moment().format('YYYY-MM-DD HH:MM A')
-    this.order.BillDateTime = moment().format('YYYY-MM-DD HH:MM A')
-    this.order.OrderedDate = moment().format('YYYY-MM-DD HH:MM A')
-    this.order.OrderedDateTime = moment().format('YYYY-MM-DD HH:MM A')
-    this.order.DeliveryDateTime = moment().format('YYYY-MM-DD HH:MM A')
-    this.order.ModifiedDate = moment().format('YYYY-MM-DD HH:MM A')
-    this.order.setbillamount()
-    var finalarray = [...this.array, ...this.order.Items]
-    this.Disp = new DispatchModule(
-      this.OrdId,
-      this.OrderedById,
-      this.SuppliedById,
-      (this.DispatchById = null),
-      this.dispatchTypeId,
-      finalarray,
-      this.orderDate,
-      this.users,
-      this.createby,
-      this.order.OrderDetail,
-      this.OrdItemId,
-      this.CompanyId,
-      this.billId,
-    )
-    console.log('finalarray', finalarray)
-    console.log('final5555array', this.Disp)
-    // this.Auth.corsTest(this.Disp).subscribe(data => {
-    //   console.log(data)
-    // })
-    this.Auth.dispatch(this.Disp).subscribe(data => {
-      console.log('temporry', data)
-      this.notification.success('Dispatch Updated', 'Dispatch Updated Successfully')
-      this.GetDispatchList()
-    })
-    this.order.setbillamount()
-    // this.order.add(this.prd)
+  // OrdDispatch() {
+  //   this.order.BillDate = moment().format('YYYY-MM-DD HH:MM A')
+  //   this.order.CreatedDate = moment().format('YYYY-MM-DD HH:MM A')
+  //   this.order.BillDateTime = moment().format('YYYY-MM-DD HH:MM A')
+  //   this.order.OrderedDate = moment().format('YYYY-MM-DD HH:MM A')
+  //   this.order.OrderedDateTime = moment().format('YYYY-MM-DD HH:MM A')
+  //   this.order.DeliveryDateTime = moment().format('YYYY-MM-DD HH:MM A')
+  //   this.order.ModifiedDate = moment().format('YYYY-MM-DD HH:MM A')
+  //   this.order.setbillamount()
+  //   var finalarray = [...this.array, ...this.order.Items]
+  //   this.Disp = new DispatchModule(
+  //     this.OrdId,
+  //     this.OrderedById,
+  //     this.SuppliedById,
+  //     (this.DispatchById = null),
+  //     this.dispatchTypeId,
+  //     finalarray,
+  //     this.orderDate,
+  //     this.users,
+  //     this.createby,
+  //     this.order.OrderDetail,
+  //     this.OrdItemId,
+  //     this.CompanyId,
+  //     this.billId,
+  //   )
+  //   console.log('finalarray', finalarray)
+  //   console.log('final5555array', this.Disp)
+  //   // this.Auth.corsTest(this.Disp).subscribe(data => {
+  //   //   console.log(data)
+  //   // })
+  //   // this.Auth.dispatch(this.Disp).subscribe(data => {
+  //   //   console.log('temporry', data)
+  //   //   this.notification.success('Dispatch Updated', 'Dispatch Updated Successfully')
+  //   //   this.GetDispatchList()
+  //   // })
+  //   this.order.setbillamount()
+  //   // this.order.add(this.prd)
 
-    this.isEditting = false
+  //   this.isEditting = false
+  //   this.temporaryItem =  null
+  // }
+
+  // openDetailpopup(contentdetail, id) {
+  //   this.Ordprd.push({
+  //     companyId: this.CompanyId,
+  //     searchId: id,
+  //     UserID: this.users[0].id,
+  //     orderType: this.orderType,
+  //     orderStatus: this.orderStatus,
+  //     numRecordsStr: this.numRecordsStr,
+  //     dispatchStatus: this.dispatchStatus,
+  //   })
+  //   // this.Auth.getorder(this.Ordprd).subscribe(data => {
+  //   //   this.popupData = data
+  //   //   console.log('popupData', this.popupData)
+  //   // })
+  //   this.TotalProductSale = 0
+  //   this.TotalPrdQty = 0
+
+  //   for (let i = 0; i < this.popupData.order.length; i++) {
+  //     this.TotalProductSale = this.TotalProductSale + this.popupData.order[i].totalsales
+  //     this.TotalPrdQty = this.TotalPrdQty + this.popupData.order[i].qty
+  //     this.TotalProductSale = +this.TotalProductSale.toFixed(2)
+  //     this.TotalPrdQty = +this.TotalPrdQty.toFixed(2)
+  //   }
+  //   const modalRef = this.modalService
+  //     .open(contentdetail, {
+  //       ariaLabelledBy: 'modal-basic-title',
+  //       centered: true,
+  //     })
+  //     .result.then(
+  //       result => {},
+  //       reason => {},
+  //     )
+  // }
+  OrderDetail: any = null
+  getorderid(OrdId, modalRef) {
+    this.Auth.getOrderIdinternal(OrdId).subscribe(data => {
+      this.popupData = data
+      this.popupData.receipts.forEach(rec => {
+        rec.itemDetails = JSON.parse(rec.orderJson)
+        console.log(JSON.parse(rec.orderJson))
+      })
+      this.OrderDetail = this.popupData.receipts[0]
+      console.log(this.popupData)
+      console.log(this.OrderDetail)
+      this.openDetailpopup(modalRef)
+    })
   }
 
-  openDetailpopup(contentdetail, id) {
-    this.Ordprd.push({
-      companyId: this.CompanyId,
-      searchId: id,
-      UserID: this.users[0].id,
-      orderType: this.orderType,
-      orderStatus: this.orderStatus,
-      numRecordsStr: this.numRecordsStr,
-      dispatchStatus: this.dispatchStatus,
-    })
-    // this.Auth.getorder(this.Ordprd).subscribe(data => {
-    //   this.popupData = data
-    //   console.log('popupData', this.popupData)
-    // })
-    this.TotalProductSale = 0
-    this.TotalPrdQty = 0
+  orders: any = null
 
-    for (let i = 0; i < this.popupData.order.length; i++) {
-      this.TotalProductSale = this.TotalProductSale + this.popupData.order[i].totalsales
-      this.TotalPrdQty = this.TotalPrdQty + this.popupData.order[i].qty
-      this.TotalProductSale = +this.TotalProductSale.toFixed(2)
-      this.TotalPrdQty = +this.TotalPrdQty.toFixed(2)
-    }
+  parseOrder(json_string, modalRef) {
+    this.orders = JSON.parse(json_string)
+    console.log(this.orders)
+    this.openDetailpopup(modalRef)
+  }
+
+  openDetailpopup(contentdetail1) {
     const modalRef = this.modalService
-      .open(contentdetail, {
+      .open(contentdetail1, {
         ariaLabelledBy: 'modal-basic-title',
         centered: true,
       })
@@ -710,6 +801,7 @@ export class DispatchComponent implements OnInit {
       this.getdispatchList = data['order']
       this.Tabledata = this.getdispatchList
       console.log(this.getdispatchList)
+      console.log(this.tableData)
       // this.StoreByidInternal(0)
     })
   }
@@ -764,6 +856,63 @@ export class DispatchComponent implements OnInit {
     // this.calculate()
     this.buffer = ''
   }
+
+  //Queen
+  getstorename(){
+    this.Auth.getdispatchstore(this.OrdId).subscribe(data =>{
+      this.storedata = data[0]
+      console.log(this.storedata)
+    })
+  }
+  showinactive:boolean 
+  testproductId: any
+  testprodid: any
+  orderid: any
+  data: any
+  dispatchtest(bool){
+    this.showinactive = bool
+    console.log(this.showinactive)
+    this.testproductId = this.showinactive['productId']
+    console.log(this.testproductId)
+    this.orderid = this.showinactive['orderId']
+    console.log(this.orderid)
+    if(this.showinactive == true){
+      // console.log(bool)
+      // console.log(this.orderid, this.testproductId)
+      //   this.data = this.batch.filter(x => !x.isactive)
+      //   console.log(this.data)
+      // console.log('test')
+      console.log(this.orderid, this.testproductId)
+      this.Auth.getbatchdata(this.orderid, this.testproductId).subscribe(data =>{
+        this.batch = data['batches']
+        console.log(this.batch)
+      }) 
+      
+    }
+    else{
+      console.log('test')
+      console.log(this.orderid, this.testproductId)
+      this.Auth.getbatchdata(this.orderid, this.testproductId).subscribe(data =>{
+        this.batch = data['batches']
+        console.log(this.batch)
+      }) 
+    }
+  }
+  prod: any = {}
+  onCheckboxChange(event) {
+    // if (event.target.checked) {
+      // website.push(new FormControl(e.target.value));
+      console.log('checked')
+      console.log(event)
+      console.log(this.prod)
+    // } else {
+      //  const index = website.controls.findIndex(x => x.value === e.target.value);
+      //  website.removeAt(index);
+      console.log('unchecked')
+    // }
+  }
+
+
 }
 
 // getErrorMessage() {

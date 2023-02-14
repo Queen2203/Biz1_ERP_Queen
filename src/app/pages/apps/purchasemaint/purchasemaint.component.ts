@@ -110,6 +110,7 @@ export class PurchasemaintComponent implements OnInit {
     this.getvenderlist()
     this.getcategory()
     this.getPurchaseData()
+    this.getbstatus()
   }
 
   visibleIndex = -1
@@ -127,14 +128,32 @@ export class PurchasemaintComponent implements OnInit {
       console.log('stores', this.stores)
     })
   }
-  PurchaseDatatest: any
-  getPurchaseData() {
-    this.Auth.getpurchase(this.CompanyId).subscribe(data => {
-      this.PurchaseDatatest = data['purchasedatatest']
-      // this.tabledata = this.CreditDatatest
-      console.log(this.PurchaseDatatest)
-      // this.isShown = true
+  BillStatus: any = 0
+  billstatusid: any = 2
+  getbstatus() {
+    this.Auth.getbillstatus(this.CompanyId).subscribe(data => {
+      this.BillStatus = data
+      console.log('BillStatus', this.BillStatus)
     })
+  }
+  BillstsId() {
+    console.log('billstatusid', this.billstatusid);
+    this.getPurchaseData()
+  }
+  recStatuss(Value) {
+    console.log('rec', Value)
+    this.billstatusid = Value
+  }
+
+  PurchaseDatatest: any
+  tabledata: any
+  getPurchaseData() {
+    this.Auth.getpurchase(this.CompanyId, this.billstatusid).subscribe(data => {
+      this.PurchaseDatatest = data
+      this.tabledata = this.PurchaseDatatest['bill']
+      console.log(this.tabledata)
+      // this.isShown = true
+    })     
   }; 
   // getpurchaseData(billstatus) {
   //   var x = new Date()
@@ -160,8 +179,8 @@ export class PurchasemaintComponent implements OnInit {
   filteredvalues = []
   filtersearch(): void {
     this.filteredvalues = this.term
-      ? this.purchaseData.ord.filter(x => x.name1.toLowerCase().includes(this.term.toLowerCase()))
-      : this.purchaseData
+      ? this.tabledata.ord.filter(x => x.cname.toLowerCase().includes(this.term.toLowerCase()))
+      : this.tabledata
     console.log('filtered values', this.filteredvalues)
   }
 
@@ -180,34 +199,34 @@ export class PurchasemaintComponent implements OnInit {
   billpayfor(id) {
     this.isShown = !this.isShown
     this.isTable = !this.isTable
-    this.NewArr.push({
-      toDate: this.toDate,
-      viewType: this.viewType,
-      companyId: this.CompanyId,
-      storeId: this.storeId,
-      vendorId: id,
-      numRecords: this.numRecords,
-    })
-    this.Auth.billpayfor(this.NewArr).subscribe(data => {
-      this.billpay = data
-      console.log('data', this.billpay)
-      this.trans.ContactId = this.billpay.bills.value.contactId
-      this.trans.Description = this.billpay.bills.value.bills[0].name
-      this.trans.storeId = this.billpay.bills.value.bills[0].providerId
-      //  this.trans.Amount = 10;
-      this.trans.Totalbalance = this.billpay.bills.value.balance
-      // this.trans.TransDate = moment(new Date()).format("DD/MM/YYYY")
-      // this.trans.TransDateTime =  moment(new Date()).format("DD/MM/YYYY")
-      this.items = this.billpay.bills.value.bills
-      this.billpay.bills.value.bills.forEach(element => {
-        element['pay'] = this.trans.pay
-      })
-      var totalamount = 20000
-      for (let i = 0; i < this.billpay.bills.value.bills.length; i++) {
-        //  this.trans.Amount = this.trans.pay;
-        this.trans.pay = 10
-      }
-    })
+    // this.NewArr.push({
+    //   toDate: this.toDate,
+    //   viewType: this.viewType,
+    //   companyId: this.CompanyId,
+    //   storeId: this.storeId,
+    //   vendorId: id,
+    //   numRecords: this.numRecords,
+    // })
+    // this.Auth.billpayfor(this.NewArr).subscribe(data => {
+    //   this.billpay = data
+    //   console.log('data', this.billpay)
+    //   this.trans.ContactId = this.billpay.bills.value.contactId
+    //   this.trans.Description = this.billpay.bills.value.bills[0].name
+    //   this.trans.storeId = this.billpay.bills.value.bills[0].providerId
+    //   //  this.trans.Amount = 10;
+    //   this.trans.Totalbalance = this.billpay.bills.value.balance
+    //   // this.trans.TransDate = moment(new Date()).format("DD/MM/YYYY")
+    //   // this.trans.TransDateTime =  moment(new Date()).format("DD/MM/YYYY")
+    //   this.items = this.billpay.bills.value.bills
+    //   this.billpay.bills.value.bills.forEach(element => {
+    //     element['pay'] = this.trans.pay
+    //   }) 
+    //   var totalamount = 20000
+    //   for (let i = 0; i < this.billpay.bills.value.bills.length; i++) {
+    //     //  this.trans.Amount = this.trans.pay;
+    //     this.trans.pay = 10
+    //   }
+    // })
     //   this.trans.TotalBalance = this.trans.TotalBalance + this.billpay.bills.value.bills[i].pendAmount;
     //   console.log("ta",totalamount, this.billpay.bills.value.bills[i].pendAmount)
     //   if (totalamount > this.billpay.bills.value.bills[i].pendAmount) {
@@ -389,25 +408,25 @@ export class PurchasemaintComponent implements OnInit {
   }
   purchasedetail(billId) {
     this.isShown = !this.isShown
-    this.isTable = this.isTable
-    this.EditTable = !this.EditTable
-    this.NewArr.push({
-      toDate: this.toDate,
-      viewType: this.viewType,
-      companyId: this.CompanyId,
-      storeId: this.storeId,
-      vendorId: billId,
-      numRecords: this.numRecords,
-    })
-    this.Auth.billpayfor(this.NewArr).subscribe(data => {
-      this.billpay = data
-      console.log('data', this.billpay)
-      this.trans.ContactId = this.billpay.bills.value.contactId
-      this.trans.Description = this.billpay.bills.value.bills[0].name
-      this.trans.storeId = this.billpay.bills.value.bills[0].providerId
-      this.trans.TotalBalance = this.billpay.bills.value.balance
-      this.trans.paystore = this.billpay.bills.value.paymentStore
-    })
+    this.isTable = !this.isTable
+    // this.EditTable = !this.EditTable
+    // this.NewArr.push({
+    //   toDate: this.toDate,
+    //   viewType: this.viewType,
+    //   companyId: this.CompanyId,
+    //   storeId: this.storeId,
+    //   vendorId: billId,
+    //   numRecords: this.numRecords,
+    // })
+    // this.Auth.billpayfor(this.NewArr).subscribe(data => {
+    //   this.billpay = data
+    //   console.log('data', this.billpay)
+    //   this.trans.ContactId = this.billpay.bills.value.contactId
+    //   this.trans.Description = this.billpay.bills.value.bills[0].name
+    //   this.trans.storeId = this.billpay.bills.value.bills[0].providerId
+    //   this.trans.TotalBalance = this.billpay.bills.value.balance
+    //   this.trans.paystore = this.billpay.bills.value.paymentStore
+    // })
   } 
   strdate: string
   enddate: string
@@ -431,7 +450,7 @@ export class PurchasemaintComponent implements OnInit {
       console.log(this.category)
     })
   }
-
+ 
   arrayName: string
   searchField: string
 
@@ -447,7 +466,7 @@ export class PurchasemaintComponent implements OnInit {
     )
   c_search = (text$: Observable<string>) => {
     return text$.pipe(
-      map(term =>
+      map(term => 
         term === ''
           ? []
           : this[this.arrayName]

@@ -55,6 +55,8 @@ import { BankaccountsComponent } from './bankaccounts/bankaccounts.component'
 import { BankaccountdetailComponent } from './bankaccountdetail/bankaccountdetail.component'
 import { BillbyvendorComponent } from './billbyvendor/billbyvendor.component'
 import { TaxgroupComponent } from './taxgroup/taxgroup.component'
+import { MaintactivitiesComponent } from './maintactivities/maintactivities.component'
+import { MaintverifyComponent } from './maintverify/maintverify.component'
 
 const routes: Routes = [
   {
@@ -219,6 +221,16 @@ const routes: Routes = [
     path: 'maintainencebilltypes',
     component: MaintbilltypesComponent,
     data: { title: 'Maintainence BillTypes App' },
+  },
+  {
+    path: 'maintenanceactivities',
+    component: MaintactivitiesComponent,
+    data: { title: 'Maintenance Activities App' },
+  },
+  {
+    path: 'maintenanceverify',
+    component: MaintverifyComponent,
+    data: { title: 'Maintenance Verify App' },
   },
   {
     path: 'editcreditrepay/:id',

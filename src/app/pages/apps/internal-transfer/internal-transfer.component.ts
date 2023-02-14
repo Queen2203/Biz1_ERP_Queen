@@ -297,10 +297,18 @@ export class InternalTransferComponent implements OnInit {
     this.Auth.getBarcodeProduct(this.CompanyId, this.StoreId).subscribe(data => {
       console.log('data', data)
       this.products = data['products']
+      console.log(this.products)
       this.batchno = data['lastbatchno'] + 1
       this.ordNo = data['lastorderNo'] + 1
     })
   }
+
+  // getBarcodeProduct(){
+  //   this.Auth.getinterproduct(this.CompanyId).subscribe(data =>{
+  //     this.products = data
+  //     console.log(this.products)
+  //   })
+  // }
   receiveStk(id) {
     console.log(id)
     this.Auth.editInternalord(id).subscribe(data => {
@@ -707,20 +715,30 @@ export class InternalTransferComponent implements OnInit {
 
   OrdId: number = 0
   OrderDetail: any = null
+  test: any
   getorderid(OrdId, modalRef) {
     this.Auth.getOrderIdinternal(OrdId).subscribe(data => {
       this.popupData = data
-      this.popupData.receipts.forEach(rec => {
-        rec.itemDetails = JSON.parse(rec.orderJson)
-        console.log(JSON.parse(rec.orderJson))
-      })
-      this.OrderDetail = this.popupData.receipts[0]
       console.log(this.popupData)
+      // this.test = this.popupData['receipts']
+      // console.log(this.test)
+      this.popupData.receipts.forEach(rec => {
+        rec.itemDetails = JSON.parse(rec.itemJson)
+        console.log(JSON.parse(rec.itemJson))
+      })
+      // this.OrderDetail = this.popupData.receipts[0]
+      // this.test = this.OrderDetail.itemDetails.Items
+      // console.log(this.OrderDetail)
+      // console.log('test', this.test)
+      // console.log(this.popupData)
+      this.OrderDetail = this.popupData.receipts[0]
+      this.test = this.OrderDetail.itemDetails
+      console.log(this.OrderDetail)
       this.openDetailpopup(modalRef)
     })
   }
-
-  orders: any = null
+ 
+  orders: any = null 
 
   parseOrder(json_string, modalRef) {
     this.orders = JSON.parse(json_string)

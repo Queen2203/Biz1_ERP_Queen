@@ -137,7 +137,7 @@ export class OrderItemModule {
   Updated: boolean = false
   DiscPercent: number
   DiscAmount: number
-  Status: number
+  Status: number 
   StatusId: number
   Note: string
   Message: string
@@ -169,6 +169,7 @@ export class OrderItemModule {
   IsInclusive: boolean
   RefId: string
   DispatchQty: number
+
   constructor(product, OrdId, storeId) {
     console.log(product, OrdId, storeId)
     this.Id = 0

@@ -168,8 +168,8 @@
       <tr *ngFor="let ord of  basicTable.data; let i = index">
         <td>{{i+1}}</td>
         <td>
-          <a class="btn btn-sm btn-light" href="javascript: void(0);" (click)="getorderid(ord.id,contentdetail1);">
-            {{ord.orderNo}}
+          <a class="btn btn-sm btn-light" href="javascript: void(0);" (click)="getorderid(ord.id,contentdetail);">
+            {{ord.id}}
           </a>
         </td>
         <td>
@@ -209,7 +209,7 @@
   </nz-table>
 </div>
 
-<ng-template #contentdetail1 let-modal>
+<ng-template #contentdetail let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Order details</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -225,27 +225,27 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let ord of OrderDetail.itemDetails.Items">
-        <td>{{ord.ProductName}}</td>
+      <!-- <tr *ngFor="let ord of OrderDetail.itemDetails.Items"> -->
+        <tr *ngFor="let ord of OrderDetail.itemDetails">
+        <td>{{ord.Product}}</td>
         <td>{{ord.OrderQuantity}}</td>
-        <td class="text-right">&#8377;{{ord.TotalAmount | number:".2"}}</td>
+        <td class="text-right">&#8377;{{ord.TotalAmount }}</td>
       </tr>
       <tr>
         <td></td>
         <td> <strong>CGST</strong> </td>
-        <td class="text-right"> {{OrderDetail.tax1 | number:".2"}}</td>
+        <td class="text-right"> {{OrderDetail.tax1 }}</td>
       </tr>
       <tr>
         <td></td>
         <td> <strong>SGST</strong> </td>
-        <td class="text-right"> {{OrderDetail.tax2 | number:".2"}} </td>
+        <td class="text-right"> {{OrderDetail.tax2}} </td>
       </tr>
 
       <tr>
         <td></td>
         <td> <strong>TotalAmt</strong> </td>
-        <td class="text-right"> &#8377; <strong class="font-weight-bold">{{OrderDetail.billAmount1 |
-            number:".2"}}</strong></td>
+        <td class="text-right"> &#8377; <strong class="font-weight-bold">{{OrderDetail.billAmount1 }}</strong></td>
       </tr>
     </tbody>
   </nz-table>

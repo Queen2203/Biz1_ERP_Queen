@@ -9,7 +9,6 @@ import { merge, Observable, Subject } from 'rxjs'
 import { Router, ActivatedRoute } from '@angular/router'
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
 import { OrderItemModule, OrderModule } from './edit-internal.module'
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast'
 import { Location } from '@angular/common'
 @Component({
   selector: 'app-edit-internal-order',
@@ -60,12 +59,12 @@ export class EditInternalOrderComponent implements OnInit {
         term === ''
           ? []
           : this.products
-              .filter(
-                v =>
-                  v.product.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
-                  v.barCode?.toLowerCase().indexOf(term.toLowerCase()) > -1,
-              )
-              .slice(0, 10),
+            .filter(
+              v =>
+                v.product.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
+                v.barCode?.toLowerCase().indexOf(term.toLowerCase()) > -1,
+            )
+            .slice(0, 10),
       ),
     )
 
@@ -78,8 +77,8 @@ export class EditInternalOrderComponent implements OnInit {
         term === ''
           ? []
           : this.stores.cusList
-              .filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10),
+            .filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10),
       ),
     )
 
@@ -92,8 +91,8 @@ export class EditInternalOrderComponent implements OnInit {
         term === ''
           ? []
           : this.Stocks.filter(
-              v => v.stockContainerName.toLowerCase().indexOf(term.toLowerCase()) > -1,
-            ).slice(0, 10),
+            v => v.stockContainerName.toLowerCase().indexOf(term.toLowerCase()) > -1,
+          ).slice(0, 10),
       ),
     )
 
@@ -208,6 +207,11 @@ export class EditInternalOrderComponent implements OnInit {
   numRecordsStr = 50
   dispatchStatus = 1
 
+  storedata: any = {
+    receiver: null,
+    supplier: null 
+  }
+
   tableData = [
     {
       key: '1',
@@ -290,8 +294,8 @@ export class EditInternalOrderComponent implements OnInit {
         term === ''
           ? []
           : this.stores.cusList
-              .filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10),
+            .filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10),
       ),
     )
 
@@ -308,8 +312,8 @@ export class EditInternalOrderComponent implements OnInit {
         term === ''
           ? []
           : this.stores.cusList
-              .filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10),
+            .filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            .slice(0, 10),
       ),
     )
 
@@ -320,7 +324,7 @@ export class EditInternalOrderComponent implements OnInit {
     if (this.OrdId != 0) {
       this.Auth.getorderPrd(this.CompanyId, this.OrdId).subscribe(data => {
         this.ordPrdDetails = data
-        console.log('hhhhhhhhhhrtughggg', this.ordPrdDetails)
+        console.log('hhrtughggg', this.ordPrdDetails)
         this.ordPrdDetails.orderItem.forEach(element => {
           element.Action = 'Chk'
           element['Price'] = element.price
@@ -334,8 +338,8 @@ export class EditInternalOrderComponent implements OnInit {
             OrderQuantity: element['orderQuantity'],
             DispatchProductId: element['productId'],
             ProductId: element['productId'],
-            Dispatchprd: element['description'],
-            ProductName: element['description'],
+            Dispatchprd: element['name'],
+            ProductName: element['name'],
             Price: element['Price'],
             Tax1: element['tax1'],
             Tax2: element['tax2'],
@@ -354,26 +358,27 @@ export class EditInternalOrderComponent implements OnInit {
         })
         this.SuppliedById = this.ordPrdDetails.order[0].suppliedById
         this.OrderedById = this.ordPrdDetails.order[0].orderedById
-        this.SuppliedBy = this.ordPrdDetails.order[0].suppliedBy
-        this.OrderedBy = this.ordPrdDetails.order[0].OrderedBy
+        this.SuppliedBy = this.ordPrdDetails.order[0].supplier
+        this.OrderedBy = this.ordPrdDetails.order[0].receiver
         this.Idorder = this.ordPrdDetails.order[0].id
         // this.ordPrdDetails.order.forEach(element => {
         //   element["StorageStoreId"] = element.SuppliedById;
         //   this.array[0].StorageStoreId = element["StorageStoreId"]
         // })
-        this.ordPrdDetails.orderProd.forEach(element => {
-          element.name +=
-            (this.ordPrdDetails.variants
-              .filter(x => x.barcodeId == element.barcodeId)
-              .map(x => x.name).length
-              ? ' /'
-              : '') +
-            this.ordPrdDetails.variants
-              .filter(x => x.barcodeId == element.barcodeId)
-              .map(x => x.name)
-              .join(' /')
-        })
 
+
+        //this.ordPrdDetails.orderProd.forEach(element => {
+        //   element.name +=
+        //     (this.ordPrdDetails.variants
+        //       .filter(x => x.barcodeId == element.barcodeId)
+        //       .map(x => x.name).length
+        //       ? ' /'
+        //       : '') +
+        //     this.ordPrdDetails.variants
+        //       .filter(x => x.barcodeId == element.barcodeId)
+        //       .map(x => x.name)
+        //       .join(' /')
+        // })
         console.log('array2', this.array)
       })
     }
@@ -420,6 +425,7 @@ export class EditInternalOrderComponent implements OnInit {
     this.getStoreList()
     this.getord()
     this.getorderPrd()
+    this.getstorename()
 
     // this.Auth.getdbdata(['loginfo']).subscribe(data => {
     //   this.loginfo = data['loginfo'][0]
@@ -455,7 +461,7 @@ export class EditInternalOrderComponent implements OnInit {
   //   })
   // }
 
-  setproductbybarcode(data) {}
+  setproductbybarcode(data) { }
   barcodereaded(event) {
     console.log(event)
     console.log(event.element.nativeElement.id)
@@ -560,8 +566,9 @@ export class EditInternalOrderComponent implements OnInit {
       this.temporaryItem[key] = item[key]
     })
     console.log(this.temporaryItem)
-    // this.quantityel['nativeElement'].focus()
+    //this.quantityel['nativeElement'].focus()
   }
+
   selectItem(item) {
     console.log('item', item)
     // console.log(item,Object.assign({},this.temporaryItem))
@@ -629,7 +636,7 @@ export class EditInternalOrderComponent implements OnInit {
       this.model = ''
       this.filteredvalues = []
       this.submitted = false
-      // console.log(this.order)
+      console.log(this.order)
       return
     }
   }
@@ -735,10 +742,11 @@ export class EditInternalOrderComponent implements OnInit {
     this.Auth.Update(this.order).subscribe(data => {
       console.log('temporry', data)
       this.addItem()
-      // this.Getorderlist()
+      //this.Getorderlist() 
     })
     this.isEditting = false
   }
+
   // getorderedList: any = []
   // Getorderlist() {
   //   this.Auth.getorderlist(this.StoreId).subscribe(data => {
@@ -746,6 +754,7 @@ export class EditInternalOrderComponent implements OnInit {
   //     console.log(this.getorderedList)
   //   })
   // }
+
   openDetailpopup(contentdetail, id) {
     this.Ordprd.push({
       companyId: this.CompanyId,
@@ -775,8 +784,32 @@ export class EditInternalOrderComponent implements OnInit {
         centered: true,
       })
       .result.then(
-        result => {},
-        reason => {},
+        result => { },
+        reason => { },
       )
+  }
+
+  // quantitychange(orderitems: OrderItemModule , event) {
+  //      console.log(orderitems , event);
+  //      var dis = this.ordPrdDetails.filter(x => x.BarcodeId == orderitems.BarcodeId)[0]
+  //      console.log(orderitems.OrderQuantity );
+  //     if(orderitems.OrderQuantity){
+
+  //     }
+  // }
+
+  
+  //Queen
+
+  // getpayment(value){
+  //   console.log('newpaytype', value)
+  //   this.product.OrderQuantity = value
+  // }
+
+  getstorename(){
+    this.Auth.getdispatchstore(this.OrdId).subscribe(data =>{
+      this.storedata = data[0]
+      console.log(this.storedata)
+    })
   }
 }

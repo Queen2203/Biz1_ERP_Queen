@@ -210,6 +210,23 @@ export const getMenuData: any[] = [
         key: 'appsMaintbilltypes',
         url: '/apps/maintainencebilltypes',
       },
+      {
+        title: 'Maintenance Record',
+        key: 'appsMaintenancerecord',
+        children:[
+          {
+            title: 'Maintenance Activities',
+            key: 'appsMaintenanceactivities',
+            url: '/apps/maintenanceactivities',
+          },
+          {
+            title: 'Maintenance Verify',
+            key: 'appsMaintenaceverify',
+            url: '/apps/maintenanceverify',
+          },
+          
+        ]
+      }
     ],
   },
   {

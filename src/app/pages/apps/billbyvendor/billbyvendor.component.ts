@@ -363,7 +363,7 @@ mastertest : any
     console.log('vendid',this.vendorId)
     this.test.payment = null
     this.test.reference = null
-    this.venid.reset()
+    this.vendorId = null
     this.SuppliedById = null
     this.test.paymenttypeid =null
     this.isTable = !this.isTable 

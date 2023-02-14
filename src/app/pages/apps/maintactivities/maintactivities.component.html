@@ -1,0 +1,205 @@
+<div class="cui__utils__heading" *ngIf="isShown">
+    <div class="row">
+        <div class="col-xl-6 pt-5">
+            <strong>Maintenance Bill Activities - Index</strong>
+        </div>
+        <!-- <button type="button" style="width: 90px;height: 30px; margin-left: 55%;" class="btn btn-squared btn-success">CreateNew</button>  -->
+        <div ngbDropdown class="col-xl-3 pt-5">
+            <button class="btn btn-success pull-right" ngbDropdownToggle id="dropdownBasic5" >
+                  <!-- <option value=null ><strong>CreateNew</strong></option>
+                  <option *ngFor="let pcat of BillStatus" value="{{pcat.id}}">{{pcat.status}}</option> -->Create New
+            </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic5">
+                <button ngbDropdownItem (click)="create()">CreateNew</button>
+                <!-- <button ngbDropdownItem>Another Action</button> -->
+            </div>
+        </div>
+        <div class="col-xl-3 pt-5">
+            <button type="button" class="btn btn-squared btn-primary  pull-right"> 
+                <i class="fa fa-search"></i> Advance Search 
+            </button>
+        </div>
+    </div>
+</div><br>
+
+<div  class="card" *ngIf="isShown">
+
+    <div class="card-header card-header-flex" *ngIf="isShown">
+        <div class="d-flex flex-column justify-content-center mr-auto">
+            <input type="text" class="form-control" placeholder="input search text" (input)="filtersearch()"
+                style="width: 250px;">
+        </div>
+        <div class="col-xl-2 pt-3">
+            <button type="button" class="btn btn-squared btn-success  pull-right">Generate Bill</button>
+        </div>
+        <div class="col-xl-2 pt-3">
+            <button type="button" class="btn btn-squared btn-success  pull-right">Generate Bill And Pay</button>
+        </div>
+    </div>
+    <nz-table #basicTable [nzData]="PurchaseDatatest" class="kit__utils__table mb-4"  nzSize="small" *ngIf="isShown">
+                <thead>
+                    <tr>
+                        <th><strong>Maint Id</strong></th>
+                        <th><strong>Asset Name</strong></th>
+                        <th><strong>Location </strong></th>
+                        <th><strong>Pay For</strong></th>
+                        <th><strong>Pay To</strong></th>
+                        <th><strong>Amount</strong></th>
+                        <th><strong>Quantity</strong></th>
+                        <th><strong>Last Generated</strong></th>
+                        <th><strong>Actions </strong></th>
+                        <th><strong>Choose</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ord of basicTable.data| filter:term">
+                        <td>
+                            <!-- <a class="btn btn-sm btn-light"> -->
+                                {{ord.id}}
+                            <!-- </a> -->
+                        </td>
+                        <td>
+                            {{ord.assetName}}
+                        </td>
+                        <td>
+                           <input class="form-control" type="text">
+                        </td>
+                        <td>
+                            {{ord.billType}}
+                        </td>
+                        <td>
+                            <input class="form-control" type="text">
+                        </td>
+                        <td>
+                            <input class="form-control" type="number" [(ngModel)]="ord.expectedAmount">
+                        </td>
+                        <td>
+                            <input class="form-control" type="number">
+                        </td>
+                        <td>
+                            {{ord.createdDate}}
+                        </td>
+                        <td>
+                            <a (click)="billpayfor(ord.billId)" href="javascript: void(0);"
+                                class="btn btn-sm btn-light ">
+                                <i class="fe fa-lg fe-dollar-sign"></i>
+                            </a>
+                            <!-- <a href="javascript: void(0);" (click)="Delete(ord.billId)"
+                        class="btn btn-sm btn-light pull-left" slot="actions">
+                        <i class="fe fe-trash mr-1"></i>
+                    </a> -->
+                            <a href="javascript: void(0);" (click)="purchasedetail(ord.billId)"
+                                class="btn btn-sm btn-light pull-left" slot="actions" style="color: blue;">
+                                <i class="fe fa-lg fe-info"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <input class="form-control"  type="checkbox" style="width: 50%; height: 50%;" [(ngModel)]="ChooValue" 
+                            (ngModelChange)="getchoosedvalue($event.target)">
+                        </td>
+
+                    </tr>
+                </tbody>
+    </nz-table>
+</div>
+
+<!-- Create New -->
+<div class="cui__utils__heading" *ngIf="isCreate">
+    <div class="col-xl-6 pt-3">
+        <strong>Add Maintenance Bills</strong>
+    </div>
+</div>
+<div class="card-body" *ngIf="isCreate" style="margin-left: 10%;">
+    <div class="form-group row">
+        <!-- <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Maintenance Bill Type<span style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" name="example_name" value="" placeholder="Select Asset Type"
+            [ngClass]="{'is-invalid': submitted && account.Description == ''}" />
+            <span *ngIf="submitted && asset.Description == ''" class="text-danger">Maintenance Bill Type cannot be empty*</span>
+        </div> -->
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Maintenance Bill Type<span style="color: red;">*</span></label>
+        <ng-template class="w-100" #rt let-r="result" let-t="term">
+                <ngb-highlight [result]="r.description" [term]="t"></ngb-highlight>
+              </ng-template>
+        <div class="col-md-3 pt-2">
+        <input id="typeahead-template"
+                [(ngModel)]="mainttypeid" #productautocomplete style="height: 84%;" #instance="ngbTypeahead" type="text"
+                class="form-control" placeholder="Search MaintBill Type" [ngbTypeahead]="search" [resultTemplate]="rt"
+                [inputFormatter]="formatter" (selectItem)="selectedItem($event.item)" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Asset Name<span style="color: red;">*</span></label>
+        <ng-template class="w-100" #rrt let-rr="result" let-t="term">
+                <ngb-highlight [result]="rr.description" [term]="t"></ngb-highlight>
+              </ng-template>
+        <div class="col-md-3 pt-2">
+        <input id="typeahead-template"
+                 #productautocomplete style="height: 84%;" #instance="ngbTypeahead" type="text"
+                class="form-control" placeholder="Search Asset" [ngbTypeahead]="assetsearch" [resultTemplate]="rrt"
+                [inputFormatter]="assetformatter" (selectItem)="assetselectedItem($event.item)" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Maintenance Type<span style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <select class="form-control" [(ngModel)]="mainttypeId" (ngModelChange)="getmaintTypeid($event)">
+                <option value=null disabled>Select MaintenanceType</option>
+                <option value=1>Recurring</option>
+                <option value=2>Non Recurring</option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Exepected Amount</label>
+        <div class="col-md-3 pt-2">
+            <input type="number" class="form-control" [(ngModel)]="expectedamount" name="example_name" value="" placeholder="Enter Amount"/>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Vendor<span style="color: red;">*</span></label>
+        <ng-template class="w-100" #vrt let-vr="result" let-t="term">
+                <ngb-highlight [result]="vr.name" [term]="t"></ngb-highlight>
+              </ng-template>
+        <div class="col-md-3 pt-2">
+        <input id="typeahead-template"
+                 #productautocomplete style="height: 84%;" #instance="ngbTypeahead" type="text"
+                class="form-control" placeholder="Search Vendor" [ngbTypeahead]="vensearch" [resultTemplate]="vrt"
+                [inputFormatter]="venformatter" (selectItem)="venselectedItem($event.item)" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Assigned To</label>
+        <div class="col-md-3 pt-2">
+        <select class="form-control" [(ngModel)]="contTypeId" (ngModelChange)="selectedcontType()">
+            <option value=null disabled>Select ContactType</option>
+            <option *ngFor="let pcatt of conttype" value="{{pcatt.id}}">{{pcatt.description}}</option>
+          </select>
+        </div>
+        <ng-template class="w-100" #crt let-cr="result" let-t="term">
+            <ngb-highlight [result]="cr.name" [term]="t"></ngb-highlight>
+          </ng-template>
+        <div class="col-md-3 pt-2">
+            <input id="typeahead-template"
+            #productautocomplete style="height: 84%;" #instance="ngbTypeahead" type="text"
+           class="form-control" placeholder="Search Contact" [ngbTypeahead]="searchcontact" [resultTemplate]="crt"
+           [inputFormatter]="formattercontact" (selectItem)="selectedcontact($event.item)" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-2 pt-3">
+            <button type="button" class="btn btn-squared btn-primary" style="margin-right: 20%;" (click)="addback()">Back</button>
+        </div>
+        <div class="col-xl-5 pt-3">
+            <button type="button" class="btn btn-squared btn-success" style="margin-left: 60%;" (click)="savemaintbill()">Save</button>
+        </div>
+    </div>
+
+</div>

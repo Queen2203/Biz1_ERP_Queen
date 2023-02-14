@@ -65,6 +65,8 @@ import { BankaccountdetailComponent } from './bankaccountdetail/bankaccountdetai
 import { BillbyvendorComponent } from './billbyvendor/billbyvendor.component'
 import { Ng2SearchPipeModule } from 'ng2-search-filter'
 import { CreditrepayComponent } from './creditrepay/creditrepay.component';
+import { MaintactivitiesComponent } from './maintactivities/maintactivities.component';
+import { MaintverifyComponent } from './maintverify/maintverify.component';
 // import { CreditpayComponent } from './creditpay/creditpay.component';
 // import { CreditindexComponent } from './creditindex/creditindex.component'
 
@@ -140,6 +142,8 @@ const COMPONENTS = [
     BankaccountdetailComponent,
     BillbyvendorComponent,
     CreditrepayComponent,
+    MaintactivitiesComponent,
+    MaintverifyComponent,
     // CreditpayComponent,
     // CreditindexComponent,
   ],

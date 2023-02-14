@@ -800,8 +800,8 @@ export class AuthService {
     return this.http.get(this.base_url1 + 'CreditTrx/TestCreditData?CompanyId=' + compid + '&billStatus=' + billStatus)
   }
   //Queen 23-09-2022
-  getpurchase(compid){
-    return this.http.get(this.base_url1 + 'PurchaseTrx/TestPurchaseData?CompanyId=' + compid)
+  getpurchase(compid, billstsid){
+    return this.http.get(this.base_url1 + 'PurchaseTrx/TestPurchaseData?CompanyId=' + compid + '&billstsid=' + billstsid)
   }
   // Queen 22-10-2022
   savecredit(crd){
@@ -866,4 +866,45 @@ export class AuthService {
     return this.http.get(this.base_url1+ 'PurchaseTrx/getbillData?companyid=' +CompanyId + '&vendorid=' + vendorid + '&storeid=' +storeid)
   }
 
+
+  //Kowsi - Internal
+  getintprod(CompanyId, StoreId, testid) {
+    return this.http.get(this.base_url1 + 'Internal/GetInternalproduct?CompanyId=' + CompanyId + '&StoreId=' + StoreId + '&testid=' + testid)
+  }
+  getstoreslist(companyid, storeid) {
+    return this.http.get(this.base_url1 + 'Internal/getstoreslist?companyid=' + companyid + '&storeid=' + storeid)
+  }
+
+    //Queen30-12-2022
+    getdispatchstore(ordid){
+      return this.http.get(this.base_url1 + 'Internal/getdispatchbyid?ordid=' + ordid)
+    }
+    getbatchdata(ordid, prodid){
+      return this.http.get(this.base_url1 + 'Internal/getbatchquantity?ordid=' + ordid + '&prodid=' +prodid)
+    }
+  
+    //Queen 23-01-2023
+    getpurproducts(companyid, venid){
+      return this.http.get(this.base_url1 + 'Purchase/GetProducts?companyId=' + companyid + '&vendorId=' +venid)
+    }
+
+  //Queen 24-01-2023
+  getinterproduct(CompanyId){
+    return this.http.get(this.base_url1+ 'Internal/getproducts?companyId=' + CompanyId ) 
+  }
+  getliabilitybyId(CompanyId, liatypeid){
+    return this.http.get(this.base_url1+ 'MaintBillTypes/getliabilityBytypeId?companyId=' + CompanyId  + '&liatypeid=' +liatypeid) 
+  }
+  getvendorsmaint(CompanyId){
+    return this.http.get(this.base_url1+ 'MaintBillTypes/getMaintVendors?companyId=' + CompanyId)
+  }
+  getcontType(CompanyId){
+    return this.http.get(this.base_url1+ 'MaintBillTypes/getContactType?companyId=' + CompanyId)
+  }
+  Savemaintenbill(maintjson){
+    return this.http.post(this.base_url1 + 'MaintBillTypes/SaveMaintBill', maintjson)
+  }
+  getmaintbillIndex(CompanyId){
+    return this.http.get(this.base_url1+ 'MaintBillTypes/GetMaintBillIndex?companyId=' + CompanyId)
+  }
 }

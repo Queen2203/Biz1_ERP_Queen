@@ -249,7 +249,7 @@ export class PurchaseEntryComponent implements OnInit {
         this.customerdetails.data_state = 'old'
       },
       error => {
-        console.log(error)
+        console.log(error) 
       },
       () => {
         // this.getcustomers();

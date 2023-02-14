@@ -90,8 +90,7 @@ export class BatchEntryComponent implements OnInit {
   onInputAutocomplete() {
     console.log(this.products)
  
-    this.filterproduct = this.products.filter(x =>
-      x.product.toLowerCase().includes(this.inputValue),
+    this.filterproduct = this.products.filter(x =>x.product.toLowerCase().includes(this.inputValue),
     )
   }
 

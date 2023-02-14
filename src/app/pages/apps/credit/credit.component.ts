@@ -689,7 +689,7 @@ export class CreditComponent implements OnInit {
     this.transmod.CreatedDate = moment().format('YYYY-MM-DD HH:MM A'),
     this.transmod.TransDateTime = moment().format('YYYY-MM-DD HH:MM A'),
     this.transmod.TransTypeId = 8
-    this.transmod.TransModeId = 2
+    this.transmod.TransModeId = 2 
     this.transmod.BillStatusId = 2
     this.transmod.CreatedBy = this.StoreId
     var bill = new BillModule(this.transmod.ContactId, this.totalpaidamount)
@@ -703,7 +703,7 @@ export class CreditComponent implements OnInit {
     console.log(this.transmod)
     this.Auth.savecredit(this.transmod).subscribe(data => {
       this.savecreditdata = data
-      console.log(this.savecreditdata)
+      console.log(this.savecreditdata) 
     })
     this.test.payment = null
     this.test.reference = null 
